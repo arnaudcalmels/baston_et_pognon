@@ -10,8 +10,9 @@ const Button = ({ color, children, onClick}) => {
                 border: 'none',
                 padding: '0.5rem 1rem',
                 borderRadius: '25px',
+                // eslint-disable-next-line
                 padding: '1rem 2rem',
-                margin: '0.5rem'
+                margin: '0.5rem 1rem'
                 }}>
             {children}
         </button>

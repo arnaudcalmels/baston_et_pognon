@@ -19,7 +19,7 @@ const Navigation = (props) => {
                 <NavLink className={styles['navlink']} to="/">Baston & Pognon</NavLink>
             </h1>
 
-            <FontAwesomeIcon onClick={() => displayMenu()} className={styles['bars']} icon={faBars} size="3x" />     
+            <FontAwesomeIcon onClick={() => displayMenu()} className={styles['bars']} icon={faBars} size="2x" />     
 
             <div className={styles['menu']}>   
                 <nav className={styles['navbar']}>

@@ -11,7 +11,7 @@ const Button = ({ color, children, onClick}) => {
                 padding: '0.5rem 1rem',
                 borderRadius: '25px',
                 // eslint-disable-next-line
-                padding: '1rem 2rem',
+                padding: '0.5rem 1rem',
                 margin: '0.5rem 1rem'
                 }}>
             {children}

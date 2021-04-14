@@ -4,10 +4,10 @@ import Navigation from '../../components/Navigation';
 
 const Game = (props) => {
     return (
-        <div>
+        <>
             <Navigation />
             <p>Je suis dans Game</p>
-        </div>
+        </>
     );
 };
 

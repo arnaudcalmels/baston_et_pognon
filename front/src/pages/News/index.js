@@ -4,10 +4,10 @@ import Navigation from '../../components/Navigation';
 
 const News = (props) => {
     return (
-        <div>
+        <>
             <Navigation />
             <p>Je suis dans News</p>
-        </div>
+        </>
     );
 };
 

@@ -4,10 +4,10 @@ import Navigation from '../../components/Navigation';
 
 const Scenario = (props) => {
     return (
-        <div>
+        <>
             <Navigation />
             <p>Je suis dans Scenario</p>
-        </div>
+        </>
     );
 };
 

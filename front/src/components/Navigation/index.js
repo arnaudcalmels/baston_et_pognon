@@ -8,32 +8,33 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import styles from './navigation.module.css';
 
 const Navigation = (props) => {
+    const displayMenu = () => {
+        const menu = document.getElementsByClassName(styles['menu'])[0];
+        menu.classList.toggle(styles['show']);
+    };
+
     return (
         <div className={styles['header']}>
             <h1 className={styles['logo']}>
                 <NavLink className={styles['navlink']} to="/">Baston & Pognon</NavLink>
             </h1>
 
-            <FontAwesomeIcon className={styles['bars']} icon={faBars} size="3x" />     
+            <FontAwesomeIcon onClick={() => displayMenu()} className={styles['bars']} icon={faBars} size="3x" />     
 
             <div className={styles['menu']}>   
                 <nav className={styles['navbar']}>
                     <ul>
                         <li>
-                        {/* eslint-disable-next-line */}
-                            <NavLink className={styles['item1', 'navlink']} exact activeClassName={styles['isActive']} to="/personnage">Personnages</NavLink>   
+                            <NavLink className={styles['navlink']} exact activeClassName={styles['isActive']} to="/personnage">Personnages</NavLink>   
                         </li>
                         <li>
-                        {/* eslint-disable-next-line */}
-                            <NavLink className={styles['item2', 'navlink']} exact activeClassName={styles['isActive']} to="/scenario">Scénarios</NavLink>  
+                            <NavLink className={styles['navlink']} exact activeClassName={styles['isActive']} to="/scenario">Scénarios</NavLink>  
                         </li>
                         <li>
-                        {/* eslint-disable-next-line */}
-                            <NavLink className={styles['item3', 'navlink']} exact activeClassName={styles['isActive']} to="/jeu">Parties en ligne</NavLink> 
+                            <NavLink className={styles['navlink']} exact activeClassName={styles['isActive']} to="/jeu">Parties en ligne</NavLink> 
                         </li>
                         <li>
-                        {/* eslint-disable-next-line */}
-                            <NavLink className={styles['item4', 'navlink']} exact activeClassName={styles['isActive']} to="/actualité">Actualités</NavLink> 
+                            <NavLink className={styles['navlink']} exact activeClassName={styles['isActive']} to="/actualité">Actualités</NavLink> 
                         </li>
                     </ul>
                 </nav>

@@ -41,15 +41,9 @@
     justify-content: center;
 }
 
-ul {
+.navbar ul {
     display: flex;
     justify-content: space-between;
-}
-
-li {
-    list-style-type: none;
-    cursor: pointer;
-
 }
 
 .navlink {
@@ -104,12 +98,15 @@ li {
         padding-bottom: 0.5rem;
     }
 
-    ul {
+    .navbar ul {
+        padding-top: 0.8rem;
         flex-direction: column;
+        height: 150px;
     }
 
-    li {
+    li .navlink {
         padding: 0.8rem;
+        margin-top: 1rem;
     } 
     
 }

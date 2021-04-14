@@ -16,7 +16,6 @@ function App() {
         <Route exact path="/scenario" component={Scenario} />
         <Route exact path="/jeu" component={Game} />
         <Route exact path="/actualité" component={News} />
-
       </Switch>
     </div>
   );

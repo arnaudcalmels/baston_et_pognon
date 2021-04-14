@@ -1,0 +1,32 @@
+.footer {
+    background-color: #ddd;
+    grid-row: 3 / 4;
+    grid-column: 1 / span 12;
+    align-items: center;
+    display: grid;
+    grid-template-rows: repeat(2, 50px);
+}
+
+.footer ul {
+    padding: 0;
+    grid-row: 1 / 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+}
+
+.link {
+    text-decoration: none;
+    color: #111;
+}
+
+.footer p {
+    grid-row: 2 / 3;
+    text-align: center;
+}
+
+@media screen and (max-width: 500px) {
+    .footer ul {
+        grid-template-columns: 30% 30% 40%;
+    }
+}

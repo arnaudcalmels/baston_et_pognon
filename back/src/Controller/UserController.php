@@ -19,10 +19,15 @@ class UserController extends AbstractController
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator): JsonResponse
     {
         $requestContent = json_decode($request->getContent());
+        if (!isset($requestContent->email) && !isset($requestContent->password) && !isset($requestContent->confirmPassword)) {
+            return new JsonResponse('Format incorrect', 400);
+        }
 
         $user = new User();
         $user->setEmail($requestContent->email);
-        $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
+        if ($requestContent->password === $requestContent->confirmPassword) {
+            $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
+        }
         $user->setRoles(['ROLE_USER']); // rôle défini par défaut
         
         // On définit un pseudo aléatoire avant de sauvegarder le nouvel utilisateur

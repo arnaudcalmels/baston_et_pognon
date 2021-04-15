@@ -3,15 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
 use App\Service\UserService;
 use App\Repository\UserRepository;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -31,7 +32,6 @@ class UserController extends AbstractController
 
         $errors = $validator->validate($user);
 
-
         if (count($errors) > 0) {
             $data = [];
             foreach ($errors as $error) {
@@ -45,10 +45,42 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $statusCode = 200;
-            $data = ['OK'];
-    
+            $data = $this->normalizeUser($user);
         }
 
         return new JsonResponse($data, $statusCode);
+    }
+
+    public function profile(UserService $userService): Response
+    {
+        $currentUser = $userService->getCurrentUser();
+
+        if ($currentUser === null) {
+            return new JsonResponse('Utilisateur non identifié', 200);
+        }
+
+        $data = $this->normalizeUser($currentUser);
+
+        return new JsonResponse($data, 200);
+    }
+
+    /* 
+     * Normalize a User Object
+     * 
+    **/
+    private function normalizeUser($user)
+    {
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers);
+
+        return $serializer->normalize($user, null, [
+            AbstractNormalizer::ATTRIBUTES => [
+                'id',
+                'email',
+                'pseudo',
+                'avatar',
+                ]
+            ]
+        );
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Button = ({ color, children, onClick}) => {
+const Button = ({ color, children, onClick }) => {
     return (
         <button 
             onClick={onClick} 

@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-const Home = (openModal) => {
+const Home = (props) => {
     return (
         <>
             <p>Je suis dans Home</p>

@@ -1,19 +1,24 @@
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import Home from './pages/Home';
 import Character from './pages/Character';
 import Scenario from './pages/Scenario';
 import Game from './pages/Game';
 import News from './pages/News';
-import Navigation from './components/Navigation';
+import Modal from './containers/Modal';
+import Navigation from './containers/Navigation';
 import Footer from './components/Footer';
 
 import './App.css';
 
-
-function App() {
+const App = ({ isRegisterModalOpen, isLoginModalOpen }) => {
   return (
     <div className="App">
       <Navigation />
+
+      <Modal isOpen={isRegisterModalOpen} title='Inscription' children={'<Register />'}/>
+      <Modal isOpen={isLoginModalOpen} title='Connexion' children={'<Login />'}/>
 
       <Switch>
         <Route exact path="/" component={Home} />
@@ -28,4 +33,11 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps= (state) => ({
+  isRegisterModalOpen: state.auth.isRegisterModalOpen,
+  isLoginModalOpen: state.auth.isLoginModalOpen
+});
+
+
+export default connect(mapStateToProps)(App);
+

@@ -20,7 +20,7 @@ class UserController extends AbstractController
     {
         $requestContent = json_decode($request->getContent());
         if (!isset($requestContent->email) && !isset($requestContent->password) && !isset($requestContent->confirmPassword)) {
-            return new JsonResponse('Format incorrect', 400);
+            return new JsonResponse(['Format incorrect'], 400);
         }
 
         $user = new User();
@@ -77,11 +77,12 @@ class UserController extends AbstractController
         $currentUser = $this->getUser();
 
         if ($user !== $currentUser) {
-            $data = 'Vous n\'êtes pas autorisé à modifier cet utilisateur';
+            $data = ['Vous n\'êtes pas autorisé à modifier cet utilisateur'];
             $statusCode = 403;
 
         } else {
             $requestContent = json_decode($request->getContent());
+
             if (isset($requestContent->email)) {
                 $user->setEmail($requestContent->email);
                 $emailChanged = true;

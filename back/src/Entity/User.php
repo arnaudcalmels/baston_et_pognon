@@ -13,7 +13,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity("email", message="Cet email est déjà utilisé.")
+ * @UniqueEntity("email", message="Cet email est déjà utilisé")
+ * @UniqueEntity("pseudo", message="Ce pseudo est déjà utilisé")
  */
 class User implements UserInterface
 {
@@ -26,7 +27,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email(message="L'adresse email n'est pas d'un format valide.")
+     * @Assert\Email(message="L'adresse email n'est pas d'un format valide")
      */
     private $email;
 

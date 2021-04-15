@@ -23,7 +23,7 @@ class UserController extends AbstractController
         $user = new User();
         $user->setEmail($requestContent->email);
         $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
-        $user->setRoles(['ROLE_USER']);
+        $user->setRoles(['ROLE_USER']); // rôle défini par défaut
         
         // On définit un pseudo aléatoire avant de sauvegarder le nouvel utilisateur
         $user->setPseudo('User-'.rand(9999, 99999));
@@ -42,7 +42,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $statusCode = 200;
+            $statusCode = 201;
             $data = $this->normalizeUser($user);
         }
 
@@ -54,7 +54,7 @@ class UserController extends AbstractController
         $currentUser = $this->getUser();
 
         if ($currentUser === null) {
-            return new JsonResponse('Utilisateur non identifié', 200);
+            return new JsonResponse('Utilisateur non trouvé', 404);
         }
 
         $data = $this->normalizeUser($currentUser);
@@ -72,7 +72,7 @@ class UserController extends AbstractController
         $currentUser = $this->getUser();
 
         if ($user !== $currentUser) {
-            $data = 'Vous n\'êtes pas autorisé à modifier cet utilisateur.';
+            $data = 'Vous n\'êtes pas autorisé à modifier cet utilisateur';
             $statusCode = 403;
 
         } else {
@@ -122,13 +122,19 @@ class UserController extends AbstractController
     {
         $currentUser = $this->getUser();
 
-        if ($user === $currentUser); {
+        if ($user !== $currentUser) {
+            $message = 'Vous n\'êtes pas autorisé à modifier cet utilisateur';
+            $statusCode = 403;
+        } else {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
-            $entityManager->flush();   
+            $entityManager->flush();  
+            
+            $message = 'Suppression OK';
+            $statusCode = 200;
         }
 
-        return new JsonResponse('Suppression OK', 200);
+        return new JsonResponse($message, $statusCode);
     }
 
     /* 

@@ -1,7 +1,15 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+# Users
+user_new:
+    path: /user/new
+    methods: [POST]
+    controller: App\Controller\UserController::new
 
+api_user_profile:
+    path: api/user/profile
+    methods: [POST]
+    controller: App\Controller\UserController::profile
+
+# Authentication
 api_login_check:
     path: /login_check
     methods: [POST]

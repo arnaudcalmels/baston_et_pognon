@@ -1,3 +1,25 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+# Users
+user_new:
+    path: /user/new
+    methods: [POST]
+    controller: App\Controller\UserController::new
+
+api_user_profile:
+    path: api/user/profile
+    methods: [GET]
+    controller: App\Controller\UserController::profile
+
+api_user_edit:
+    path: api/user/edit/{id}
+    methods: [PUT]
+    controller: App\Controller\UserController::edit
+
+api_user_delete:
+    path: api/user/delete/{id}
+    methods: [DELETE]
+    controller: App\Controller\UserController::delete
+
+# Authentication
+api_login_check:
+    path: /login_check
+    methods: [POST]

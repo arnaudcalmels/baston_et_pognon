@@ -1,13 +1,17 @@
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 // rootReducer = résultat de combineReducers
 import rootReducer from '../reducers';
 
-// on crée le store
+// middlewares
+import apiMiddleware from '../middlewares/api';
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(),
+  composeWithDevTools(
+    applyMiddleware(apiMiddleware),
+  ),
 );
 
 export default store;

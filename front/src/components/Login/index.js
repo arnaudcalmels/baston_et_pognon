@@ -4,12 +4,12 @@ import Button from '../Button';
 
 import PropTypes from 'prop-types';
 
-import styles from './register.module.css';
+import styles from './login.module.css';
 
-const Register = ({ closeModal, registerSubmit }) => {
+const Login = ({ closeModal, loginSubmit }) => {
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    registerSubmit(JSON.stringify(values, null, 2));
+    loginSubmit(JSON.stringify(values, null, 2));
     closeModal();
   };
   return (
@@ -17,7 +17,6 @@ const Register = ({ closeModal, registerSubmit }) => {
       initialValues={{
       email: '',
       password: '',
-      confirmPassword: '',
       }}
       validate={values => {
         const errors = {};
@@ -31,12 +30,6 @@ const Register = ({ closeModal, registerSubmit }) => {
         } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(values.password)) {
           errors.password = 'Ce champ doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
         }
-        if(!values.confirmPassword) {
-          errors.confirmPassword = 'Veuillez remplir ce champ !';
-        } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(values.confirmPassword)) {
-          errors.confirmPassword = 'Ce champ doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
-        }
-
         return errors;
       }}
       onSubmit={(values) => handleSubmit(values)}
@@ -62,27 +55,16 @@ const Register = ({ closeModal, registerSubmit }) => {
         />
         <ErrorMessage name='password' component='div' className={styles['error_message']}/>
 
-
-        <label htmlFor="confirmPassword" className={styles['form_label']}>Confirmation mot de passe :</label>
-        <Field
-          className={styles['form_field']}
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          placeholder="Veuillez confirmer le mot de passe"
-        />
-        <ErrorMessage name='confirmPassword' component='div' className={styles['error_message']}/>
-
         <Button color='#eee' children='Annuler' onClick={closeModal}/>
-        <Button type="submit" color='#eee' children='Valider'/>
+        <Button type="submit" color='#eee' children='Se connecter'/>
       </Form>
     </Formik>
   );
 };
 
-Register.propTypes = {
+Login.propTypes = {
   closeModal: PropTypes.func,
-  registerSubmit: PropTypes.func,
+  loginSubmit: PropTypes.func,
 };
 
-export default Register;
+export default Login;

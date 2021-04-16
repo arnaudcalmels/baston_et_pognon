@@ -10,6 +10,7 @@ import Modal from './containers/Modal';
 import Navigation from './containers/Navigation';
 import Footer from './components/Footer';
 import Register from './containers/Register';
+import Login from './containers/Login';
 
 import './App.css';
 
@@ -19,7 +20,7 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen }) => {
       <Navigation />
 
       <Modal isOpen={isRegisterModalOpen} title='Inscription' children={<Register />}/>
-      <Modal isOpen={isLoginModalOpen} title='Connexion' children={'<Login />'}/>
+      <Modal isOpen={isLoginModalOpen} title='Connexion' children={<Login />}/>
 
       <Switch>
         <Route exact path="/" component={Home} />

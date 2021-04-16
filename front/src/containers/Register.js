@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Modal from '../components/Modal';
+import Register from '../components/Register';
 
 import { closeModal } from '../actions/auth';
 
@@ -14,4 +14,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Modal);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -1,0 +1,30 @@
+.form {
+    margin-top: 3rem;
+    padding-left: 2rem;
+}
+
+.form_label {
+}
+
+.form_field {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.8rem;
+    margin-bottom: 2rem;
+    width: 230px;
+    height: 30px;
+}
+
+.error_message {
+    color: red;
+    margin-top: -1.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+@media screen and (min-width: 600px) {
+    .form {
+        padding-left: 4.5rem;
+    }
+}

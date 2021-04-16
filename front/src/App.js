@@ -1,15 +1,27 @@
-import './App.css';
 import { Route, Switch } from 'react-router-dom';
-import Home from '../src/pages/Home';
-import Character from '../src/pages/Character';
-import Scenario from '../src/pages/Scenario';
-import Game from '../src/pages/Game';
-import News from '../src/pages/News';
+import { connect } from 'react-redux';
 
+import Home from './pages/Home';
+import Character from './pages/Character';
+import Scenario from './pages/Scenario';
+import Game from './pages/Game';
+import News from './pages/News';
+import Modal from './containers/Modal';
+import Navigation from './containers/Navigation';
+import Footer from './components/Footer';
+import Register from './containers/Register';
+import Login from './containers/Login';
 
-function App() {
+import './App.css';
+
+const App = ({ isRegisterModalOpen, isLoginModalOpen }) => {
   return (
     <div className="App">
+      <Navigation />
+
+      <Modal isOpen={isRegisterModalOpen} title='Inscription' children={<Register />}/>
+      <Modal isOpen={isLoginModalOpen} title='Connexion' children={<Login />}/>
+
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/personnage" component={Character} />
@@ -17,8 +29,17 @@ function App() {
         <Route exact path="/jeu" component={Game} />
         <Route exact path="/actualité" component={News} />
       </Switch>
+
+      <Footer />
     </div>
   );
 }
 
-export default App;
+const mapStateToProps= (state) => ({
+  isRegisterModalOpen: state.auth.isRegisterModalOpen,
+  isLoginModalOpen: state.auth.isLoginModalOpen
+});
+
+
+export default connect(mapStateToProps)(App);
+

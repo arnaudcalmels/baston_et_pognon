@@ -5,14 +5,13 @@ import { signUpSuccess, loginSuccess } from '../actions/auth';
 
 import { SIGN_UP, LOGIN } from '../actions/types';
 
-const baseURL = 'localhost:8000/';
 
 const api = (store) => (next) => (action) => {
   switch (action.type) {
     case SIGN_UP: {
       const config = {
         method: 'post',
-        url: baseURL + 'user/new',
+        url: process.env.REACT_APP_BASE_URL_API + 'user/new',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -25,13 +24,15 @@ const api = (store) => (next) => (action) => {
         })
         .catch ((error) => {
           console.log(error)
-        })
+        });
+
       break;
     }
+
     case LOGIN: {
       const config = {
         method: 'post',
-        url: baseURL + '',
+        url: process.env.REACT_APP_BASE_URL_API + 'login_check',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -44,9 +45,11 @@ const api = (store) => (next) => (action) => {
         })
         .catch ((error) => {
           console.log(error)
-        })
+        });
+
       break;
     }
+    
     default:
       next(action);
   }

@@ -53,7 +53,7 @@ class User implements UserInterface
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity=Character::class, mappedBy="owner", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Characters::class, mappedBy="owner", orphanRemoval=true)
      */
     private $characters;
 
@@ -180,14 +180,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Character[]
+     * @return Collection|Characters[]
      */
     public function getCharacters(): Collection
     {
         return $this->characters;
     }
 
-    public function addCharacter(Character $character): self
+    public function addCharacter(Characters $character): self
     {
         if (!$this->characters->contains($character)) {
             $this->characters[] = $character;
@@ -197,7 +197,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeCharacter(Character $character): self
+    public function removeCharacter(Characters $character): self
     {
         if ($this->characters->removeElement($character)) {
             // set the owning side to null (unless already changed)

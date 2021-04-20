@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,6 +45,16 @@ class Game
      * @ORM\JoinColumn(nullable=false)
      */
     private $scenario;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Characters::class, mappedBy="games")
+     */
+    private $characters;
+
+    public function __construct()
+    {
+        $this->characters = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +117,33 @@ class Game
     public function setScenario(Scenario $scenario): self
     {
         $this->scenario = $scenario;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Characters[]
+     */
+    public function getCharacters(): Collection
+    {
+        return $this->characters;
+    }
+
+    public function addCharacter(Characters $character): self
+    {
+        if (!$this->characters->contains($character)) {
+            $this->characters[] = $character;
+            $character->addGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCharacter(Characters $character): self
+    {
+        if ($this->characters->removeElement($character)) {
+            $character->removeGame($this);
+        }
 
         return $this;
     }

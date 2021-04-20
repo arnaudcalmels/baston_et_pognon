@@ -1,5 +1,5 @@
 import {
-  OPEN_REGISTER_MODAL, OPEN_LOGIN_MODAL, CLOSE_MODAL, SIGN_UP, SIGN_UP_SUCCESS, LOGIN, LOGIN_SUCCESS,
+  OPEN_REGISTER_MODAL, OPEN_LOGIN_MODAL, CLOSE_MODAL, SIGN_UP, SIGN_UP_SUCCESS, LOGIN, LOGIN_SUCCESS, LOGOUT,
 } from './types';
 
 export const isRegisterModalOpen = () => ({
@@ -32,4 +32,8 @@ export const login = (values) => ({
 export const loginSuccess = (data) => ({
   type: LOGIN_SUCCESS,
   data
+});
+
+export const logout = () => ({
+  type: LOGOUT,
 });

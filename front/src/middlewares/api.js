@@ -2,8 +2,9 @@ import axios from 'axios';
 
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
+import { getProfile, getProfileSuccess } from '../actions/user';
 
-import { SIGN_UP, LOGIN } from '../actions/types';
+import { SIGN_UP, LOGIN, GET_PROFILE } from '../actions/types';
 
 
 const api = (store) => (next) => (action) => {
@@ -42,10 +43,35 @@ const api = (store) => (next) => (action) => {
       axios(config)
         .then ((response) => {
           store.dispatch(loginSuccess(response.data)); 
+          store.dispatch(getProfile());
+          console.log(response);
         })
         .catch ((error) => {
           console.log(error)
         });
+
+      break;
+    }
+
+    case GET_PROFILE: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/user/profile',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getProfileSuccess(response.data));
+        console.log(response);
+      })
+      .catch ((error) => {
+        console.log(error)
+      });
 
       break;
     }

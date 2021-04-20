@@ -5,14 +5,18 @@ import Button from '../Button';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './navigation.module.css';
 
-const Navigation = ({ isRegisterModalOpen, isLoginModalOpen }) => {
+const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout, username }) => {
   const displayMenu = () => {
     const menu = document.getElementsByClassName(styles['menu'])[0];
     menu.classList.toggle(styles['show']);
+  };
+  const displayUserMenu = () => {
+    const userMenu = document.getElementsByClassName(styles['user_navbar'])[0];
+    userMenu.classList.toggle(styles['show_user_navbar']);
   };
 
   return (
@@ -42,8 +46,33 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen }) => {
         </nav>
         
         <div className={styles['log']}>
-          <Button color='#eee' children='Inscription' onClick={isRegisterModalOpen} />
-          <Button color='#eee' children='Connexion' onClick={isLoginModalOpen} />
+
+        {
+          isLoggedIn ?
+          <div className={styles['user_menu']}>
+            <img id={styles['avatar']} src="https://cdn.pixabay.com/photo/2016/04/01/10/11/avatar-1299805__340.png" alt='photo_avatar'/>
+
+            <p>{username}</p>
+            <FontAwesomeIcon onClick={() => displayUserMenu()} className={styles['chevron']} icon={faChevronDown} size="x" style={{cursor: 'pointer'}}/>     
+
+            <nav className={styles['user_navbar']}>
+              <ul>
+                <li>
+                  <NavLink className={styles['navlink']} to="/profile">Profil</NavLink>   
+                </li>
+                <li>
+                  <Button id={styles['logout_button']} color='#eee' children='Déconnexion' onClick={logout} />
+                </li>
+              </ul>
+            </nav>
+          </div>
+          :
+          <>
+            <Button color='#eee' children='Inscription' onClick={isRegisterModalOpen} />
+            <Button color='#eee' children='Connexion' onClick={isLoginModalOpen} />
+          </>
+        }
+
         </div>
       </div>
     </div>
@@ -53,6 +82,9 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen }) => {
 Navigation.propTypes = {
   isRegisterModalOpen: PropTypes.func, 
   isLoginModalOpen: PropTypes.func,
+  isLoggedIn: PropTypes.bool,
+  logout: PropTypes.func,
+  username: PropTypes.string,
 };
 
 export default Navigation;

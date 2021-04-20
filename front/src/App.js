@@ -6,11 +6,12 @@ import Character from './pages/Character';
 import Scenario from './pages/Scenario';
 import Game from './pages/Game';
 import News from './pages/News';
-import Modal from './containers/Modal';
-import Navigation from './containers/Navigation';
+import Profile from './containers/pages/Profile';
+import Modal from './containers/components/Modal';
+import Navigation from './containers/components/Navigation';
 import Footer from './components/Footer';
-import Register from './containers/Register';
-import Login from './containers/Login';
+import Register from './containers/components/Register';
+import Login from './containers/components/Login';
 
 import './App.css';
 
@@ -28,6 +29,7 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen }) => {
         <Route exact path="/scenario" component={Scenario} />
         <Route exact path="/jeu" component={Game} />
         <Route exact path="/actualité" component={News} />
+        <Route exact path="/profil" component={Profile} />
       </Switch>
 
       <Footer />

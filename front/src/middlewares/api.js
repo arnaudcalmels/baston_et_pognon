@@ -4,7 +4,7 @@ import axios from 'axios';
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { getProfile, getProfileSuccess } from '../actions/user';
 
-import { SIGN_UP, LOGIN, GET_PROFILE } from '../actions/types';
+import { SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, } from '../actions/types';
 
 
 const api = (store) => (next) => (action) => {
@@ -76,6 +76,28 @@ const api = (store) => (next) => (action) => {
       break;
     }
     
+    case DELETE_PROFILE: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'delete',
+        url: process.env.REACT_APP_BASE_URL_API + `api/user/delete/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        console.log('Suppression effectuée');
+      })
+      .catch ((error) => {
+        console.log(error)
+      });
+
+      break;
+    }
+
     default:
       next(action);
   }

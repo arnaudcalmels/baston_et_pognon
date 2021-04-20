@@ -1,0 +1,53 @@
+.main {
+    grid-row: 2 / 3;
+    grid-column: 1 / span 12;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    justify-items: center;
+    align-items: center;
+}
+
+.avatar {
+    grid-row: 1 / 2;
+    grid-column: 1 / span 2;
+    width: 100px;
+    height: 100px;
+}
+
+.name {
+    grid-row: 2 / 3;
+    grid-column: 1 / span 2;
+}
+
+.email {
+    grid-row: 3 / 4;
+    grid-column: 1 / span 2;
+}
+
+.buttons {
+    grid-row: 4 / 5;
+    grid-column: 1 / span 2;
+}
+
+@media screen and (min-width: 600px) {
+    .avatar {
+        grid-row: 1 / 2;
+        grid-column: 1 / 2;
+        justify-self: flex-end;
+        margin-right: 2rem;
+    }
+
+    .name {
+        grid-row: 1 / 2;
+        grid-column: 2 / 3;
+        justify-self: flex-start;
+        margin-left: 2rem;
+    }
+    
+    .buttons {
+        grid-row: 4 / 5;
+        grid-column: 1 / span 2;
+    }
+    
+}

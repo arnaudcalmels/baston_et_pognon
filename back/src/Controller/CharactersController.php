@@ -2,21 +2,30 @@
 
 namespace App\Controller;
 
-use App\Entity\Characters;
 use App\Entity\Inventory;
-use App\Repository\CharactersRepository;
+use App\Entity\Characters;
 use App\Repository\GameRepository;
-use App\Repository\ProfessionRepository;
 use App\Repository\RaceRepository;
+use App\Repository\CharactersRepository;
+use App\Repository\ProfessionRepository;
+use App\Validator\CharactersValidator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CharactersController extends AbstractController
 {
+    /**
+     * Get all characters of the current User
+     *
+     * @param Request $request
+     * @param CharactersRepository $charactersRepository
+     * @return JsonResponse
+     */
     public function charactersByOwner(Request $request, CharactersRepository $charactersRepository): JsonResponse
     {
         $currentUser = $this->getUser();
@@ -30,7 +39,16 @@ class CharactersController extends AbstractController
         return new JsonResponse($data, 200);
     }
 
-    public function new(Request $request, ProfessionRepository $professionRepo, RaceRepository $raceRepo): JsonResponse
+    /**
+     * Create a new character for the current User
+     *
+     * @param Request $request
+     * @param ProfessionRepository $professionRepo
+     * @param RaceRepository $raceRepo
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     */
+    public function new(Request $request, ProfessionRepository $professionRepo, RaceRepository $raceRepo, ValidatorInterface $validator): JsonResponse
     {
         $currentUser = $this->getUser();
 
@@ -38,29 +56,65 @@ class CharactersController extends AbstractController
 
         $character = new Characters();
         $character->setOwner($currentUser);
-        $character->setName($requestContent->name);
-        $race = $raceRepo->find($requestContent->raceId);
-        $character->setRace($race);
-        $character->setSex($requestContent->sex);
-        $profession = $professionRepo->find($requestContent->professionId);
-        $character->setProfession($profession);
+
+        if (isset($requestContent->professionId)) {
+            $profession = $professionRepo->find($requestContent->professionId);
+            if (!$profession) {
+                $requestContent->professionId = null;
+            }
+            $character->setProfession($profession);
+        }
+        if (isset($requestContent->raceId)) {
+            $race = $raceRepo->find($requestContent->raceId);
+            if (!$race) {
+                $requestContent->raceId = null;
+            }
+            $character->setRace($race);
+        }
+        if (isset($requestContent->name)) {
+            $character->setName($requestContent->name);
+        }
+        if (isset($requestContent->sex)) {
+            $character->setSex($requestContent->sex);
+        }
         $character->setInventory(new Inventory);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($character);
-        $em->flush();
+        $characterValidator = new CharactersValidator($validator);
+        $errors = $characterValidator->validate($requestContent, $character);
 
-        $data = $this->normalizeCharacters($character);
+        if (count($errors) > 0 ) {
+            $data = $errors;
+            $statusCode = 403;
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($character);
+            $em->flush();
+    
+            $data = $this->normalizeCharacters($character);
+            $statusCode = 200;  
+        }
 
-        return new JsonResponse($data, 200);
+        return new JsonResponse($data, $statusCode);
     }
 
+    /**
+     * Edit a character
+     *
+     * @param Request $request
+     * @param Characters $character
+     * @param ProfessionRepository $professionRepo
+     * @param RaceRepository $raceRepo
+     * @param GameRepository $gameRepo
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     */
     public function edit(
         Request $request,
         Characters $character,
         ProfessionRepository $professionRepo,
         RaceRepository $raceRepo,
-        GameRepository $gameRepo
+        GameRepository $gameRepo,
+        ValidatorInterface $validator
         ): JsonResponse
     {
         $owner = $character->getOwner();
@@ -76,24 +130,52 @@ class CharactersController extends AbstractController
         } else {
             $requestContent = json_decode($request->getContent());
 
-            $character->setName($requestContent->name);
-            $race = $raceRepo->find($requestContent->raceId);
-            $character->setRace($race);
-            $character->setSex($requestContent->sex);
-            $profession = $professionRepo->find($requestContent->professionId);
-            $character->setProfession($profession);
+            if (isset($requestContent->professionId)) {
+                $profession = $professionRepo->find($requestContent->professionId);
+                if (!$profession) {
+                    $requestContent->professionId = null;
+                }
+                $character->setProfession($profession);
+            }
+            if (isset($requestContent->raceId)) {
+                $race = $raceRepo->find($requestContent->raceId);
+                if (!$race) {
+                    $requestContent->raceId = null;
+                }
+                $character->setRace($race);
+            }
+            if (isset($requestContent->name)) {
+                $character->setName($requestContent->name);
+            }
+            if (isset($requestContent->sex)) {
+                $character->setSex($requestContent->sex);
+            }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+            $characterValidator = new CharactersValidator($validator);
+            $errors = $characterValidator->validate($requestContent, $character);
 
-            $data = $this->normalizeCharacters($character);
-            $statusCode = 200;
-
+            if (count($errors) > 0 ) {
+                $data = $errors;
+                $statusCode = 403;
+            } else {
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+        
+                $data = $this->normalizeCharacters($character);
+                $statusCode = 200;  
+            }
         }
 
         return new JsonResponse($data, $statusCode);
     }
 
+    /**
+     * Delete a character
+     *
+     * @param Request $request
+     * @param Characters $character
+     * @return JsonResponse
+     */
     public function delete(Request $request, Characters $character): JsonResponse
     {
         $currentUser = $this->getUser();
@@ -114,11 +196,13 @@ class CharactersController extends AbstractController
         return new JsonResponse($message, $statusCode);
     }
 
-    /* 
+    /**
      * Normalize Characters Objects
-     * 
-    **/
-    private function normalizeCharacters($characters)
+     *
+     * @param Characters|Characters[] $characters
+     * @return array
+     */
+    private function normalizeCharacters($characters): array
     {
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers);

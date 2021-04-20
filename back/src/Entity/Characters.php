@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CharactersRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,11 +22,17 @@ class Characters
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Un nom de personnage doit être indiqué")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=1)
+     * @Assert\NotBlank(message="Le sexe doit être indiqué")
+     * @Assert\Choice(
+     *      choices={"M", "F"},
+     *      message="Le sexe doit être indiqué par M ou F"
+     * )
      */
     private $sex;
 

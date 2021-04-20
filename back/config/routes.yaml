@@ -23,3 +23,9 @@ api_user_delete:
 api_login_check:
     path: /login_check
     methods: [POST]
+
+# CategoriesPlaces
+api_categories_places:
+    path: api/categoriesPlaces
+    methods: [GET]
+    controller: App\Controller\CategoryPlacesController::categories

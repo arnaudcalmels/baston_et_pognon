@@ -29,3 +29,24 @@ api_categories_places:
     path: api/categoriesPlaces
     methods: [GET]
     controller: App\Controller\CategoryPlacesController::categories
+
+# Characters
+api_character:
+    path: api/character
+    methods: [GET]
+    controller: App\Controller\CharactersController::charactersByOwner
+
+api_character_new:
+    path: api/character/new
+    methods: [POST]
+    controller: App\Controller\CharactersController::new
+
+api_character_edit:
+    path: api/character/edit/{id}
+    methods: [PUT]
+    controller: App\Controller\CharactersController::edit
+
+api_character_delete:
+    path: api/character/delete/{id}
+    methods: [DELETE]
+    controller: App\Controller\CharactersController::delete

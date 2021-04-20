@@ -26,12 +26,18 @@ class UserController extends AbstractController
         $user = new User();
         $user->setEmail($requestContent->email);
         if ($requestContent->password === $requestContent->confirmPassword) {
-            $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
+            if (preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $requestContent->password)) {
+                // On enregistre le mot de passe hashé uniquement qu'on la regex correspond pour exploiter le message du NotBlank en cas de non correspondance
+                $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
+            }
         }
         $user->setRoles(['ROLE_USER']); // rôle défini par défaut
         
         // On définit un pseudo aléatoire avant de sauvegarder le nouvel utilisateur
         $user->setPseudo('User-'.rand(9999, 99999));
+
+        $urlAvatar = $this->getParameter('avatar_default_url');
+        $user->setAvatar('$urlAvatar');
 
         $errors = $validator->validate($user);
 
@@ -45,6 +51,9 @@ class UserController extends AbstractController
         } else {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
+
+            $user->setAvatar($urlAvatar);
+
             $entityManager->flush();
 
             $statusCode = 201;
@@ -89,7 +98,10 @@ class UserController extends AbstractController
             }
             if (isset($requestContent->password)) {
                 if ($requestContent->password === $requestContent->confirmPassword) {
-                    $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
+                    if (preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $requestContent->password)) {
+                        // On enregistre le mot de passe hashé uniquement qu'on la regex correspond pour exploiter le message du NotBlank en cas de non correspondance
+                        $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
+                    }
                 }
             }
             if (isset($requestContent->pseudo)) {
@@ -110,7 +122,6 @@ class UserController extends AbstractController
                 }
             } else {
                 $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($user);
                 $entityManager->flush();
 
                 $statusCode = 200;

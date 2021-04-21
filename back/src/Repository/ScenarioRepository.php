@@ -19,32 +19,17 @@ class ScenarioRepository extends ServiceEntityRepository
         parent::__construct($registry, Scenario::class);
     }
 
-    // /**
-    //  * @return Scenario[] Returns an array of Scenario objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Scenario[] Returns an array of Scenario objects
+     */
+    public function findScenariosNotBelongToSpecificOwner($owner)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('s.owner != :owner')
+            ->setParameter('owner', $owner)
+            ->orderBy('s.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Scenario
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

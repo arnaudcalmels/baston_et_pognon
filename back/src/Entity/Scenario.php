@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ScenarioRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +22,7 @@ class Scenario
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le nom est obligatoire")
      */
     private $name;
 
@@ -31,11 +33,13 @@ class Scenario
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Positive(message="Le nombre de joueur doit être un entier positif")
      */
     private $maxPlayers;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive(message="Le niveau des personnages doit être un entier positif")
      */
     private $characterLevel = 1;
 

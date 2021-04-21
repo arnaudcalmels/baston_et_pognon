@@ -55,3 +55,29 @@ api_character_delete:
     path: api/character/delete/{id}
     methods: [DELETE]
     controller: App\Controller\CharactersController::delete
+
+# Scenario
+api_scenario:
+    path: api/scenario
+    methods: [GET]
+    controller: App\Controller\ScenarioController::scenariosByOwner
+
+api_scenario_other_owner:
+    path: api/scenario/other
+    methods: [GET]
+    controller: App\Controller\ScenarioController::scenariosOfOtherOwnerThanCurrentUser
+
+api_scenario_new:
+    path: api/scenario/new
+    methods: [POST]
+    controller: App\Controller\ScenarioController::new
+
+api_scenario_edit:
+    path: api/scenario/edit/{id}
+    methods: [PUT]
+    controller: App\Controller\ScenarioController::edit
+
+api_scenario_delete:
+    path: api/scenario/delete/{id}
+    methods: [DELETE]
+    controller: App\Controller\ScenarioController::delete

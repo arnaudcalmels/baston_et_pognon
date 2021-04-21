@@ -4,7 +4,7 @@ import Button from '../Button';
 
 import PropTypes from 'prop-types';
 
-import styles from './deleteConfirm.module.css';
+import styles from './deleteConfirm.module.scss';
 
 const DeleteConfirm = ({ cancelAction, confirmAction }) => {
   return (

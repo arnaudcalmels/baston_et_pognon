@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import styles from './modal.module.css';
+import styles from './modal.module.scss';
 
 ReactModal.setAppElement('#root');
 

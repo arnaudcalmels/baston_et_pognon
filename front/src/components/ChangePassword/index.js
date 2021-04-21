@@ -5,7 +5,7 @@ import Button from '../Button';
 
 import PropTypes from 'prop-types';
 
-import styles from './changePassword.module.css';
+import styles from './changePassword.module.scss';
 
 const ChangePassword = ({ cancelAction, changePassword }) => {
 

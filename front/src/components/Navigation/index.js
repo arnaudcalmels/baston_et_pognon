@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
-import styles from './navigation.module.css';
+import styles from './navigation.module.scss';
 
 const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout, username, avatar }) => {
   const displayMenu = () => {

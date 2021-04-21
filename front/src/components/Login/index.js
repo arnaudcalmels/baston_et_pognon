@@ -4,7 +4,7 @@ import Button from '../Button';
 
 import PropTypes from 'prop-types';
 
-import styles from './login.module.css';
+import styles from './login.module.scss';
 
 const Login = ({ closeModal, loginSubmit }) => {
   const handleSubmit = (values) => {

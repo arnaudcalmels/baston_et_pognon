@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 
-import styles from './footer.module.css';
+import styles from './footer.module.scss';
 
 const Footer = (props) => {
   return (

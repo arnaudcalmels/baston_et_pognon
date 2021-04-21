@@ -16,7 +16,7 @@ import Login from './containers/components/Login';
 
 import { closeModal } from './actions/auth';
 
-import './App.css';
+import './App.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {

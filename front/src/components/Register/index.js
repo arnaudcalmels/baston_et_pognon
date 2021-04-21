@@ -4,7 +4,7 @@ import Button from '../Button';
 
 import PropTypes from 'prop-types';
 
-import styles from './register.module.css';
+import styles from './register.module.scss';
 
 const Register = ({ closeModal, registerSubmit }) => {
   const handleSubmit = (values) => {

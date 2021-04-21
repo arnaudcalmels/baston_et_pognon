@@ -9,7 +9,7 @@ import ChangePassword from '../../components/ChangePassword';
 
 import PropTypes from 'prop-types';
 
-import styles from './profile.module.css';
+import styles from './profile.module.scss';
 
 const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logout, changePassword }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
@@ -41,7 +41,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
             setOpenEditProfileModal(true);
           }} 
         />
-        
+
         <Button 
           color='#eee' 
           children='Changer le mot de passe' 

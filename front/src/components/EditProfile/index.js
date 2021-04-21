@@ -5,7 +5,7 @@ import Button from '../Button';
 
 import PropTypes from 'prop-types';
 
-import styles from './editProfile.module.css';
+import styles from './editProfile.module.scss';
 
 const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) => {
 

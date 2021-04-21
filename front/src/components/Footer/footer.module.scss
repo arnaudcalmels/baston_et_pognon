@@ -1,5 +1,7 @@
+@import '../../styles/vars';
+
 .footer {
-    background-color: #ddd;
+    background-color: $color-secondary;
     grid-row: 3 / 4;
     grid-column: 1 / span 12;
     align-items: center;
@@ -17,7 +19,7 @@
 
 .link {
     text-decoration: none;
-    color: #111;
+    color: $color-tertiary;
 }
 
 .footer p {

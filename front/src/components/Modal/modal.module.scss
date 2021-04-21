@@ -1,3 +1,5 @@
+@import '../../styles/vars';
+
 .overlay {
     position: fixed;
     top: 0;
@@ -16,21 +18,23 @@
     width: 300px;
     height: 500px;
     margin: auto;
-    border: 1px solid #ccc;
-    background: #fff;
+    border: 1px solid $color-secondary;
+    background: $color-primary;
     overflow: auto;
     border-radius: 4px;
     outline: none;
 }
 
 .header {
-    background-color: #ccc;
+    background-color: $color-secondary;
     padding: 1rem;
-    text-align: center;
+    display: flex;
+    align-items: center;    
+    justify-content: center;
 }
 
 .title {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
 }
 
@@ -38,4 +42,9 @@
     .content {
         width: 400px;
     }
+
+    .title {
+        font-size: 1.5rem;
+    }
+    
 }

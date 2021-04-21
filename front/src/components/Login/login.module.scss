@@ -3,9 +3,6 @@
     padding-left: 2rem;
 }
 
-.form_label {
-}
-
 .form_field {
     display: flex;
     flex-direction: column;
@@ -23,8 +20,28 @@
     font-style: italic;
 }
 
+#close_button {
+    position: relative;
+    top: -3rem;
+    left: 2rem;  
+}
+
+#submit_button {
+    position: relative;
+    left: 6rem;  
+}
+
 @media screen and (min-width: 600px) {
     .form {
         padding-left: 4.5rem;
     }
+
+    #close_button {
+        left: 4rem;  
+    }
+
+    #submit_button {
+        left: 7rem;  
+    }
+    
 }

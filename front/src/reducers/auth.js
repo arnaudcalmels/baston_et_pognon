@@ -1,5 +1,5 @@
 import { 
-  OPEN_REGISTER_MODAL, OPEN_LOGIN_MODAL, CLOSE_MODAL, SIGN_UP_SUCCESS, LOGIN_SUCCESS, 
+  OPEN_REGISTER_MODAL, OPEN_LOGIN_MODAL, CLOSE_MODAL, SIGN_UP_SUCCESS, LOGIN_SUCCESS, LOGOUT, 
 } from "../actions/types";
 
 const initialState = {
@@ -9,6 +9,7 @@ const initialState = {
   email: '',
   pseudo: '',
   avatar: '',
+  token: ''
 
 };
 
@@ -38,13 +39,15 @@ const reducer = (oldState = initialState, action) => {
         pseudo: action.data.pseudo,
         avatar: action.data.avatar
       }
-      case LOGIN_SUCCESS: 
+    case LOGIN_SUCCESS: 
       return {
         ...oldState,
-        id: action.data.id,
-        email: action.data.email,
-        pseudo: action.data.pseudo,
-        avatar: action.data.avatar
+        token: action.data.token,
+      }
+    case LOGOUT:
+      return {
+        ...oldState,
+        token: ''
       }
     default:
       return oldState

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,6 +15,14 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 class UserController extends AbstractController
 {
+    /**
+     * Create a new User
+     *
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator): JsonResponse
     {
         $requestContent = json_decode($request->getContent());
@@ -63,6 +70,11 @@ class UserController extends AbstractController
         return new JsonResponse($data, $statusCode);
     }
 
+    /**
+     * Get profile of current user
+     *
+     * @return JsonResponse
+     */
     public function profile(): JsonResponse
     {
         $currentUser = $this->getUser();
@@ -76,6 +88,16 @@ class UserController extends AbstractController
         return new JsonResponse($data, 200);
     }
 
+    /**
+     * Edit a profile
+     *
+     * @param Request $request
+     * @param User $user
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param ValidatorInterface $validator
+     * @param JWTTokenManagerInterface $JWTManager
+     * @return JsonResponse
+     */
     public function edit(
         Request $request,
         User $user,
@@ -135,6 +157,13 @@ class UserController extends AbstractController
         return new JsonResponse($data, $statusCode);
     }
 
+    /**
+     * Delete a user
+     *
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
+     */
     public function delete(Request $request, User $user): JsonResponse
     {
         $currentUser = $this->getUser();
@@ -154,11 +183,13 @@ class UserController extends AbstractController
         return new JsonResponse($message, $statusCode);
     }
 
-    /* 
+    /**
      * Normalize a User Object
-     * 
-    **/
-    private function normalizeUser($user)
+     *
+     * @param User $user
+     * @return array
+     */
+    private function normalizeUser(User $user): array
     {
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers);

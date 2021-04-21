@@ -29,7 +29,7 @@ class CharactersValidator
 
         if (count($errorsValidator) > 0) {
             foreach ($errorsValidator as $error) {
-                /* @var ConstraintViolation $error */
+                /** @var ConstraintViolation $error */
                 $errors[] = $error->getMessage();
             }
         }

@@ -51,7 +51,7 @@ class UserController extends AbstractController
         if (count($errors) > 0) {
             $data = [];
             foreach ($errors as $error) {
-                /* @var ConstraintViolation $error */
+                /** @var ConstraintViolation $error */
                 $data[] = $error->getMessage();
                 $statusCode = 403;
             }
@@ -128,7 +128,7 @@ class UserController extends AbstractController
             if (count($errors) > 0) {
                 $data = [];
                 foreach ($errors as $error) {
-                    /* @var ConstraintViolation $error */
+                    /** @var ConstraintViolation $error */
                     $data[] = $error->getMessage();
                 }
                 $statusCode = 403;

@@ -91,7 +91,7 @@ class CharactersController extends AbstractController
             $em->flush();
     
             $data = $this->normalizeCharacters($character);
-            $statusCode = 200;  
+            $statusCode = 201;  
         }
 
         return new JsonResponse($data, $statusCode);

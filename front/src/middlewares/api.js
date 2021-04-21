@@ -1,9 +1,10 @@
 import axios from 'axios';
 
+import { setErrorToasts, setSuccessToast } from '../utils/toasts';
+
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
-
 import { SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, } from '../actions/types';
 
 
@@ -22,9 +23,10 @@ const api = (store) => (next) => (action) => {
       axios(config)
         .then ((response) => {
           store.dispatch(signUpSuccess(response.data)); 
+          setSuccessToast('Inscription réussie !');
         })
         .catch ((error) => {
-          console.log(error)
+          setErrorToasts(error.response.data);
         });
 
       break;
@@ -44,10 +46,9 @@ const api = (store) => (next) => (action) => {
         .then ((response) => {
           store.dispatch(loginSuccess(response.data)); 
           store.dispatch(getProfile());
-          console.log(response);
         })
         .catch ((error) => {
-          console.log(error)
+          setErrorToasts(error.response.data);
         });
 
       break;
@@ -67,10 +68,10 @@ const api = (store) => (next) => (action) => {
       axios(config)
       .then ((response) => { 
         store.dispatch(getProfileSuccess(response.data));
-        console.log(response);
+        setSuccessToast('Connecté !');
       })
       .catch ((error) => {
-        console.log(error)
+        setErrorToasts(error.response.data);
       });
 
       break;
@@ -89,10 +90,10 @@ const api = (store) => (next) => (action) => {
 
       axios(config)
       .then ((response) => { 
-        console.log('Suppression effectuée');
+        setSuccessToast('Suppression effectuée');
       })
       .catch ((error) => {
-        console.log(error)
+        setErrorToasts(error.response.data);
       });
 
       break;
@@ -114,9 +115,10 @@ const api = (store) => (next) => (action) => {
       .then ((response) => { 
         console.log(response);
         store.dispatch(editProfileSuccess(response.data));
+        setSuccessToast('Modification effectuée !');
       })
       .catch ((error) => {
-        console.log(error)
+        setErrorToasts(error.response.data);
       });
 
       break;
@@ -135,17 +137,15 @@ const api = (store) => (next) => (action) => {
       };
 
       axios(config)
-      .then ((response) => { 
-        console.log('mot de passe modifié avec succès !');
-        // store.dispatch(changePasswordSuccess(response.data));
+      .then (() => { 
+        setSuccessToast('Modification effectuée !');
       })
       .catch ((error) => {
-        console.log(error)
+        setErrorToasts(error.response.data);
       });
 
       break;
     }
-
 
     default:
       next(action);

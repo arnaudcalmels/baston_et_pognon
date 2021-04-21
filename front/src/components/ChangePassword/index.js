@@ -10,7 +10,6 @@ import styles from './changePassword.module.css';
 const ChangePassword = ({ cancelAction, changePassword }) => {
 
   const handleSubmit = (values) => {
-    console.log(JSON.stringify(values, null, 2));
     changePassword(JSON.stringify(values, null, 2));
     cancelAction();
   };

@@ -8,7 +8,6 @@ import styles from './login.module.css';
 
 const Login = ({ closeModal, loginSubmit }) => {
   const handleSubmit = (values) => {
-    console.log(JSON.stringify(values, null, 2));
     loginSubmit(JSON.stringify(values, null, 2));
     closeModal();
   };

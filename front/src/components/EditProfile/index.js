@@ -10,7 +10,6 @@ import styles from './editProfile.module.css';
 const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) => {
 
   const handleSubmit = (values) => {
-    console.log(JSON.stringify(values, null, 2));
     editProfile(id, JSON.stringify(values, null, 2));
     cancelAction();
   };

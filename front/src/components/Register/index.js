@@ -8,7 +8,6 @@ import styles from './register.module.css';
 
 const Register = ({ closeModal, registerSubmit }) => {
   const handleSubmit = (values) => {
-    console.log(JSON.stringify(values, null, 2));
     registerSubmit(JSON.stringify(values, null, 2));
     closeModal();
   };

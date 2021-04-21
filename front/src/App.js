@@ -1,5 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
 import Home from './pages/Home';
 import Character from './pages/Character';
@@ -16,6 +17,7 @@ import Login from './containers/components/Login';
 import { closeModal } from './actions/auth';
 
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
   return (
@@ -35,6 +37,7 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
       </Switch>
 
       <Footer />
+      <ToastContainer autoClose={2000}/>
     </div>
   );
 }

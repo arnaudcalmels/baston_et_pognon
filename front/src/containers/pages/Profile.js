@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import Profile from '../../pages/Profile';
 
-import { editProfile, deleteProfile } from '../../actions/user';
+import { editProfile, deleteProfile, changePassword } from '../../actions/user';
 import { logout } from '../../actions/auth';
 
 
@@ -23,6 +23,9 @@ const mapDispatchToProps = (dispatch) => ({
   logout: () => {
     dispatch(logout());
   },
+  changePassword: (values) => {
+    dispatch(changePassword(values));
+  }
 
 });
 

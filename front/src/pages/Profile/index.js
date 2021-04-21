@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Button from '../../components/Button';
-import Modal from '../../containers/components/Modal';
+import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
 import EditProfile from '../../components/EditProfile';
+import ChangePassword from '../../components/ChangePassword';
 
 import PropTypes from 'prop-types';
 
 import styles from './profile.module.css';
 
-const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logout }) => {
+const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logout, changePassword }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
   const [openEditProfileModal, setOpenEditProfileModal] = useState(false);  
+  const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);  
 
   let history = useHistory(); 
   const handleDeleteProfile = (id) => {
@@ -39,6 +41,15 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
             setOpenEditProfileModal(true);
           }} 
         />
+        
+        <Button 
+          color='#eee' 
+          children='Changer le mot de passe' 
+          onClick={() => {
+            setOpenChangePasswordModal(true);
+          }} 
+        />
+
         <Button 
           color='#eee' 
           children='Supprimer le compte' 
@@ -50,6 +61,10 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
 
       <Modal 
         isOpen={openDeleteModal} 
+        closeModal={() => {
+          console.log('clic');
+          setOpenDeleteModal(false);
+        }}
         title='Supprimer le compte ?' 
         children={
           <DeleteConfirm 
@@ -63,6 +78,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
 
       <Modal 
         isOpen={openEditProfileModal}
+        closeModal={() => setOpenEditProfileModal(false)}
         title='Modifier le profil'
         children={
           <EditProfile 
@@ -75,6 +91,19 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
           />
         }
       />
+
+      <Modal 
+        isOpen={openChangePasswordModal}
+        closeModal={() => setOpenChangePasswordModal(false)}
+        title='Modifier le mot de passe'
+        children={
+          <ChangePassword 
+            cancelAction={() => setOpenChangePasswordModal(false)} 
+            changePassword={changePassword}
+          />
+        }
+      />
+
     </div>
 
   );
@@ -88,6 +117,7 @@ Profile.propTypes = {
   editProfile: PropTypes.func,
   deleteProfile: PropTypes.func,
   logout: PropTypes.func,
+  changePassword: PropTypes.func,
 
 };
 

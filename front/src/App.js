@@ -7,21 +7,23 @@ import Scenario from './pages/Scenario';
 import Game from './pages/Game';
 import News from './pages/News';
 import Profile from './containers/pages/Profile';
-import Modal from './containers/components/Modal';
+import Modal from './components/Modal';
 import Navigation from './containers/components/Navigation';
 import Footer from './components/Footer';
 import Register from './containers/components/Register';
 import Login from './containers/components/Login';
 
+import { closeModal } from './actions/auth';
+
 import './App.css';
 
-const App = ({ isRegisterModalOpen, isLoginModalOpen }) => {
+const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
   return (
     <div className="App">
       <Navigation />
 
-      <Modal isOpen={isRegisterModalOpen} title='Inscription' children={<Register />}/>
-      <Modal isOpen={isLoginModalOpen} title='Connexion' children={<Login />}/>
+      <Modal isOpen={isRegisterModalOpen} title='Inscription' children={<Register />} closeModal={closeModal}/>
+      <Modal isOpen={isLoginModalOpen} title='Connexion' children={<Login />} closeModal={closeModal}/>
 
       <Switch>
         <Route exact path="/" component={Home} />
@@ -42,6 +44,11 @@ const mapStateToProps= (state) => ({
   isLoginModalOpen: state.auth.isLoginModalOpen
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  closeModal: () => {
+    dispatch(closeModal());
+  }
+});
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 

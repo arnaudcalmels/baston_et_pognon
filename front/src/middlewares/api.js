@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
-import { editProfileSuccess, getProfile, getProfileSuccess } from '../actions/user';
+import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 
-import { SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, } from '../actions/types';
+import { SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, } from '../actions/types';
 
 
 const api = (store) => (next) => (action) => {
@@ -101,7 +101,7 @@ const api = (store) => (next) => (action) => {
     case EDIT_PROFILE: {
       const { auth: { token } } = store.getState();
       const config = {
-        method: 'put',
+        method: 'patch',
         url: process.env.REACT_APP_BASE_URL_API + `api/user/edit/${action.id}`,
         headers: {
           'Content-Type': 'application/json',
@@ -114,6 +114,30 @@ const api = (store) => (next) => (action) => {
       .then ((response) => { 
         console.log(response);
         store.dispatch(editProfileSuccess(response.data));
+      })
+      .catch ((error) => {
+        console.log(error)
+      });
+
+      break;
+    }
+
+    case CHANGE_PASSWORD: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'patch',
+        url: process.env.REACT_APP_BASE_URL_API + `api/user/edit-password`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }, 
+        data: action.values,   
+      };
+
+      axios(config)
+      .then ((response) => { 
+        console.log('mot de passe modifié avec succès !');
+        // store.dispatch(changePasswordSuccess(response.data));
       })
       .catch ((error) => {
         console.log(error)

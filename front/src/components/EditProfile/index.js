@@ -62,8 +62,6 @@ const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) =
           />
           <ErrorMessage name='email' component='div' className={styles['error_message']}/>
 
-          <ErrorMessage name='confirmPassword' component='div' className={styles['error_message']}/>
-
           <Button id={styles['submit_button']} type="submit" color='#eee' children='Valider'/>
         </Form>
       </Formik>

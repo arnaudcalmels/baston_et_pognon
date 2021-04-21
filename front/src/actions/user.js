@@ -1,5 +1,5 @@
 import {
-  GET_PROFILE, GET_PROFILE_SUCCESS, EDIT_PROFILE, DELETE_PROFILE
+  GET_PROFILE, GET_PROFILE_SUCCESS, EDIT_PROFILE, EDIT_PROFILE_SUCCESS, DELETE_PROFILE
 } from './types';
 
 export const getProfile = () => ({
@@ -11,9 +11,17 @@ export const getProfileSuccess = (data) => ({
   data
 });
 
-export const editProfile = () => ({
+export const editProfile = (id, values) => ({
   type: EDIT_PROFILE,
+  id,
+  values
 });
+
+export const editProfileSuccess = (data) => ({
+  type: EDIT_PROFILE_SUCCESS,
+  data
+});
+
 
 export const deleteProfile = (id) => ({
   type: DELETE_PROFILE,

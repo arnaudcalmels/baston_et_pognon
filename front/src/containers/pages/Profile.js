@@ -14,9 +14,9 @@ const mapStateToProps= (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // editProfile: () => {
-  //   dispatch(editProfile());
-  // },
+  editProfile: (id, values) => {
+    dispatch(editProfile(id, values));
+  },
   deleteProfile: (id) => {
     dispatch(deleteProfile(id));
   },

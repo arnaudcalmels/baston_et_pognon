@@ -1,5 +1,5 @@
 import {
-  GET_PROFILE_SUCCESS,
+  GET_PROFILE_SUCCESS, EDIT_PROFILE_SUCCESS, 
 } from '../actions/types';
 
 const initialState = {
@@ -19,7 +19,14 @@ const reducer = (oldState = initialState, action) => {
         pseudo: action.data.pseudo,
         avatar: action.data.avatar
       }
-    
+    case EDIT_PROFILE_SUCCESS:
+      return {
+        ...oldState,
+        email: action.data.email,
+        pseudo: action.data.pseudo,
+        avatar: action.data.avatar
+      }
+  
     default:
       return oldState
   }

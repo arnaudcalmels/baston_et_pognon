@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import Modal from '../../containers/components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
+import EditProfile from '../../components/EditProfile';
 
 import PropTypes from 'prop-types';
 
@@ -11,6 +12,7 @@ import styles from './profile.module.css';
 
 const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logout }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
+  const [openEditProfileModal, setOpenEditProfileModal] = useState(false);  
 
   let history = useHistory(); 
   const handleDeleteProfile = (id) => {
@@ -33,9 +35,9 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
         <Button 
           color='#eee' 
           children='Editer le profil' 
-          // onClick={() => {
-            
-          // }} 
+          onClick={() => {
+            setOpenEditProfileModal(true);
+          }} 
         />
         <Button 
           color='#eee' 
@@ -57,6 +59,21 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
               setOpenDeleteModal(false);
             }}
           />}
+      />
+
+      <Modal 
+        isOpen={openEditProfileModal}
+        title='Modifier le profil'
+        children={
+          <EditProfile 
+            pseudo={username}
+            email={email}
+            id={id}
+            avatar={avatar}
+            cancelAction={() => setOpenEditProfileModal(false)} 
+            editProfile={editProfile}
+          />
+        }
       />
     </div>
 

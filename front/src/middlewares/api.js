@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
-import { getProfile, getProfileSuccess } from '../actions/user';
+import { editProfileSuccess, getProfile, getProfileSuccess } from '../actions/user';
 
-import { SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, } from '../actions/types';
+import { SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, } from '../actions/types';
 
 
 const api = (store) => (next) => (action) => {
@@ -97,6 +97,31 @@ const api = (store) => (next) => (action) => {
 
       break;
     }
+
+    case EDIT_PROFILE: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'put',
+        url: process.env.REACT_APP_BASE_URL_API + `api/user/edit/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }, 
+        data: action.values,   
+      };
+
+      axios(config)
+      .then ((response) => { 
+        console.log(response);
+        store.dispatch(editProfileSuccess(response.data));
+      })
+      .catch ((error) => {
+        console.log(error)
+      });
+
+      break;
+    }
+
 
     default:
       next(action);

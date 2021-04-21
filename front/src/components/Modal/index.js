@@ -21,7 +21,7 @@ const Modal = ({ isOpen, closeModal, title, children }) => {
     >
       <div className={styles['header']}>
         <span className={styles['title']}>{title}</span>
-        <FontAwesomeIcon onClick={closeModal} icon={faTimes} size='2x' style={{cursor: 'pointer'}} pull='right' />
+        <FontAwesomeIcon onClick={closeModal} icon={faTimes} size='2x' style={{cursor: 'pointer', position: 'absolute', right: '15px'}} pull='right' />
       </div>
       {children}
     </ReactModal>

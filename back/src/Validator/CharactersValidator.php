@@ -28,11 +28,9 @@ class CharactersValidator
         $errorsValidator = $this->validator->validate($character);
 
         if (count($errorsValidator) > 0) {
-            if (count($errorsValidator) > 0) {
-                foreach ($errorsValidator as $error) {
-                    /* @var ConstraintViolation $error */
-                    $errors[] = $error->getMessage();
-                }
+            foreach ($errorsValidator as $error) {
+                /* @var ConstraintViolation $error */
+                $errors[] = $error->getMessage();
             }
         }
 

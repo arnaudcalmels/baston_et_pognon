@@ -27,6 +27,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="L'adresse email est obligatoire")
      * @Assert\Email(message="L'adresse email n'est pas d'un format valide")
      */
     private $email;
@@ -45,6 +46,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Le pseudonyme est obligatoire")
      */
     private $pseudo;
 

@@ -89,11 +89,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * Edit a profile
+     * Edit a profile (except password)
      *
      * @param Request $request
      * @param User $user
-     * @param UserPasswordEncoderInterface $passwordEncoder
      * @param ValidatorInterface $validator
      * @param JWTTokenManagerInterface $JWTManager
      * @return JsonResponse
@@ -101,7 +100,6 @@ class UserController extends AbstractController
     public function edit(
         Request $request,
         User $user,
-        UserPasswordEncoderInterface $passwordEncoder,
         ValidatorInterface $validator,
         JWTTokenManagerInterface $JWTManager): JsonResponse
     {
@@ -118,14 +116,6 @@ class UserController extends AbstractController
                 $user->setEmail($requestContent->email);
                 $emailChanged = true;
             }
-            if (isset($requestContent->password)) {
-                if ($requestContent->password === $requestContent->confirmPassword) {
-                    if (preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $requestContent->password)) {
-                        // On enregistre le mot de passe hashé uniquement qu'on la regex correspond pour exploiter le message du NotBlank en cas de non correspondance
-                        $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
-                    }
-                }
-            }
             if (isset($requestContent->pseudo)) {
                 $user->setPseudo($requestContent->pseudo);
             }
@@ -140,8 +130,8 @@ class UserController extends AbstractController
                 foreach ($errors as $error) {
                     /* @var ConstraintViolation $error */
                     $data[] = $error->getMessage();
-                    $statusCode = 403;
                 }
+                $statusCode = 403;
             } else {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->flush();
@@ -153,6 +143,65 @@ class UserController extends AbstractController
                 }
             }
         }
+
+        return new JsonResponse($data, $statusCode);
+    }
+
+    /**
+     * Edit password
+     *
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return JsonResponse
+     */
+    public function editPassword(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder): JsonResponse
+    {
+        $currentUser = $this->getUser();
+
+        if ($currentUser === null) {
+            $data = ['Utilisateur non trouvé'];
+            $statusCode = 404;
+        } else {
+            $requestContent = json_decode($request->getContent());
+
+            $errors = [];
+    
+            if (!isset($requestContent->currentPassword) || $requestContent->currentPassword === '') {
+                $errors[] = 'Le mot de passe actuel doit-être renseigné';
+            }
+    
+            if (count($errors) === 0) {
+                if (!$passwordEncoder->isPasswordValid($currentUser, $requestContent->currentPassword)) {
+                    $errors[] = 'Le mot de passe actuel est incorrect';
+                }
+            }
+            if (count($errors) === 0) {
+                if (!isset($requestContent->newPassword) || !isset($requestContent->confirmNewPassword) || $requestContent->newPassword !== $requestContent->confirmNewPassword) {
+                    $errors[] = 'Le nouveau mot de passe doit être renseigné et confirmé';
+                }
+            }
+            if (count($errors) === 0) {
+                if (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $requestContent->newPassword)) {
+                    $errors[] = 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
+                }
+            }
+            if (count($errors) === 0) {
+                // On enregistre le mot de passe hashé uniquement quand il n'y a aucune erreur
+                $currentUser->setPassword($passwordEncoder->encodePassword($currentUser, $requestContent->newPassword));
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->flush();
+    
+                $data = $this->normalizeUser($currentUser);
+                $statusCode = 200;
+            } else {
+                $data = $errors;
+                $statusCode = 403;
+            }    
+        }
+
 
         return new JsonResponse($data, $statusCode);
     }

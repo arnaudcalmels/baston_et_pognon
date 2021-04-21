@@ -11,8 +11,13 @@ api_user_profile:
 
 api_user_edit:
     path: api/user/edit/{id}
-    methods: [PUT]
+    methods: [PATCH]
     controller: App\Controller\UserController::edit
+
+api_user_edit_password:
+    path: api/user/edit-password
+    methods: [PATCH]
+    controller: App\Controller\UserController::editPassword
 
 api_user_delete:
     path: api/user/delete/{id}

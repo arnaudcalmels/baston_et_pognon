@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
 import Home from './pages/Home';
-import Character from './pages/Character';
+import Characters from './pages/Characters';
 import Scenario from './pages/Scenario';
 import Game from './pages/Game';
 import News from './pages/News';
@@ -29,7 +29,7 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
 
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/personnage" component={Character} />
+        <Route exact path="/personnage" component={Characters} />
         <Route exact path="/scenario" component={Scenario} />
         <Route exact path="/jeu" component={Game} />
         <Route exact path="/actualité" component={News} />

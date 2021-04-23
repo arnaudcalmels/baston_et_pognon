@@ -2,20 +2,27 @@
 
 .card {
     width: 250px;
+    height: 350px;
     border: 2px solid black;
     border-radius: 5px;
     display: grid;
-    grid-template-rows: 180px repeat(3, 1fr);
+    grid-template-rows: 220px repeat(3, 40px);
     justify-items: center;
     align-items: center;
     background-color: $color-tertiary;
     box-sizing: border-box;
 }
 
-#image {
+.image_container {
     grid-row: 1 / 2;
     width: 150px;
-    height: 150px;
+    height: 200px;
+    overflow: hidden;
+}
+
+#image {
+    max-width: 150px;
+    max-height: 200px;
 }
 
 .name {

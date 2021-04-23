@@ -51,7 +51,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
             <li>
               <NavLink 
                 className={styles['navlink']} 
-                exact activeClassName={styles['isActive']} 
+                activeClassName={styles['isActive']} 
                 to="/personnage" 
                 onClick={() => displayMenu()}
               >

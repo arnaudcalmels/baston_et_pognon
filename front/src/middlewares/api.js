@@ -5,7 +5,9 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
-import { SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, } from '../actions/types';
+import { 
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER,
+ } from '../actions/types';
 
 
 const api = (store) => (next) => (action) => {
@@ -146,6 +148,29 @@ const api = (store) => (next) => (action) => {
 
       break;
     }
+
+    case DELETE_CHARACTER: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'delete',
+        url: process.env.REACT_APP_BASE_URL_API + `api/character/delete/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        setSuccessToast('Suppression effectuée');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
 
     default:
       next(action);

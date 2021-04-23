@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useHistory } from 'react-router-dom';
 
 import Button from '../../components/Button';
+import Modal from '../../components/Modal';
+import DeleteConfirm from '../../components/DeleteConfirm';
 
-// import PropTypes from 'prop-types';
+
+import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faRing, faCoins } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './character.module.scss';
 
-const Character = props => {
+const Character = ({ id, deleteCharacter }) => {
+  const showForm = () => {
+    const form = document.getElementsByClassName(styles['form'])[0];
+    const identity = document.getElementById(styles['identity']);
+
+    form.classList.toggle(styles['show_form']);
+    identity.classList.toggle(styles['hide_identity']);
+  }
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);  
+
+  let history = useHistory(); 
+  const handleDeleteCharacter = (id) => {
+    deleteCharacter(id);
+    history.push('/personnage');
+  }
+
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
   };
@@ -198,6 +218,7 @@ const Character = props => {
             children='Editer le personnage' 
             onClick={() => {
               console.log('editer perso');
+              showForm();
             }} 
           />
 
@@ -205,18 +226,35 @@ const Character = props => {
           color='#eee' 
           children='Supprimer le personnage' 
           onClick={() => {
-            console.log('supprimer perso');
+            setOpenDeleteModal(true);
           }} 
         />
       </div>
 
- 
+      <Modal 
+        isOpen={openDeleteModal} 
+        closeModal={() => {
+          console.log('clic');
+          setOpenDeleteModal(false);
+        }}
+        title='Supprimer le personnage ?' 
+        children={
+          <DeleteConfirm 
+            cancelAction={() => setOpenDeleteModal(false)} 
+            confirmAction={() => {
+              handleDeleteCharacter(id)
+              setOpenDeleteModal(false);
+            }}
+          />}
+      />
+
     </div>
   );
 };
 
-// Character.propTypes = {
-  
-// };
+Character.propTypes = {
+  id: PropTypes.number,
+  deleteCharacter: PropTypes.func,
+};
 
 export default Character;

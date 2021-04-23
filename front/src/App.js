@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 
 import Home from './pages/Home';
 import Characters from './pages/Characters';
-import Character from './pages/Character';
+import Character from './containers/pages/Character';
 import Scenario from './pages/Scenario';
 import Game from './pages/Game';
 import News from './pages/News';

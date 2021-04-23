@@ -8,7 +8,7 @@ export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
 
-//User
+// User
 export const GET_PROFILE = 'GET_PROFILE';
 export const GET_PROFILE_SUCCESS = 'GET_PROFILE_SUCCESS';
 export const EDIT_PROFILE = 'EDIT_PROFILE';
@@ -16,3 +16,7 @@ export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';
 export const DELETE_PROFILE = 'DELETE_PROFILE';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
+
+
+// Character
+export const DELETE_CHARACTER = 'DELETE_CHARACTER';

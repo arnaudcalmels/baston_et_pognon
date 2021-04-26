@@ -15,6 +15,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ScenarioController extends AbstractController
 {
     /**
+     * Get a scenario
+     *
+     * @param Scenario $scenario
+     * @return JsonResponse
+     */
+    public function scenario(Scenario $scenario): JsonResponse
+    {   
+        $data = $this->normalizeScenario($scenario);
+
+        return new JsonResponse($data, 200);
+    }
+
+    /**
      * Get all Scenarios of current user
      *
      * @param Request $request

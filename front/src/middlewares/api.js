@@ -6,8 +6,9 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER,
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, 
  } from '../actions/types';
+import { editCharacterSuccess } from '../actions/character';
 
 
 const api = (store) => (next) => (action) => {
@@ -171,6 +172,29 @@ const api = (store) => (next) => (action) => {
       break;
     }
 
+    case EDIT_CHARACTER: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'put',
+        url: process.env.REACT_APP_BASE_URL_API + `api/character/edit/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(editCharacterSuccess(response.data));
+        setSuccessToast('Modification effectuée');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
 
     default:
       next(action);

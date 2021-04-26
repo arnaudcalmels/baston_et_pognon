@@ -14,18 +14,21 @@ import { faPlusCircle, faRing, faCoins } from '@fortawesome/free-solid-svg-icons
 
 import styles from './character.module.scss';
 
-const Character = ({ id, deleteCharacter }) => {
+const Character = ({ id, deleteCharacter, editCharacter }) => {
   const showForm = () => {
-    const form = document.getElementsByClassName(styles['form'])[0];
+    const block_form = document.getElementById(styles['block_form']);
     const identity = document.getElementById(styles['identity']);
-
-    form.classList.toggle(styles['show_form']);
+    
+    block_form.classList.toggle(styles['show_form']);
     identity.classList.toggle(styles['hide_identity']);
+    
+    window.scrollTo(0, 0);
   }
-
+  
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
 
   let history = useHistory(); 
+
   const handleDeleteCharacter = (id) => {
     deleteCharacter(id);
     history.push('/personnage');
@@ -33,6 +36,7 @@ const Character = ({ id, deleteCharacter }) => {
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
+    editCharacter(id, JSON.stringify(values, null, 2));
   };
 
   return (
@@ -59,7 +63,7 @@ const Character = ({ id, deleteCharacter }) => {
             <td className={styles['table_cell-value']}>Masculin</td>
           </tr>
           <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Profession :</td>
+            <td className={styles['table_cell-name']}>Classe :</td>
             <td className={styles['table_cell-value']}>Guerrier</td>
           </tr>
           <tr className={styles['table_row']}>
@@ -69,79 +73,77 @@ const Character = ({ id, deleteCharacter }) => {
         </tbody>
       </table>
 
-      <Formik
-        initialValues={{
-        name: '',
-        sex: '',
-        level: '',
-        profession: [],
-        race: [],
-        }}
-        validate={values => {
-          const errors = {};
-          if (!values.name || !values.sex || !values.profession || !values.race) {
-            errors.all = 'Veuillez remplir tous les champs requis !';
-          } 
-          return errors;
-        }}
-        onSubmit={(values) => handleSubmit(values)}
-      >
-        <Form className={styles['form']}>
-          {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
-
-          <label htmlFor="name" className={styles['form_label']}>Nom :</label>
-          <Field 
-            className={styles['form_field']}
-            id="name" 
-            name="name" 
-            type="text" 
-          />
-
-          <label htmlFor="sex" className={styles['form_label']}>Sexe :</label>
-          <Field 
-            className={styles['form_field']}
-            id="sex" 
-            name="sex" 
-            type="select"
-          />
-            {/* <option></option> */}
-          {/* <ErrorMessage name='sex' component='div' className={styles['error_message']}/> */}
-
-          <label htmlFor="profession" className={styles['form_label']}>Profession :</label>
-          <Field 
-            className={styles['form_field']}
-            id="profession" 
-            name="profession" 
-            type="select"
-          />
-            {/* <option></option> */}
-          {/* <ErrorMessage name='profession' component='div' className={styles['error_message']}/> */}
-
-          <label htmlFor="race" className={styles['form_label']}>Race :</label>
-          <Field 
-            className={styles['form_field']}
-            id="race" 
-            name="race" 
-            type="select"
-          />
-            {/* <option></option> */}
-          {/* <ErrorMessage name='race' component='div' className={styles['error_message']}/> */}
-
-          {/* <label htmlFor="level" className={styles['form_label']}>Level :</label>
-          <Field
-            className={styles['form_field']}
-            id="level"
-            name="level"
-            type="text"
-            value={1}
-          /> */}
-          {/* <ErrorMessage name='level' component='div' className={styles['error_message']}/> */}
-
-          {/* <Button id={styles['submit_button']} type="submit" color='#eee' children='Valider'/> */}
-        <span className={styles['info']}>Tous les champs sont obligatoires.</span>
-        </Form>
-      </Formik>
-      {/* <Button id={styles['close_button']} color='#eee' children='Annuler' onClick={closeModal}/> */}
+      <div id={styles['block_form']} className={styles['hide_form']}>
+        <Formik
+          initialValues={{
+          name: '',
+          sex: '',
+          level: '',
+          profession: [],
+          race: [],
+          }}
+          validate={values => {
+            const errors = {};
+            if (!values.name || !values.sex || !values.profession || !values.race) {
+              errors.all = 'Veuillez remplir tous les champs requis !';
+            }
+            return errors;
+          }}
+          onSubmit={(values) => handleSubmit(values)}
+        >
+          <Form className={styles['form']}>
+            {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
+            <label htmlFor="name" className={styles['form_label']}>Nom :</label>
+            <Field
+              className={styles['form_field']}
+              id="name"
+              name="name"
+              type="text"
+            />
+            <label htmlFor="sex" className={styles['form_label']}>Sexe :</label>
+            <Field
+              className={styles['form_field']}
+              id="sex"
+              name="sex"
+              type="select"
+            />
+              {/* <option></option> */}
+            {/* <ErrorMessage name='sex' component='div' className={styles['error_message']}/> */}
+            <label htmlFor="profession" className={styles['form_label']}>Classe :</label>
+            <Field
+              className={styles['form_field']}
+              id="profession"
+              name="profession"
+              type="select"
+            />
+              {/* <option></option> */}
+            {/* <ErrorMessage name='profession' component='div' className={styles['error_message']}/> */}
+            <label htmlFor="race" className={styles['form_label']}>Race :</label>
+            <Field
+              className={styles['form_field']}
+              id="race"
+              name="race"
+              type="select"
+            />
+              {/* <option></option> */}
+            {/* <ErrorMessage name='race' component='div' className={styles['error_message']}/> */}
+          <span className={styles['info']}>Tous les champs sont obligatoires.</span>
+            <Button
+              id={styles['submit_button']}
+              type="submit"
+              color='#eee'
+              children='Valider'
+            />
+        
+          </Form>
+        </Formik>
+        <Button
+          id={styles['cancel_button']}
+          color='#eee'
+          children='Annuler'
+          onClick={() => showForm()}
+        />
+      </div>
 
       <table className={styles['table']} id={styles['caracteristics']}>
         <tbody className={styles['table_content']}>
@@ -255,6 +257,7 @@ const Character = ({ id, deleteCharacter }) => {
 Character.propTypes = {
   id: PropTypes.number,
   deleteCharacter: PropTypes.func,
+  editCharacter: PropTypes.func,
 };
 
 export default Character;

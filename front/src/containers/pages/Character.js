@@ -10,9 +10,9 @@ const mapStateToProps= (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // editCharacter: (id, values) => {
-  //   dispatch(editCharacter(id, values));
-  // },
+  editCharacter: (id, values) => {
+    dispatch(editCharacter(id, values));
+  },
   deleteCharacter: (id) => {
     dispatch(deleteCharacter(id));
   },

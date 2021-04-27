@@ -11,15 +11,158 @@ api_user_profile:
 
 api_user_edit:
     path: api/user/edit/{id}
-    methods: [PUT]
+    methods: [PATCH]
     controller: App\Controller\UserController::edit
+    requirements:
+        id: '\d+'
+
+api_user_edit_password:
+    path: api/user/edit-password
+    methods: [PATCH]
+    controller: App\Controller\UserController::editPassword
 
 api_user_delete:
     path: api/user/delete/{id}
     methods: [DELETE]
     controller: App\Controller\UserController::delete
+    requirements:
+        id: '\d+'
 
 # Authentication
 api_login_check:
     path: /login_check
     methods: [POST]
+
+# CategoriesPlaces
+api_categories_places:
+    path: api/categoriesPlaces
+    methods: [GET]
+    controller: App\Controller\CategoryPlacesController::categories
+
+# Professions
+api_profession_places:
+    path: api/profession
+    methods: [GET]
+    controller: App\Controller\ProfessionController::professions
+
+    # Races
+api_race_places:
+    path: api/race
+    methods: [GET]
+    controller: App\Controller\RaceController::races
+
+# Characters
+api_character:
+    path: api/character
+    methods: [GET]
+    controller: App\Controller\CharactersController::charactersByOwner
+
+api_character_new:
+    path: api/character/new
+    methods: [POST]
+    controller: App\Controller\CharactersController::new
+
+api_character_edit:
+    path: api/character/edit/{id}
+    methods: [PUT]
+    controller: App\Controller\CharactersController::edit
+    requirements:
+        id: '\d+'
+
+api_character_delete:
+    path: api/character/delete/{id}
+    methods: [DELETE]
+    controller: App\Controller\CharactersController::delete
+    requirements:
+        id: '\d+'
+
+# Scenario
+api_scenario:
+    path: api/scenario/{id}
+    methods: [GET]
+    controller: App\Controller\ScenarioController::scenario
+    requirements:
+        id: '\d+'
+
+api_scenarios:
+    path: api/scenario
+    methods: [GET]
+    controller: App\Controller\ScenarioController::scenariosByOwner
+
+api_scenarios_other_owner:
+    path: api/scenario/other
+    methods: [GET]
+    controller: App\Controller\ScenarioController::scenariosOfOtherOwnerThanCurrentUser
+
+api_scenario_new:
+    path: api/scenario/new
+    methods: [POST]
+    controller: App\Controller\ScenarioController::new
+
+api_scenario_edit:
+    path: api/scenario/edit/{id}
+    methods: [PUT]
+    controller: App\Controller\ScenarioController::edit
+    requirements:
+        id: '\d+'
+
+api_scenario_delete:
+    path: api/scenario/delete/{id}
+    methods: [DELETE]
+    controller: App\Controller\ScenarioController::delete
+    requirements:
+        id: '\d+'
+
+# Places
+api_place:
+    path: api/place/{id}
+    methods: [GET]
+    controller: App\Controller\PlaceController::place
+    requirements:
+        id: '\d+'
+
+api_place_new:
+    path: api/place/new
+    methods: [POST]
+    controller: App\Controller\PlaceController::new
+
+api_place_edit:
+    path: api/place/edit/{id}
+    methods: [PUT]
+    controller: App\Controller\PlaceController::edit
+    requirements:
+        id: '\d+'
+
+api_place_delete:
+    path: api/place/delete/{id}
+    methods: [DELETE]
+    controller: App\Controller\PlaceController::delete
+    requirements:
+        id: '\d+'
+
+# Monsters
+api_monster:
+    path: api/monster/{id}
+    methods: [GET]
+    controller: App\Controller\MonsterController::monster
+    requirements:
+        id: '\d+'
+
+api_monster_new_for_place:
+    path: api/monster/new/place
+    methods: [POST]
+    controller: App\Controller\MonsterController::newMonsterForAPlace
+
+api_monster_edit:
+    path: api/monster/edit/{id}
+    methods: [PUT]
+    controller: App\Controller\MonsterController::edit
+    requirements:
+        id: '\d+'
+
+api_monster_delete:
+    path: api/monster/delete/{id}
+    methods: [DELETE]
+    controller: App\Controller\MonsterController::delete
+    requirements:
+        id: '\d+'

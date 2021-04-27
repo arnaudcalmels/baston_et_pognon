@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\CharacterRepository;
+use App\Repository\CharactersRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CharacterRepository::class)
+ * @ORM\Entity(repositoryClass=CharactersRepository::class)
  */
-class Character
+class Characters
 {
     /**
      * @ORM\Id
@@ -19,11 +22,17 @@ class Character
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Un nom de personnage doit être indiqué")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=1)
+     * @Assert\NotBlank(message="Le sexe doit être indiqué")
+     * @Assert\Choice(
+     *      choices={"M", "F"},
+     *      message="Le sexe doit être indiqué par M ou F"
+     * )
      */
     private $sex;
 
@@ -55,6 +64,16 @@ class Character
      * @ORM\JoinColumn(nullable=false)
      */
     private $profession;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Game::class, inversedBy="characters")
+     */
+    private $games;
+
+    public function __construct()
+    {
+        $this->games = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -141,6 +160,30 @@ class Character
     public function setProfession(?Profession $profession): self
     {
         $this->profession = $profession;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Game[]
+     */
+    public function getGames(): Collection
+    {
+        return $this->games;
+    }
+
+    public function addGame(Game $game): self
+    {
+        if (!$this->games->contains($game)) {
+            $this->games[] = $game;
+        }
+
+        return $this;
+    }
+
+    public function removeGame(Game $game): self
+    {
+        $this->games->removeElement($game);
 
         return $this;
     }

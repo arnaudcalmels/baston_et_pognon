@@ -27,6 +27,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="L'adresse email est obligatoire")
      * @Assert\Email(message="L'adresse email n'est pas d'un format valide")
      */
     private $email;
@@ -39,11 +40,13 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Le pseudonyme est obligatoire")
      */
     private $pseudo;
 
@@ -53,7 +56,7 @@ class User implements UserInterface
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity=Character::class, mappedBy="owner", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Characters::class, mappedBy="owner", orphanRemoval=true)
      */
     private $characters;
 
@@ -180,14 +183,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Character[]
+     * @return Collection|Characters[]
      */
     public function getCharacters(): Collection
     {
         return $this->characters;
     }
 
-    public function addCharacter(Character $character): self
+    public function addCharacter(Characters $character): self
     {
         if (!$this->characters->contains($character)) {
             $this->characters[] = $character;
@@ -197,7 +200,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeCharacter(Character $character): self
+    public function removeCharacter(Characters $character): self
     {
         if ($this->characters->removeElement($character)) {
             // set the owning side to null (unless already changed)

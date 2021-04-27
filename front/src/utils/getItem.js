@@ -1,6 +1,7 @@
 import store from '../store/store';
 
-const getItems = (id, itemType) => {
+// fonction générique qui récupère un item dans un tableau
+const getItem = (id, itemType) => {
   const { character: { characters } } = store.getState();
   
   const itemList = {
@@ -10,4 +11,4 @@ const getItems = (id, itemType) => {
   return itemList[itemType].find(character => character.id === parseInt(id, 10));
 };
 
-export default getItems;
+export default getItem;

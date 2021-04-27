@@ -5,7 +5,7 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
-import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess } from '../actions/character';
+import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
 
 // types
 import { 
@@ -222,6 +222,7 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
+        store.dispatch(getCharacters());
       })
       .catch ((error) => {
         setErrorToasts(error.response.data);

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { useHistory, useParams } from 'react-router-dom';
 
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
@@ -13,12 +12,7 @@ import { faPlusCircle, faRing, faCoins } from '@fortawesome/free-solid-svg-icons
 
 import styles from './character.module.scss';
 
-import getItems from '../../utils/getItems';
-
-const Character = ({ deleteCharacter, editCharacter }) => {
-  const { id } = useParams();
-  let character = getItems(id, 'characters');
-
+const Character = ({ deleteCharacter, editCharacter, character }) => { 
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
     const identity = document.getElementById(styles['identity']);
@@ -31,20 +25,19 @@ const Character = ({ deleteCharacter, editCharacter }) => {
   
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
 
-  let history = useHistory(); 
-
   const handleDeleteCharacter = (id) => {
     deleteCharacter(id);
-    history.push('/personnage');
   }
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
     editCharacter(character.id, JSON.stringify(values, null, 2));
+    showForm();
   };
 
   return (
     <div className={styles['main']}>
+
       <div className={styles['overlay-image']}>
         <img src="https://cdn.pixabay.com/photo/2016/12/07/17/44/man-1889980__340.png" alt="photo_perso"/>  
         <div className={styles['hover']}>
@@ -80,10 +73,10 @@ const Character = ({ deleteCharacter, editCharacter }) => {
       <div id={styles['block_form']} className={styles['hide_form']}>
         <Formik
           initialValues={{
-          name: '',
-          sex: '',
-          professionId: '',
-          raceId: '',
+          name: character.name,
+          sex: character.sex,
+          professionId: character.profession.id,
+          raceId: character.race.id,
           }}
           validate={values => {
             const errors = {};
@@ -257,7 +250,7 @@ const Character = ({ deleteCharacter, editCharacter }) => {
           <DeleteConfirm 
             cancelAction={() => setOpenDeleteModal(false)} 
             confirmAction={() => {
-              handleDeleteCharacter(id)
+              handleDeleteCharacter(character.id);
               setOpenDeleteModal(false);
             }}
           />}
@@ -270,6 +263,7 @@ const Character = ({ deleteCharacter, editCharacter }) => {
 Character.propTypes = {
   deleteCharacter: PropTypes.func,
   editCharacter: PropTypes.func,
+  character: PropTypes.object,
 };
 
 export default Character;

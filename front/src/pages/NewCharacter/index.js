@@ -11,7 +11,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './newCharacter.module.scss';
 
-const Character = ({ newCharacter }) => {
+const NewCharacter = ({ newCharacter }) => {
   let history = useHistory(); 
 
   const backToList = () => {
@@ -126,9 +126,9 @@ const Character = ({ newCharacter }) => {
   );
 };
 
-Character.propTypes = {
+NewCharacter.propTypes = {
   id: PropTypes.number,
   newCharacter: PropTypes.func,
 };
 
-export default Character;
+export default NewCharacter;

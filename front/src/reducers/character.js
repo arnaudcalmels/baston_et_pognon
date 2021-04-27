@@ -4,10 +4,11 @@ import {
 
 const initialState = {
   characters: [],
-  currentId: 10,
 };
 
 const reducer = (oldState = initialState, action) => {
+  let newState = {...oldState};
+
   switch (action.type) {
     case GET_CHARACTERS_SUCCESS:
       return {
@@ -16,13 +17,19 @@ const reducer = (oldState = initialState, action) => {
       }
 
     case EDIT_CHARACTER_SUCCESS:
-      return {
+      // on filtre le tableau des personnages en ne gardant que les éléments qui n'ont pas été modifiés
+      const filteredCharacters = newState.characters.filter(character => character.id !== action.data.id);
+      // on rajoute l'élément modifié puis on trie par id
+      filteredCharacters.push(action.data);
+      filteredCharacters.sort((a, b) => parseFloat(a.id) - parseFloat(b.id));
+
+      newState = {
         ...oldState,
-        // characters: action.data
+        characters: filteredCharacters,
       }
+      return newState
 
     case NEW_CHARACTER_SUCCESS:
-      let newState = {...oldState};
       // ajout du nouveau personnage dans le tableau des personnages
       newState = {
         ...oldState,

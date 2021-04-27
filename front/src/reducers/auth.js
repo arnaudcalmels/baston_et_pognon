@@ -1,5 +1,5 @@
 import { 
-  OPEN_REGISTER_MODAL, OPEN_LOGIN_MODAL, CLOSE_MODAL, SIGN_UP_SUCCESS, LOGIN_SUCCESS, LOGOUT, 
+  OPEN_REGISTER_MODAL, OPEN_LOGIN_MODAL, CLOSE_MODAL, SIGN_UP_SUCCESS, LOGIN_SUCCESS,  
 } from "../actions/types";
 
 const initialState = {
@@ -44,11 +44,11 @@ const reducer = (oldState = initialState, action) => {
         ...oldState,
         token: action.data.token,
       }
-    case LOGOUT:
-      return {
-        ...oldState,
-        token: ''
-      }
+    // case LOGOUT:
+    //   return {
+    //     ...oldState,
+    //     token: ''
+    //   }
     default:
       return oldState
   }

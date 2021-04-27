@@ -1,0 +1,43 @@
+@import '../../styles/vars';
+
+.card {
+    width: 250px;
+    height: 350px;
+    border: 2px solid black;
+    border-radius: 5px;
+    display: grid;
+    grid-template-rows: 220px repeat(3, 40px);
+    justify-items: center;
+    align-items: center;
+    background-color: $color-tertiary;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.image_container {
+    grid-row: 1 / 2;
+    width: 150px;
+    height: 200px;
+    overflow: hidden;
+}
+
+#image {
+    max-width: 150px;
+    max-height: 200px;
+}
+
+.name {
+    grid-row: 2 / 3;
+    margin: 0.5rem auto;
+}
+
+.profession {
+    grid-row: 3 / 4;
+    margin-top: 0;
+    margin: 0 auto;
+}
+
+.level {
+    grid-row: 4 / 5;
+    margin: 0 auto;
+}

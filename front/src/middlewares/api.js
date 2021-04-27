@@ -5,11 +5,20 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
-import { SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, } from '../actions/types';
+import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
 
+// types
+import { 
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS
+ } from '../actions/types';
 
-const api = (store) => (next) => (action) => {
+ 
+ const api = (store) => (next) => (action) => {
+
   switch (action.type) {
+
+    // ----- REGISTER -----
+
     case SIGN_UP: {
       const config = {
         method: 'post',
@@ -32,6 +41,8 @@ const api = (store) => (next) => (action) => {
       break;
     }
 
+    // ----- LOGIN -----
+
     case LOGIN: {
       const config = {
         method: 'post',
@@ -53,6 +64,8 @@ const api = (store) => (next) => (action) => {
 
       break;
     }
+
+    // ----- USER -----
 
     case GET_PROFILE: {
       const { auth: { token } } = store.getState();
@@ -139,6 +152,101 @@ const api = (store) => (next) => (action) => {
       axios(config)
       .then (() => { 
         setSuccessToast('Modification effectuée !');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
+    // ----- CHARACTER -----
+
+    case GET_CHARACTERS: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/character',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getCharactersSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
+    case NEW_CHARACTER: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'post',
+        url: process.env.REACT_APP_BASE_URL_API + `api/character/new`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(newCharacterSuccess(response.data));
+        setSuccessToast('Personnage créé !');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
+    case DELETE_CHARACTER: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'delete',
+        url: process.env.REACT_APP_BASE_URL_API + `api/character/delete/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        setSuccessToast('Suppression effectuée');
+        store.dispatch(getCharacters());
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
+    case EDIT_CHARACTER: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'put',
+        url: process.env.REACT_APP_BASE_URL_API + `api/character/edit/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(editCharacterSuccess(response.data));
+        setSuccessToast('Modification effectuée');
       })
       .catch ((error) => {
         setErrorToasts(error.response.data);

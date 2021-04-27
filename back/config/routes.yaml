@@ -39,6 +39,18 @@ api_categories_places:
     methods: [GET]
     controller: App\Controller\CategoryPlacesController::categories
 
+# Professions
+api_profession_places:
+    path: api/profession
+    methods: [GET]
+    controller: App\Controller\ProfessionController::professions
+
+    # Races
+api_race_places:
+    path: api/race
+    methods: [GET]
+    controller: App\Controller\RaceController::races
+
 # Characters
 api_character:
     path: api/character

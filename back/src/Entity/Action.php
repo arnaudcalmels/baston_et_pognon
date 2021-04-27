@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ActionRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,26 +20,36 @@ class Action
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotNull()
+     * @Assert\Positive()
      */
-    private $damages = 0;
+    private $damages = 1;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\NotNull()
+     * @Assert\Type("bool")
      */
     private $distance = false;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotNull()
+     * @Assert\Positive()
      */
     private $frequency = 1;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\NotNull()
+     * @Assert\Type("bool")
      */
     private $heal = false;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\NotNull()
+     * @Assert\Type("bool")
      */
     private $isSpecial = false;
 

@@ -139,3 +139,30 @@ api_place_delete:
     controller: App\Controller\PlaceController::delete
     requirements:
         id: '\d+'
+
+# Monsters
+api_monster:
+    path: api/monster/{id}
+    methods: [GET]
+    controller: App\Controller\MonsterController::monster
+    requirements:
+        id: '\d+'
+
+api_monster_new_for_place:
+    path: api/monster/new/place
+    methods: [POST]
+    controller: App\Controller\MonsterController::newMonsterForAPlace
+
+api_monster_edit:
+    path: api/monster/edit/{id}
+    methods: [PUT]
+    controller: App\Controller\MonsterController::edit
+    requirements:
+        id: '\d+'
+
+api_monster_delete:
+    path: api/monster/delete/{id}
+    methods: [DELETE]
+    controller: App\Controller\MonsterController::delete
+    requirements:
+        id: '\d+'

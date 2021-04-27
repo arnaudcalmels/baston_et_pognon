@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CaracteristicsRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,16 +22,21 @@ class Caracteristics
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotNull()
+     * @Assert\Positive()
      */
     private $armor = 10;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive()
+     * @Assert\NotNull()
      */
     private $lifePoints = 100;
 
     /**
      * @ORM\OneToMany(targetEntity=Action::class, mappedBy="caracteristics", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $actions;
 

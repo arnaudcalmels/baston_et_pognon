@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\MonsterRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Validator as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MonsterRepository::class)
@@ -19,26 +21,34 @@ class Monster
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\NotNull()
+     * @Assert\Type("bool")
      */
     private $isBoss = false;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\NotNull()
+     * @Assert\Type("bool")
      */
     private $hasBooster = false;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotNull()
+     * @Assert\Positive()
      */
     private $level = 1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
      */
     private $picture;
 
@@ -50,11 +60,13 @@ class Monster
     /**
      * @ORM\OneToOne(targetEntity=Caracteristics::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private $caracteristics;
 
     /**
      * @ORM\ManyToOne(targetEntity=SpecialObject::class, inversedBy="monsters")
+     * @Assert\Valid()
      */
     private $specialObject;
 

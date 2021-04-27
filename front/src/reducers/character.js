@@ -1,28 +1,35 @@
 import {
-  EDIT_CHARACTER_SUCCESS
+  EDIT_CHARACTER_SUCCESS, GET_CHARACTERS_SUCCESS, NEW_CHARACTER_SUCCESS
 } from '../actions/types';
 
 const initialState = {
-  id: '',
-  name: '',
-  sex: '',
-  level: '',
-  profession: [],
-  race: [],
-  inventory: []
-
+  characters: [],
+  currentId: 10,
 };
 
 const reducer = (oldState = initialState, action) => {
   switch (action.type) {
+    case GET_CHARACTERS_SUCCESS:
+      return {
+        ...oldState,
+        characters: action.data
+      }
+
     case EDIT_CHARACTER_SUCCESS:
       return {
         ...oldState,
-        name: action.data.name,
-        sex: action.data.sex,
-        profession: action.data.profession,
-        race: action.data.race,      
+        // characters: action.data
       }
+
+    case NEW_CHARACTER_SUCCESS:
+      let newState = {...oldState};
+      // ajout du nouveau personnage dans le tableau des personnages
+      newState = {
+        ...oldState,
+        characters: [...oldState.characters, action.data]
+      }
+      return newState
+  
     default: 
       return oldState;
   }

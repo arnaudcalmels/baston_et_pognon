@@ -6,7 +6,6 @@ import { editCharacter, deleteCharacter } from '../../actions/character';
 
 
 const mapStateToProps= (state) => ({
-  id: state.character.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({

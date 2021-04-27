@@ -66,12 +66,27 @@
     grid-gap: 0.5rem;
     justify-items: center;
     align-items: center;
-}
 
+    &_field {
+        width: 150px;
+        height: 30px;
+    }
 
-.form_field {
-    width: 150px;
-    height: 30px;
+    &_group {
+        display: flex;
+        width: 150px;
+        height: 30px;
+
+    }
+     &_radio {
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+
+        &-input {
+            margin-right: 0.5rem;
+        }
+     }
 }
 
 .error_message {

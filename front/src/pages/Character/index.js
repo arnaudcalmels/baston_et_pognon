@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useHistory } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+import { useHistory, useParams } from 'react-router-dom';
 
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
-
 
 import PropTypes from 'prop-types';
 
@@ -14,7 +13,12 @@ import { faPlusCircle, faRing, faCoins } from '@fortawesome/free-solid-svg-icons
 
 import styles from './character.module.scss';
 
-const Character = ({ id, deleteCharacter, editCharacter }) => {
+import getItems from '../../utils/getItems';
+
+const Character = ({ deleteCharacter, editCharacter }) => {
+  const { id } = useParams();
+  let character = getItems(id, 'characters');
+
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
     const identity = document.getElementById(styles['identity']);
@@ -36,7 +40,7 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    editCharacter(id, JSON.stringify(values, null, 2));
+    editCharacter(character.id, JSON.stringify(values, null, 2));
   };
 
   return (
@@ -54,21 +58,21 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
         </div>
       </div>
 
-      <h2 className={styles['name']}>{'Michel'}</h2>
+      <h2 className={styles['name']}>{character.name}</h2>
 
       <table className={styles['table']} id={styles['identity']}>
         <tbody className={styles['table_content']}>
           <tr className={styles['table_row']}>
             <td className={styles['table_cell-name']}>Sexe :</td>
-            <td className={styles['table_cell-value']}>Masculin</td>
+            <td className={styles['table_cell-value']}>{character.sex}</td>
           </tr>
           <tr className={styles['table_row']}>
             <td className={styles['table_cell-name']}>Classe :</td>
-            <td className={styles['table_cell-value']}>Guerrier</td>
+            <td className={styles['table_cell-value']}>{character.profession.name}</td>
           </tr>
           <tr className={styles['table_row']}>
             <td className={styles['table_cell-name']}>Race :</td>
-            <td className={styles['table_cell-value']}>Humain</td>
+            <td className={styles['table_cell-value']}>{character.race.name}</td>
           </tr>
         </tbody>
       </table>
@@ -78,14 +82,13 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
           initialValues={{
           name: '',
           sex: '',
-          level: '',
-          profession: [],
-          race: [],
+          professionId: '',
+          raceId: '',
           }}
           validate={values => {
             const errors = {};
-            if (!values.name || !values.sex || !values.profession || !values.race) {
-              errors.all = 'Veuillez remplir tous les champs requis !';
+            if (!values.name || !values.sex || !values.professionId || !values.raceId) {
+              errors.all = 'Veuillez remplir tous les champs !';
             }
             return errors;
           }}
@@ -93,6 +96,7 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
         >
           <Form className={styles['form']}>
             {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
+
             <label htmlFor="name" className={styles['form_label']}>Nom :</label>
             <Field
               className={styles['form_field']}
@@ -100,34 +104,39 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
               name="name"
               type="text"
             />
-            <label htmlFor="sex" className={styles['form_label']}>Sexe :</label>
+
+            <div className={styles['form_label']}>Sexe :</div>
+            <div role="group" className={styles['form_group']}>
+              <label className={styles['form_radio']}>
+                <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
+                M
+              </label>
+              <label className={styles['form_radio']}>
+                <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
+                F
+              </label>
+            </div>
+
+            <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
             <Field
               className={styles['form_field']}
-              id="sex"
-              name="sex"
+              id="professionId"
+              name="professionId"
               type="select"
             />
               {/* <option></option> */}
-            {/* <ErrorMessage name='sex' component='div' className={styles['error_message']}/> */}
-            <label htmlFor="profession" className={styles['form_label']}>Classe :</label>
+
+            <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
             <Field
               className={styles['form_field']}
-              id="profession"
-              name="profession"
+              id="raceId"
+              name="raceId"
               type="select"
             />
               {/* <option></option> */}
-            {/* <ErrorMessage name='profession' component='div' className={styles['error_message']}/> */}
-            <label htmlFor="race" className={styles['form_label']}>Race :</label>
-            <Field
-              className={styles['form_field']}
-              id="race"
-              name="race"
-              type="select"
-            />
-              {/* <option></option> */}
-            {/* <ErrorMessage name='race' component='div' className={styles['error_message']}/> */}
+
           <span className={styles['info']}>Tous les champs sont obligatoires.</span>
+
             <Button
               id={styles['submit_button']}
               type="submit"
@@ -148,7 +157,7 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
       <table className={styles['table']} id={styles['caracteristics']}>
         <tbody className={styles['table_content']}>
           <tr className={styles['table_title']}>
-            <td>Niveau 1</td>
+            <td>Niveau {character.level}</td>
           </tr>
           <tr className={styles['table_row']}>
             <td className={styles['table_cell-name']}>Attaque normale :</td>
@@ -174,16 +183,20 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
           <tr className={styles['table_title']}>
             <td>Inventaire</td>
           </tr>
-          <tr className={styles['table_row_inventory']}>
-            <td className={styles['table_cell_inventory-picture']}>
-              <FontAwesomeIcon 
-                icon={faRing} 
-                size="2x" 
-              />
-            </td>
-            <td className={styles['table_cell_inventory-name']}>Anneau magique</td>
-            <td className={styles['table_cell_inventory-value']}>+ 1 PV </td>
-          </tr>
+          {
+            character.inventory.specialObjects.map(object => (
+              <tr className={styles['table_row_inventory']} key={object.id}>
+                <td className={styles['table_cell_inventory-picture']}>
+                  <FontAwesomeIcon 
+                    icon={faRing} 
+                    size="2x" 
+                  />
+                </td>
+                <td className={styles['table_cell_inventory-name']}>{object.name}</td>
+                <td className={styles['table_cell_inventory-value']}>+ 1 PV </td>
+              </tr>
+            ))
+          }
           <tr className={styles['table_row_inventory']}>
             <td className={styles['table_cell_inventory-picture']}>
               <FontAwesomeIcon 
@@ -192,7 +205,7 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
               />
             </td>
             <td className={styles['table_cell_inventory-name']}>Booster</td>
-            <td className={styles['table_cell_inventory-value']}>4 </td>
+            <td className={styles['table_cell_inventory-value']}>{character.inventory.boostersCount} </td>
           </tr>
 
         </tbody>
@@ -255,7 +268,6 @@ const Character = ({ id, deleteCharacter, editCharacter }) => {
 };
 
 Character.propTypes = {
-  id: PropTypes.number,
   deleteCharacter: PropTypes.func,
   editCharacter: PropTypes.func,
 };

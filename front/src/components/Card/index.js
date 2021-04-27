@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 
 import styles from './card.module.scss';
 
-const Card = ({ image, name, profession, level}) => {
+const Card = ({ image, name, profession, level, onClick }) => {
   return (
-    <article className={styles['card']}>
+    <article className={styles['card']} onClick={onClick}
+    >
       <div className={styles['image_container']}>
         <img 
           id={styles['image']}

@@ -19,6 +19,8 @@
     width: 150px;
     height: 200px;
     overflow: hidden;
+    display: grid;
+    align-content: center;
 }
 
 #image {
@@ -31,7 +33,7 @@
     margin: 0.5rem auto;
 }
 
-.profession {
+.subtitle {
     grid-row: 3 / 4;
     margin-top: 0;
     margin: 0 auto;

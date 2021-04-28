@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-
 import Title from '../../components/Title';
 import Card from '../../components/Card';
 
@@ -11,19 +10,14 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
+import styles from './scenarios.module.scss';
 
-import styles from './characters.module.scss';
-
-const Characters = ({ getCharacters, isLoggedIn, characters }) => {
+const Scenarios = ({ isLoggedIn, scenarios, getScenarios }) => {
   let history = useHistory();
 
-  const newCharacter = () => {
-    history.push('/personnage/nouveau');
-  };
-
   useEffect(() => {
-    if (isLoggedIn && characters.length === 0) {
-      getCharacters();
+    if (isLoggedIn && scenarios.length === 0) {
+      getScenarios();
     }
   }, 
   // eslint-disable-next-line
@@ -31,40 +25,37 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
 
   return (
     <div className={styles['main']}>
-      <div className={styles['title_container']} 
->
-        <Title title='Personnages' />
+      <div className={styles['title_container']}>
+        <Title title='Scénarios' />
         <FontAwesomeIcon 
           className={styles['plus']} 
           icon={faPlusCircle} 
           size="2x" 
           style={{cursor: 'pointer'}}
-          onClick={() => newCharacter()}
+          onClick={() => console.log('nouveau scenario')}
         />
-        <p className={styles['new']} onClick={() => newCharacter()}>Nouveau personnage</p>
+        <p className={styles['new']} onClick={() => console.log('nouveau scenario')}>Nouveau scénario</p>
       </div>
 
       {
-
         isLoggedIn && 
         <div className={styles['card_container']}>
           {
-            characters.map(character => (
+            scenarios.map(scenario => (
               <Card 
-                image={'https://cdn.pixabay.com/photo/2016/12/07/17/44/man-1889980__340.png'}
-                name={character.name}
-                subtitle={character.profession.name}
-                level={character.level}
-                id={character.id}
-                key={character.id}
+                image={scenario.picture}
+                name={scenario.name}
+                subtitle={`Nombre de joueurs : ${scenario.maxPlayers}`}
+                level={scenario.characterLevel}
+                id={scenario.id}
+                key={scenario.id}
                 onClick={() => {
-                  history.push(`/personnage/${character.id}`);
+                  history.push(`/scenario/${scenario.id}`);
                 }}
               />
             ))
           }
         </div>
-
       }
 
       <div className={styles['text_container']}>
@@ -72,9 +63,9 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
         <img src="https://cdn.pixabay.com/photo/2016/04/30/13/12/sutterlin-1362879__340.jpg" alt="page"/>
         <NavLink 
           className={styles['navlink']} 
-          to="/personnage/nouveau" 
+          to="/scenario/nouveau" 
         >
-          Créer mon 1er personnage
+          Créer mon 1er scénario
         </NavLink>  
         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste vel, error eligendi nam doloribus eum facilis saepe tempora distinctio odio enim. Animi distinctio natus perspiciatis sunt rem, aliquid hic voluptas!</p>
         <img src="https://cdn.pixabay.com/photo/2017/11/17/07/56/background-2956789__340.jpg" alt="page2"/>
@@ -84,10 +75,10 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
   );
 };
 
-Characters.propTypes = {
-  getCharacters: PropTypes.func,
-  isLoggedIn: PropTypes.bool,
-  characters: PropTypes.arrayOf(PropTypes.object,),
+Scenarios.propTypes = {
+    isLoggedIn: PropTypes.bool,
+    scenarios: PropTypes.arrayOf(PropTypes.object,),
+    getScenarios: PropTypes.func,
 };
 
-export default Characters;
+export default Scenarios;

@@ -31,8 +31,7 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
 
   return (
     <div className={styles['main']}>
-      <div className={styles['title_container']} 
->
+      <div className={styles['title_container']}>
         <Title title='Personnages' />
         <FontAwesomeIcon 
           className={styles['plus']} 

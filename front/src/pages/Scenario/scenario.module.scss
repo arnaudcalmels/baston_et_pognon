@@ -1,0 +1,181 @@
+@import '../../styles/vars';
+
+.main {
+    min-height: 80vh;
+    grid-row: 2 / 3;
+    grid-column: 1 / span 12;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.picture {
+    max-width: 300px;
+    margin-bottom: 1rem;
+}
+
+.table {
+
+    border: 3px solid $color-secondary;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 1rem;
+    width: 300px;
+
+    
+    &_content {
+        width: 300px;
+        display: grid;
+        grid-gap: 1rem;
+        align-items: center;
+    }
+    
+    &_row {
+        display: grid;
+        grid-template-columns: 200px 80px;
+        grid-gap: 0.5rem;
+        align-items: center;
+        justify-items: center;
+    }
+
+    &_cell {
+        
+        &-name {
+            grid-column: 1 / 2;
+            height: 30px;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        &-value {
+            width: 150px;
+            height: 30px;
+            grid-column: 2 / 3;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
+
+.description {
+    width: 300px;
+    text-align: center;
+    border: 3px solid $color-secondary;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 1rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#edit_button {
+    display: none;
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
+        align-items: center;        
+    }
+
+    #title {
+        grid-column: 1 / span 2;
+    }
+
+    .picture {
+        justify-self: center;
+    }
+
+    .description {
+        grid-column: 1 / span 2;
+        width: 600px;
+        justify-self: center;
+    }
+
+    .buttons {
+        flex-direction: row;
+        grid-column: 1 / span 2;
+        justify-content: center;
+    }
+
+    #edit_button {
+        display: block;
+    }
+
+    
+}
+
+@media screen and (min-width: 1200px) {
+    .main {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 50px repeat(2, 1fr) 50px;
+        justify-content: center;
+        align-items: center;  
+    }
+
+    #title {
+        grid-column: 1 / span 3;
+    }
+
+    .picture {
+        grid-row: 2 / 3;
+        grid-column: 1 / 2 ;
+    }
+
+    #caracteristics {
+        grid-row: 3 / 4;
+        grid-column: 1 / 2 ;
+        justify-self: center;
+        align-self: flex-start;
+    }
+
+    .description {
+        grid-column: 2 / span 2;
+        grid-row: 2 / 4;
+        align-self: flex-start;
+        margin-top: 4rem;
+    }
+
+    .buttons {
+        grid-row: -1 / span 1;
+        grid-column: 1 / span 3;
+    }
+
+}
+
+@media screen and (min-width: 1500px) {
+    .picture {
+        justify-self: center;
+        align-self: flex-start;
+        margin-top: 4rem;
+    }
+
+    #caracteristics {
+        grid-row: 2 / 3;
+        grid-column: 3 / 4 ;
+        justify-self: center;
+        align-self: flex-start;
+        margin-top: 4rem;
+    }
+
+    .description {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+        align-self: flex-start;
+        margin-top: 4rem;
+    }
+
+
+}

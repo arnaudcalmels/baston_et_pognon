@@ -46,7 +46,7 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios }) => {
                 image={scenario.picture}
                 name={scenario.name}
                 subtitle={`Nombre de joueurs : ${scenario.maxPlayers}`}
-                level={scenario.characterLevel}
+                level={`Niveau de départ : ${scenario.characterLevel}`}
                 id={scenario.id}
                 key={scenario.id}
                 onClick={() => {

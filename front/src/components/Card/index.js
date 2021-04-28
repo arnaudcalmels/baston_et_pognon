@@ -17,7 +17,7 @@ const Card = ({ image, name, subtitle, level, onClick }) => {
       </div>
       <h3 className={styles['name']}>{name}</h3>
       <h4 className={styles['subtitle']}>{subtitle}</h4>
-      <span className={styles['level']}>Niveau {level}</span>
+      <span className={styles['level']}>{level}</span>
     </article>
   );
 };

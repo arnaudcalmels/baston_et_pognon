@@ -53,7 +53,7 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
                 image={'https://cdn.pixabay.com/photo/2016/12/07/17/44/man-1889980__340.png'}
                 name={character.name}
                 subtitle={character.profession.name}
-                level={character.level}
+                level={`Niveau ${character.level}`}
                 id={character.id}
                 key={character.id}
                 onClick={() => {

@@ -70,6 +70,16 @@
     margin: 1rem;
 }
 
+.carousel {
+    width: 250px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.slider {
+    margin-bottom: 1rem;
+}
+
 .buttons {
     display: flex;
     flex-direction: column;
@@ -103,6 +113,12 @@
         justify-self: center;
     }
 
+    .carousel {
+        width: 520px;
+        grid-column: 1 / span 2;
+        justify-self: center;
+    }
+    
     .buttons {
         flex-direction: row;
         grid-column: 1 / span 2;
@@ -120,7 +136,7 @@
     .main {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 50px repeat(2, 1fr) 50px;
+        grid-template-rows: 50px 400px 200px 1fr 50px;
         justify-content: center;
         align-items: center;  
     }
@@ -148,6 +164,13 @@
         margin-top: 4rem;
     }
 
+    .carousel {
+        grid-row: 4 / 5;
+        grid-column: 1 / span 3;
+        width: 800px;
+        justify-self: center;
+    }
+
     .buttons {
         grid-row: -1 / span 1;
         grid-column: 1 / span 3;
@@ -156,10 +179,14 @@
 }
 
 @media screen and (min-width: 1500px) {
+    .main {
+        grid-template-rows: 50px 400px 1fr 50px;
+    }
+
     .picture {
         justify-self: center;
         align-self: flex-start;
-        margin-top: 4rem;
+        margin-top: 2rem;
     }
 
     #caracteristics {
@@ -167,15 +194,19 @@
         grid-column: 3 / 4 ;
         justify-self: center;
         align-self: flex-start;
-        margin-top: 4rem;
+        margin-top: 2rem;
     }
 
     .description {
         grid-column: 2 / 3;
         grid-row: 2 / 3;
         align-self: flex-start;
-        margin-top: 4rem;
+        margin-top: 2rem;
     }
 
+    .carousel {
+        grid-row: 3 / 4;
+        width : 1100px;
+    }
 
 }

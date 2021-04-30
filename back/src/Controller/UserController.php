@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Validator\UserValidator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,42 +26,35 @@ class UserController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator): JsonResponse
     {
-        $requestContent = json_decode($request->getContent());
-        if (!isset($requestContent->email) && !isset($requestContent->password) && !isset($requestContent->confirmPassword)) {
-            return new JsonResponse(['Format incorrect'], 400);
+        $userValidator = new UserValidator($validator);
+
+        $errors = $userValidator->validateRequestDatas($request->getContent(), 'new');
+
+        if (!count($errors) === 0) {
+            return new JsonResponse($errors, 403);
         }
+
+        $requestContent = json_decode($request->getContent());
 
         $user = new User();
         $user->setEmail($requestContent->email);
-        if ($requestContent->password === $requestContent->confirmPassword) {
-            if (preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $requestContent->password)) {
-                // On enregistre le mot de passe hashé uniquement qu'on la regex correspond pour exploiter le message du NotBlank en cas de non correspondance
-                $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
-            }
-        }
+        $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
         $user->setRoles(['ROLE_USER']); // rôle défini par défaut
         
         // On définit un pseudo aléatoire avant de sauvegarder le nouvel utilisateur
         $user->setPseudo('User-'.rand(9999, 99999));
 
-        $urlAvatar = $this->getParameter('avatar_default_url');
-        $user->setAvatar('$urlAvatar');
-
-        $errors = $validator->validate($user);
-
-        if (count($errors) > 0) {
-            $data = [];
-            foreach ($errors as $error) {
-                /** @var ConstraintViolation $error */
-                $data[] = $error->getMessage();
+        $errorsObject = $userValidator->validateObject($user);
+        
+        if (count($errorsObject) > 0) {
+                $data = $errorsObject;
                 $statusCode = 403;
-            }
         } else {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
-
+            
+            $urlAvatar = $this->getParameter('avatar_default_url');
             $user->setAvatar($urlAvatar);
-
             $entityManager->flush();
 
             $statusCode = 201;
@@ -110,6 +104,12 @@ class UserController extends AbstractController
             $statusCode = 403;
 
         } else {
+
+            $userValidator = new UserValidator($validator);
+
+            $errors = $userValidator->validateRequestDatas($request->getContent(), 'edit');
+            dd($errors);
+
             $requestContent = json_decode($request->getContent());
 
             if (isset($requestContent->email)) {
@@ -156,7 +156,8 @@ class UserController extends AbstractController
      */
     public function editPassword(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder): JsonResponse
+        UserPasswordEncoderInterface $passwordEncoder,
+        ValidatorInterface $validator): JsonResponse
     {
         $currentUser = $this->getUser();
 
@@ -164,6 +165,10 @@ class UserController extends AbstractController
             $data = ['Utilisateur non trouvé'];
             $statusCode = 404;
         } else {
+            $userValidator = new UserValidator($validator);
+
+            $errors = $userValidator->validateRequestDatas($request->getContent(), 'editPassword');
+            dd($errors);
             $requestContent = json_decode($request->getContent());
 
             $errors = [];

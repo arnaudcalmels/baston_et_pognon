@@ -155,7 +155,7 @@ class MonsterValidator
             $this->formatErrors($$formatedErrorsList, $errors);
         }
 
-        return $$formatedErrorsList;
+        return $formatedErrorsList;
     }
 
     /**

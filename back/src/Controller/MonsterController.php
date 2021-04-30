@@ -127,59 +127,23 @@ class MonsterController extends AbstractController
             $data = $errors;
             $statusCode = 403;
         } else {
-
             $em = $this->getDoctrine()->getManager();
 
             $requestContent = json_decode($request->getContent());
-            $caracteristicsDatas = $requestContent->caracteristics;
 
-            $caracteristicsObject = $monster->getCaracteristics();
-    
-            $caracteristicsObject->setArmor($caracteristicsDatas->armor);
-            $caracteristicsObject->setLifePoints($caracteristicsDatas->lifePoints);
-    
-            $actionsData = $caracteristicsDatas->actions;
-            $actionsCount = count($actionsData);
-            $actionsCollection = $caracteristicsObject->getActions();
+            $this->setMonsterAndSubObjects($monster, $requestContent, $em);
 
-            // Mise à jour et éventuelle création d'actions
-            for ($i = 0; $i < $actionsCount; $i++) {
-                if ($actionsCollection[$i]) {
-                    $actionObject = $actionsCollection[$i];
-                } else {
-                    $actionObject = new Action();
-                    $em->persist($actionObject);
-                    $caracteristicsObject->addAction($actionObject);
-                }
+            $errorsObject = $monsterValidator->validateObject($monster);
 
-                $actionObject->setDamages($actionsData[$i]->damages);
-                $actionObject->setDistance($actionsData[$i]->distance);
-                $actionObject->setFrequency($actionsData[$i]->frequency);
-                $actionObject->setHeal($actionsData[$i]->heal);
-                $actionObject->setIsSpecial($actionsData[$i]->isSpecial);
+            if (count($errorsObject) > 0) {
+                $data = $errorsObject;
+                $statusCode = 403;
+            } else {
+                $em->flush();         
 
+                $data = $this->normalizeMonster($monster);
+                $statusCode = 200;
             }
-            // On vérifie s'il y a moins d'actions, on les supprime le cas échéant
-            $countActionsCollection= count($actionsCollection);
-            if ($countActionsCollection > $i) {
-                for ($i; $i < $countActionsCollection; $i++) {
-                    $actionToDelete = $actionsCollection[$i];
-                    $em->remove($actionToDelete);
-                }
-            }
-            
-            // Assignation des propriétés du monstre
-            $monster->setName($requestContent->name);
-            $monster->setIsBoss($requestContent->isBoss);
-            $monster->setHasBooster($requestContent->hasBooster);
-            $monster->setLevel($requestContent->level);
-            $monster->setPicture($requestContent->picture);
-            $monster->setCaracteristics($caracteristicsObject);
-    
-            $em->flush();
-
-            $data = $this->normalizeMonster($monster);
-            $statusCode = 200;
         }
 
         return new JsonResponse($data, $statusCode);
@@ -203,7 +167,9 @@ class MonsterController extends AbstractController
             return null;
         } else {
 
-            $monster = $this->monsterCreation($object, $em);
+            $monster = new Monster();
+
+            $this->setMonsterAndSubObjects($monster, $object, $em);
 
             $place->addMonster($monster);
 
@@ -232,7 +198,9 @@ class MonsterController extends AbstractController
             $wanderingGroup = new WanderingMonsterGroup();
             $em->persist($wanderingGroup);
 
-            $monster = $this->monsterCreation($object, $em);
+            $monster = new Monster();
+
+            $this->setMonsterAndSubObjects($monster, $object, $em);
             
             $wanderingGroup->addMonster($monster);
             $scenario->addWanderingMonster($wanderingGroup);
@@ -259,7 +227,10 @@ class MonsterController extends AbstractController
             return null;
         } else {
 
-            $monster = $this->monsterCreation($object, $em);
+
+            $monster = new Monster();
+
+            $this->setMonsterAndSubObjects($monster, $object, $em);
 
             $wanderingGroup->addMonster($monster);
 
@@ -268,48 +239,67 @@ class MonsterController extends AbstractController
     }
 
     /**
-     * Create a monster
+     * Set Monster properties and its sub objects
      *
      * @param \StdClass $object
      * @param EntityManager $em
-     * @return Monster
+     * @return void
      */
-    private function monsterCreation(\StdClass $object, EntityManager $em): Monster
+    private function setMonsterAndSubObjects(Monster &$monster, \StdClass $datasObject, EntityManager $em)
     {
         // Création de l'objet caracteristics
-        $caracteristics = $object->caracteristics;
+        $caracteristicsDatas = $datasObject->caracteristics;
 
-        $caracteristicsObject = new Caracteristics();
+        $caracteristicsObject = $monster->getCaracteristics();
 
-        $caracteristicsObject->setArmor($caracteristics->armor);
-        $caracteristicsObject->setLifePoints($caracteristics->lifePoints);
-
-        $em->persist($caracteristicsObject);
-
-        // Création et ajout des actions à l'abjet caracteristics
-        foreach ($caracteristics->actions as $action) {
-            $actionObject = new Action();
-            $actionObject->setDamages($action->damages);
-            $actionObject->setDistance($action->distance);
-            $actionObject->setFrequency($action->frequency);
-            $actionObject->setHeal($action->heal);
-            $actionObject->setIsSpecial($action->isSpecial);
-
-            $em->persist($actionObject);
-
-            $caracteristicsObject->addAction($actionObject);
+        if (!$caracteristicsObject) {
+            $caracteristicsObject = new Caracteristics();
+            $em->persist($caracteristicsObject);
+            $monster->setCaracteristics($caracteristicsObject);
         }
 
-        // Création du monstre, assignation de ses caractéristiques
-        $monster = new Monster();
-        $monster->setName($object->name);
-        $monster->setIsBoss($object->isBoss);
-        $monster->setHasBooster($object->hasBooster);
-        $monster->setLevel($object->level);
-        $monster->setPicture($object->picture);
+        $caracteristicsObject->setArmor($caracteristicsDatas->armor);
+        $caracteristicsObject->setLifePoints($caracteristicsDatas->lifePoints);
+
+        $actionsData = $caracteristicsDatas->actions;
+        $actionsCount = count($actionsData);
+        $actionsObjectCollection = $caracteristicsObject->getActions();
+
+        // Création éventuelle d'actions et assignations des propriétés
+        for ($i = 0; $i < $actionsCount; $i++) {
+            if ($actionsObjectCollection[$i]) {
+                $actionObject = $actionsObjectCollection[$i];
+            } else {
+                $actionObject = new Action();
+                $em->persist($actionObject);
+                $caracteristicsObject->addAction($actionObject);
+            }
+
+            $actionObject->setDamages($actionsData[$i]->damages);
+            $actionObject->setDistance($actionsData[$i]->distance);
+            $actionObject->setFrequency($actionsData[$i]->frequency);
+            $actionObject->setHeal($actionsData[$i]->heal);
+            $actionObject->setIsSpecial($actionsData[$i]->isSpecial);
+
+        }
+        // On vérifie s'il y a moins d'actions, on les supprime le cas échéant
+        $countactionsObjectCollection = count($actionsObjectCollection);
+        if ($countactionsObjectCollection > $i) {
+            for ($i; $i < $countactionsObjectCollection; $i++) {
+                $actionToDelete = $actionsObjectCollection[$i];
+                $em->remove($actionToDelete);
+            }
+        }
+
+        // Assignation des propriétés du monstre
+        $monster->setName($datasObject->name);
+        $monster->setIsBoss($datasObject->isBoss);
+        $monster->setHasBooster($datasObject->hasBooster);
+        $monster->setLevel($datasObject->level);
+        $monster->setPicture($datasObject->picture);
         $monster->setCaracteristics($caracteristicsObject);
 
-        return $monster;
+        // return $monster;
     }
 
     /**

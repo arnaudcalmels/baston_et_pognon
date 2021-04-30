@@ -24,6 +24,7 @@ class MonsterController extends AbstractController
      * Get a monster
      *
      * @param Monster $monster
+     * @param integer $id
      * @return JsonResponse
      */
     public function monster(Monster $monster = null, int $id): JsonResponse
@@ -102,6 +103,15 @@ class MonsterController extends AbstractController
         return new JsonResponse($data, $statusCode);
     }
 
+    /**
+     * Edit a monster object
+     *
+     * @param Request $request
+     * @param Monster $monster
+     * @param integer $id
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     */
     public function edit(Request $request, Monster $monster = null, int $id, ValidatorInterface $validator): JsonResponse
     {
         if (!$monster) {
@@ -147,6 +157,40 @@ class MonsterController extends AbstractController
         }
 
         return new JsonResponse($data, $statusCode);
+    }
+
+    /**
+     * Delete a monster
+     *
+     * @param Request $request
+     * @param Monster $monster
+     * @param integer $id
+     * @return JsonResponse
+     */
+    public function delete(Request $request, Monster $monster = null, int $id): JsonResponse
+    {
+        if (!$monster) {
+
+            return new JsonResponse(['Le monstre d\'id ('.$id.') n\'existe pas'], 404);
+        }
+
+        $currentUser = $this->getUser();
+        $place = $monster->getPlace();
+        $owner = $place ? $place->getScenario()->getOwner() : $monster->getWanderingMonsterGroup()->getScenario()->getOwner();
+
+        if ($owner !== $currentUser) {
+            $message = 'Vous n\'êtes pas autorisé à supprimer ce scénario';
+            $statusCode = 403;
+        } else {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($monster);
+            $entityManager->flush();  
+            
+            $message = 'Suppression OK';
+            $statusCode = 200;
+        }
+
+        return new JsonResponse($message, $statusCode);
     }
 
     /**

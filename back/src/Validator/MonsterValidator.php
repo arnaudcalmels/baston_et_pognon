@@ -8,10 +8,10 @@ use App\Entity\Scenario;
 use App\Entity\WanderingMonsterGroup;
 use App\Validator\ContainsIdOfEntityClass;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MonsterValidator
@@ -25,7 +25,15 @@ class MonsterValidator
         $this->serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
     }
 
-    public function validateRequestDatas(string $requestContent, $isNew = false, string $parentEntityName = null)
+    /**
+     * Validate datas required for monster object
+     *
+     * @param string $requestContent
+     * @param boolean $isNew
+     * @param string $parentEntityName
+     * @return array
+     */
+    public function validateRequestDatas(string $requestContent, $isNew = false, string $parentEntityName = null): array
     {
         $datas = $this->serializer->decode($requestContent, 'json');
 
@@ -51,20 +59,7 @@ class MonsterValidator
             ]);
 
             $parentValidationErrors = $this->validator->validate($datas, $parentConstraints);
-        } else {
-            // Sinon on vérifie que le monstre est défini et existe
-            $parentConstraints = new Assert\Collection([
-                'allowExtraFields' => true,
-                'fields' => [
-                    'monsterId' => [
-                        new Assert\NotBlank(),
-                        new Assert\Positive(),
-                        new ContainsIdOfEntityClass(Monster::class),
-                    ],    
-                ],
-            ]);
         }
-
 
         $constraints = new Assert\Collection([
             'allowExtraFields' => true,
@@ -133,19 +128,47 @@ class MonsterValidator
 
         $validationErrors = $this->validator->validate($datas, $constraints);
 
-        $errors = [];
+        $formatedErrorsList = [];
 
-        if ($parentValidationErrors) {
-            /** @var ConstraintViolation $error */
-            foreach ($parentValidationErrors as $error) {
-                $errors[$error->getPropertyPath()] = $error->getMessage();
-            }
-        }
-        /** @var ConstraintViolation $error */
-        foreach ($validationErrors as $error) {
-            $errors[$error->getPropertyPath()] = $error->getMessage();
+        if (isset($parentValidationErrors)) {
+            $this->formatErrors($formatedErrorsList, $parentValidationErrors);
         }
 
-        return $errors;
+        $this->formatErrors($formatedErrorsList, $validationErrors);
+
+        return $formatedErrorsList;
+    }
+
+    /**
+     * Validate the monster object
+     *
+     * @param Monster $monster
+     * @return array
+     */
+    public function validateObject(Monster $monster): array
+    {
+        $errors = $this->validator->validate($monster);
+
+        $formatedErrorsList = [];
+
+        if (count($errors) > 0) {
+            $this->formatErrors($$formatedErrorsList, $errors);
+        }
+
+        return $$formatedErrorsList;
+    }
+
+    /**
+     * Format list of errors
+     *
+     * @param array $formatedErrorsList
+     * @param ConstraintViolationList $errorsList
+     * @return void
+     */
+    private function formatErrors(array &$formatedErrorsList, ConstraintViolationList $errorsList)
+    {
+        foreach ($errorsList as $error) {
+            $formatedErrorsList[$error->getPropertyPath()] = $error->getMessage();
+        }
     }
 }

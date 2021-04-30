@@ -83,7 +83,7 @@ class MonsterController extends AbstractController
             } else {
                 $em->persist($monster);
 
-                $errorsObject = $validator->validate($monster);
+                $errorsObject = $monsterValidator->validateObject($monster);
 
                 if (count($errorsObject) > 0) {
                     $data = $errorsObject;
@@ -92,15 +92,94 @@ class MonsterController extends AbstractController
                     $em->flush();
 
                     $place = $monster->getPlace();
-                    if ($place) {
-                        $scenarioId = $place->getScenario()->getId();
-                    } else {
-                        $scenarioId = $monster->getWanderingMonsterGroup()->getScenario()->getId();
-                    }
+                    $scenarioId = $place ? $place->getScenario()->getId() : $monster->getWanderingMonsterGroup()->getScenario()->getId();
 
                     return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
                 }
             }               
+        }
+
+        return new JsonResponse($data, $statusCode);
+    }
+
+    public function edit(Request $request, Monster $monster = null, int $id, ValidatorInterface $validator): JsonResponse
+    {
+        if (!$monster) {
+
+            return new JsonResponse(['Le monstre d\'id ('.$id.') n\'existe pas'], 404);
+        } 
+
+        $place = $monster->getPlace();
+
+        $owner = $place ? $place->getScenario()->getOwner() : $monster->getWanderingMonsterGroup()->getScenario()->getOwner();
+        $currentUser = $this->getUser();
+
+        if ($owner !== $currentUser) {
+
+            return new JsonResponse(['Vous n\'êtes pas autorisé à modifier ce monstre'], 404);
+        }
+
+        $monsterValidator = new MonsterValidator($validator);
+
+        $errors = $monsterValidator->validateRequestDatas($request->getContent());
+
+        if (count($errors) > 0) {
+            $data = $errors;
+            $statusCode = 403;
+        } else {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $requestContent = json_decode($request->getContent());
+            $caracteristicsDatas = $requestContent->caracteristics;
+
+            $caracteristicsObject = $monster->getCaracteristics();
+    
+            $caracteristicsObject->setArmor($caracteristicsDatas->armor);
+            $caracteristicsObject->setLifePoints($caracteristicsDatas->lifePoints);
+    
+            $actionsData = $caracteristicsDatas->actions;
+            $actionsCount = count($actionsData);
+            $actionsCollection = $caracteristicsObject->getActions();
+
+            // Mise à jour et éventuelle création d'actions
+            for ($i = 0; $i < $actionsCount; $i++) {
+                if ($actionsCollection[$i]) {
+                    $actionObject = $actionsCollection[$i];
+                } else {
+                    $actionObject = new Action();
+                    $em->persist($actionObject);
+                    $caracteristicsObject->addAction($actionObject);
+                }
+
+                $actionObject->setDamages($actionsData[$i]->damages);
+                $actionObject->setDistance($actionsData[$i]->distance);
+                $actionObject->setFrequency($actionsData[$i]->frequency);
+                $actionObject->setHeal($actionsData[$i]->heal);
+                $actionObject->setIsSpecial($actionsData[$i]->isSpecial);
+
+            }
+            // On vérifie s'il y a moins d'actions, on les supprime le cas échéant
+            $countActionsCollection= count($actionsCollection);
+            if ($countActionsCollection > $i) {
+                for ($i; $i < $countActionsCollection; $i++) {
+                    $actionToDelete = $actionsCollection[$i];
+                    $em->remove($actionToDelete);
+                }
+            }
+            
+            // Assignation des propriétés du monstre
+            $monster->setName($requestContent->name);
+            $monster->setIsBoss($requestContent->isBoss);
+            $monster->setHasBooster($requestContent->hasBooster);
+            $monster->setLevel($requestContent->level);
+            $monster->setPicture($requestContent->picture);
+            $monster->setCaracteristics($caracteristicsObject);
+    
+            $em->flush();
+
+            $data = $this->normalizeMonster($monster);
+            $statusCode = 200;
         }
 
         return new JsonResponse($data, $statusCode);
@@ -151,6 +230,7 @@ class MonsterController extends AbstractController
         } else {
 
             $wanderingGroup = new WanderingMonsterGroup();
+            $em->persist($wanderingGroup);
 
             $monster = $this->monsterCreation($object, $em);
             
@@ -194,7 +274,7 @@ class MonsterController extends AbstractController
      * @param EntityManager $em
      * @return Monster
      */
-    private function monsterCreation(\StdClass$object, EntityManager $em): Monster
+    private function monsterCreation(\StdClass $object, EntityManager $em): Monster
     {
         // Création de l'objet caracteristics
         $caracteristics = $object->caracteristics;

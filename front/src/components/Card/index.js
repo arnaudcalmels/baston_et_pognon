@@ -12,7 +12,7 @@ const Card = ({ image, name, subtitle, level, onClick }) => {
         <img 
           id={styles['image']}
           src={image} 
-          alt='photo_personnage'
+          alt='Illustration'
         />
       </div>
       <h3 className={styles['name']}>{name}</h3>

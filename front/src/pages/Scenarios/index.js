@@ -15,6 +15,11 @@ import styles from './scenarios.module.scss';
 const Scenarios = ({ isLoggedIn, scenarios, getScenarios }) => {
   let history = useHistory();
 
+  const newScenario = () => {
+    history.push('/scenario/nouveau');
+  };
+
+
   useEffect(() => {
     if (isLoggedIn && scenarios.length === 0) {
       getScenarios();
@@ -32,9 +37,9 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios }) => {
           icon={faPlusCircle} 
           size="2x" 
           style={{cursor: 'pointer'}}
-          onClick={() => console.log('nouveau scenario')}
+          onClick={() => newScenario()}
         />
-        <p className={styles['new']} onClick={() => console.log('nouveau scenario')}>Nouveau scénario</p>
+        <p className={styles['new']} onClick={() => newScenario()}>Nouveau scénario</p>
       </div>
 
       {

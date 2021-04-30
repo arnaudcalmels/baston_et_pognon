@@ -2,8 +2,8 @@ import { toast } from "react-toastify";
 
 export const setErrorToasts = (errors) => {
   let index = 1;
-  let time = 2000 * index;
   errors.forEach( error => {
+    let time = 2000 * index;
     toast.error(error, { 
       autoClose: time,
       position: toast.POSITION.BOTTOM_RIGHT

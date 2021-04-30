@@ -1,5 +1,5 @@
 import {
-  GET_SCENARIOS_SUCCESS, 
+  GET_SCENARIOS_SUCCESS, NEW_SCENARIO_SUCCESS
 } from '../actions/types';
 
 const initialState = {
@@ -13,7 +13,12 @@ const reducer = (oldState = initialState, action) => {
         ...oldState,
         scenarios: action.data
       }
-  
+    case NEW_SCENARIO_SUCCESS:
+      return {
+        ...oldState,
+        scenarios: [...oldState.scenarios, action.data]
+      }
+
     default: 
       return oldState;
   }

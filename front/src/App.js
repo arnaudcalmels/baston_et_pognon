@@ -8,6 +8,7 @@ import Character from './containers/pages/Character';
 import NewCharacter from './containers/pages/NewCharacter';
 import Scenarios from './containers/pages/Scenarios';
 import Scenario from './containers/pages/Scenario';
+import NewScenario from './containers/pages/NewScenario';
 import Game from './pages/Game';
 import News from './pages/News';
 import Profile from './containers/pages/Profile';
@@ -36,6 +37,7 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
         <Route exact path="/personnage/nouveau" component={NewCharacter} />
         <Route exact path="/personnage/:id" component={Character} />
         <Route exact path="/scenario" component={Scenarios} />
+        <Route exact path="/scenario/nouveau" component={NewScenario} />
         <Route exact path="/scenario/:id" component={Scenario} />
         <Route exact path="/jeu" component={Game} />
         <Route exact path="/actualité" component={News} />

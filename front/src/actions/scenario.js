@@ -1,5 +1,5 @@
 import { 
-  GET_SCENARIOS, GET_SCENARIOS_SUCCESS
+  GET_SCENARIOS, GET_SCENARIOS_SUCCESS, NEW_SCENARIO, NEW_SCENARIO_SUCCESS,
 } from './types';
 
 export const getScenarios = () => ({
@@ -10,3 +10,15 @@ export const getScenariosSuccess = (data) => ({
   type: GET_SCENARIOS_SUCCESS,
   data
 });
+
+export const newScenario = (values, redirect) => ({
+  type: NEW_SCENARIO,
+  values,
+  redirect
+});
+
+export const newScenarioSuccess = (data) => ({
+  type: NEW_SCENARIO_SUCCESS,
+  data
+});
+

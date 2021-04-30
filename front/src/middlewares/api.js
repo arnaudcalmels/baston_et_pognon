@@ -6,16 +6,15 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
-import { getScenariosSuccess } from '../actions/scenario';
+import { getScenariosSuccess, newScenarioSuccess } from '../actions/scenario';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS,
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO,
  } from '../actions/types';
 
  
  const api = (store) => (next) => (action) => {
-
   switch (action.type) {
 
     // ----- REGISTER -----
@@ -201,6 +200,7 @@ import {
       .then ((response) => { 
         store.dispatch(newCharacterSuccess(response.data));
         setSuccessToast('Personnage créé !');
+        action.redirect(`/personnage/${response.data.id}`);
       })
       .catch ((error) => {
         setErrorToasts(error.response.data);
@@ -280,6 +280,31 @@ import {
       break;
     }
     
+    case NEW_SCENARIO: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'post',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/scenario/new',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(newScenarioSuccess(response.data));
+        setSuccessToast('Scénario créé !');
+        action.redirect(`/scenario/${response.data.id}`);
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
     default:
       next(action);
   }

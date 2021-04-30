@@ -7,7 +7,7 @@ import Characters from './containers/pages/Characters';
 import Character from './containers/pages/Character';
 import NewCharacter from './containers/pages/NewCharacter';
 import Scenarios from './containers/pages/Scenarios';
-import Scenario from './pages/Scenario';
+import Scenario from './containers/pages/Scenario';
 import Game from './pages/Game';
 import News from './pages/News';
 import Profile from './containers/pages/Profile';

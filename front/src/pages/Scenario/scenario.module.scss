@@ -70,6 +70,7 @@
     margin: 1rem;
 }
 
+
 .carousel {
     width: 250px;
     text-align: center;
@@ -78,6 +79,27 @@
 
 .slider {
     margin-bottom: 1rem;
+}
+
+.wanderingMonsters  {
+    width: 300px;
+    text-align: center;
+    border: 3px solid $color-secondary;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.monsters {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.monster_group {
+    padding: 0.5rem;
 }
 
 .buttons {
@@ -115,6 +137,11 @@
 
     .carousel {
         width: 520px;
+        grid-column: 1 / span 2;
+        justify-self: center;
+    }
+    
+    .wanderingMonsters  {
         grid-column: 1 / span 2;
         justify-self: center;
     }
@@ -164,6 +191,13 @@
         margin-top: 4rem;
     }
 
+    .wanderingMonsters  {
+        grid-column: 3 / span 4;
+        grid-row: 3 / 4;
+        justify-self: center;
+        align-self: flex-start;
+    }
+
     .carousel {
         grid-row: 4 / 5;
         grid-column: 1 / span 3;
@@ -180,7 +214,7 @@
 
 @media screen and (min-width: 1500px) {
     .main {
-        grid-template-rows: 50px 400px 1fr 50px;
+        grid-template-rows: 50px 200px 200px 1fr 50px;
     }
 
     .picture {
@@ -197,15 +231,20 @@
         margin-top: 2rem;
     }
 
+    .wanderingMonsters  {
+        grid-column: 3 / 4;
+        grid-row: 3 / 4;
+    }
+
     .description {
         grid-column: 2 / 3;
-        grid-row: 2 / 3;
+        grid-row: 2 / span 2;
         align-self: flex-start;
         margin-top: 2rem;
     }
 
     .carousel {
-        grid-row: 3 / 4;
+        grid-row: 4 / 5;
         width : 1100px;
     }
 

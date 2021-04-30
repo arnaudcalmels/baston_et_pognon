@@ -148,10 +148,12 @@ api_monster:
     requirements:
         id: '\d+'
 
-api_monster_new_for_place:
-    path: api/monster/new/place
+api_monster_new:
+    path: api/monster/new/{slug}
     methods: [POST]
-    controller: App\Controller\MonsterController::newMonsterForAPlace
+    controller: App\Controller\MonsterController::new
+    requirements:
+        slug: "place|scenario|wanderGroup"
 
 api_monster_edit:
     path: api/monster/edit/{id}

@@ -68,16 +68,16 @@ class MonsterValidator
                     new Assert\NotBlank(),
                 ],
                 'isBoss' => [
-                    new Assert\Type('bool'),
                     new Assert\NotNull(),
+                    new Assert\Type('bool'),
                 ],
                 'hasBooster' => [
-                    new Assert\Type('bool'),
                     new Assert\NotNull(),
+                    new Assert\Type('bool'),
                 ],
                 'level' => [
-                    new Assert\Positive(),
                     new Assert\NotNull(),
+                    new Assert\Positive(),
                 ],
                 'picture' => [
                     new Assert\Type('string'),
@@ -85,12 +85,12 @@ class MonsterValidator
                 'caracteristics' => new Assert\Required([
                     new Assert\Collection([
                         'armor' => [
-                            new Assert\Positive(),
                             new Assert\NotNull(),
+                            new Assert\Positive(),
                         ],
                         'lifePoints' => [
-                            new Assert\Positive(),
                             new Assert\NotNull(),
+                            new Assert\Positive(),
                         ],
                         'actions' => new Assert\Required([
                             new Assert\Type('array'),
@@ -98,24 +98,24 @@ class MonsterValidator
                             new Assert\All([
                                 new Assert\Collection([
                                     'damages' => [
-                                        new Assert\Positive(),
                                         new Assert\NotNull(),
+                                        new Assert\Positive(),
                                     ],
                                     'distance' => [
-                                        new Assert\Type('bool'),
                                         new Assert\NotNull(),
+                                        new Assert\Type('bool'),
                                     ],
                                     'frequency' => [
-                                        new Assert\Positive(),
                                         new Assert\NotNull(),
+                                        new Assert\Positive(),
                                     ],
                                     'heal' => [
-                                        new Assert\Type('bool'),
                                         new Assert\NotNull(),
+                                        new Assert\Type('bool'),
                                     ],
                                     'isSpecial' => [
-                                        new Assert\Type('bool'),
                                         new Assert\NotNull(),
+                                        new Assert\Type('bool'),
                                     ],
                                 ]),
                             ]),

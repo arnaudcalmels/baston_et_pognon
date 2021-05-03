@@ -282,11 +282,12 @@ import {
     
     case NEW_SCENARIO: {
       const { auth: { token } } = store.getState();
+      console.log(action.values);
       const config = {
         method: 'post',
         url: process.env.REACT_APP_BASE_URL_API + 'api/scenario/new',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
         },
         data: action.values     

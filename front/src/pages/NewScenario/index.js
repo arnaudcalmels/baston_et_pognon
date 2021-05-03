@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useHistory } from 'react-router-dom';
+import FormData from 'form-data';
 
 import Title from '../../components/Title';
 import Button from '../../components/Button';
@@ -21,8 +22,13 @@ const NewScenario = ({ newScenario }) => {
   };
 
   const handleSubmit = (values) => {
-    console.log(JSON.stringify(values, null, 2));
-    newScenario(JSON.stringify(values, null, 2));
+    let data = new FormData();
+    data.append('name', values.name);
+    data.append('picture', values.picture);
+    data.append('description', values.description);
+    data.append('maxPlayers', values.maxPlayers);
+    data.append('characterLevel', values.characterLevel);
+    newScenario(data);
   };
 
   return (
@@ -30,22 +36,24 @@ const NewScenario = ({ newScenario }) => {
       <Title title={'Créer un nouveau scénario'} id={styles['title']}/>
 
       <Formik
-          initialValues={{
-            name: '',
-            description: '',
-            maxPlayers: 1,
-            characterLevel: 1,
-          }}
-          validate={values => {
-            const errors = {};
-            if (!values.name) {
-              errors.name = 'Veuillez remplir ce champ !';
-            }
-            return errors;
-          }}
-          onSubmit={(values) => handleSubmit(values)}
-        >
-
+        initialValues={{
+          name: '',
+          description: '',
+          maxPlayers: 1,
+          characterLevel: 1,
+          picture: ''
+        }}
+        validate={values => {
+          const errors = {};
+          if (!values.name) {
+            errors.name = 'Veuillez remplir ce champ !';
+          }
+          return errors;
+        }}
+        onSubmit={(values) => handleSubmit(values)}
+      >
+        {
+          (props) => (
           <Form className={styles['form']}>
             <div className={styles['overlay-image']}>
               <img src="https://cdn.pixabay.com/photo/2020/06/21/17/06/village-5325891__340.png" alt="photo_scenario"/>  
@@ -59,6 +67,20 @@ const NewScenario = ({ newScenario }) => {
                 />
               </div>
             </div>
+
+            <input 
+            name="picture" 
+            type="file" 
+            onChange={(event) => {
+              // let file = { 
+              //     fileName: event.currentTarget.files[0].name, 
+              //     type: event.currentTarget.files[0].type,
+              //     size: `${event.currentTarget.files[0].size} bytes`
+              //   };
+              props.setFieldValue("picture", event.currentTarget.files[0]);
+              console.log(event.currentTarget);
+            }}
+            />
 
             <div className={styles['scenario_name']}>
               <label htmlFor="name" className={styles['form_label']}>Nom * :</label>
@@ -105,6 +127,9 @@ const NewScenario = ({ newScenario }) => {
             />
         
           </Form>
+
+          )
+        }
         </Formik>
 
         <Button

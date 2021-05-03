@@ -10,9 +10,58 @@
     align-items: center;
 }
 
-.picture {
-    max-width: 300px;
-    margin-bottom: 1rem;
+.show_scenario {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#block_form, #block_scenario {
+    background-color: initial;
+}
+
+.hide_scenario {
+    display: none;
+}
+
+.hide_form {
+    display: none;
+}
+
+.show_form {
+    display: block;
+}
+
+.overlay-image {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    margin-top: 0;
+    position: relative;
+    width: 300px;
+    justify-self: center;
+
+    
+    & img {
+        width: 300px;
+        height: auto;
+    }
+
+    & .hover {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0.2;
+        transition: .5s ease;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    &:hover .hover {
+        opacity: 1;
+    }
 }
 
 .table {
@@ -70,7 +119,6 @@
     margin: 1rem;
 }
 
-
 .carousel {
     width: 250px;
     text-align: center;
@@ -114,25 +162,33 @@
 }
 
 @media screen and (min-width: 768px) {
-    .main {
+    #title {
+        grid-column: 1 / span 2;
+    }
+
+    .show_scenario {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         justify-content: center;
         align-items: center;        
     }
 
-    #title {
-        grid-column: 1 / span 2;
+    .overlay-image {
+        justify-self: center;
+        grid-row: 2 / 3;
+        grid-column: 1 / 2;
     }
 
-    .picture {
-        justify-self: center;
+    #caracteristics {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
     }
 
     .description {
         grid-column: 1 / span 2;
         width: 600px;
         justify-self: center;
+        grid-row: 3 / 4;
     }
 
     .carousel {
@@ -144,6 +200,7 @@
     .wanderingMonsters  {
         grid-column: 1 / span 2;
         justify-self: center;
+        grid-row: 4 / 5;
     }
     
     .buttons {
@@ -156,11 +213,94 @@
         display: block;
     }
 
+    .form {
+        grid-row: 2 / 3;
+        grid-column: 1 / span 2;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 0.5rem;
+        justify-items: center;
+        align-items: center;
+        margin-top: 1rem;
+    } 
+    
+    .new-scenario_name {
+        grid-column: 1 / span 2;
+        grid-row: 1 / 2;
+        margin-bottom: 1rem;
+    
+        & .form_field {
+            width: 250px;
+            margin-left: 1rem;
+        }
+    }
+        
+    .new-description {
+        grid-row: 3 / 4;
+        grid-column: 1 / span 2;
+        width: 600px;
+        height: 300px;
+        justify-self: center;
+        text-align: center;
+        border: 3px solid $color-secondary;
+        border-radius: 5px;
+        padding: 0.5rem;
+        margin: 1rem;
+        display: flex;
+        flex-direction: column;
+    
+        & .form_field {
+            width: auto;
+            height: 280px;
+        }
+    }
+        
+    .caracteristics {
+        border: 3px solid $color-secondary;
+        border-radius: 5px;
+        padding: 0.5rem;
+        margin: 1rem;
+        width: 300px;
+        display: grid;
+        grid-template-columns: 200px 80px;
+        grid-gap: 1rem;
+        align-items: center;
+        justify-items: center;
+        
+            & .form_field {
+                width: 30px;
+            }
+    }
+        
+    .info {
+        font-size: 0.7rem;
+        font-style: italic;
+        grid-column: 1 / span 2;
+        justify-self: center;
+    }
+    
+    #cancel_button {
+        justify-self: center;
+        width: 100px;  
+        position: relative;
+        top: -3rem;
+        left: 5rem;
+    }
+    
+    #submit_button {
+        grid-column: 2 / 3;
+        justify-self: center;
+        width: 100px;  
+    }
     
 }
 
 @media screen and (min-width: 1200px) {
-    .main {
+    #title {
+        grid-column: 1 / span 3;
+    }
+
+    .show_scenario {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: 50px 400px 200px 1fr 50px;
@@ -168,11 +308,8 @@
         align-items: center;  
     }
 
-    #title {
-        grid-column: 1 / span 3;
-    }
 
-    .picture {
+    .overlay-image {
         grid-row: 2 / 3;
         grid-column: 1 / 2 ;
     }
@@ -192,14 +329,14 @@
     }
 
     .wanderingMonsters  {
-        grid-column: 3 / span 4;
         grid-row: 3 / 4;
+        grid-column: 3 / 4 ;
         justify-self: center;
         align-self: flex-start;
     }
 
     .carousel {
-        grid-row: 4 / 5;
+        grid-row: 5 / 6;
         grid-column: 1 / span 3;
         width: 800px;
         justify-self: center;
@@ -210,14 +347,51 @@
         grid-column: 1 / span 3;
     }
 
+    .form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 50px 400px 200px 1fr 50px;
+        justify-content: center;
+        align-items: center;  
+    }
+    
+    .new-scenario_name {
+        grid-column: 1 / span 3;
+    }
+
+    .new-description {
+        grid-column: 2 / span 2;
+        grid-row: 2 / 3;
+        align-self: flex-start;
+    }
+
+    .caracteristics {
+        grid-row: 3 / 4;
+        grid-column: 1 / 2;
+    }
+
+    .info {
+        grid-column: 1 / span 3;
+    }
+
+    #cancel_button {
+        left: 23rem;
+    }
+    
+    #submit_button {
+        grid-column: 2 / 3;
+        justify-self: end;
+    }
+
 }
 
+
 @media screen and (min-width: 1500px) {
-    .main {
+    .show_scenario {
         grid-template-rows: 50px 200px 200px 1fr 50px;
     }
 
-    .picture {
+    .overlay-image {
         justify-self: center;
         align-self: flex-start;
         margin-top: 2rem;
@@ -231,11 +405,6 @@
         margin-top: 2rem;
     }
 
-    .wanderingMonsters  {
-        grid-column: 3 / 4;
-        grid-row: 3 / 4;
-    }
-
     .description {
         grid-column: 2 / 3;
         grid-row: 2 / span 2;
@@ -246,6 +415,27 @@
     .carousel {
         grid-row: 4 / 5;
         width : 1100px;
+    }
+
+    .form {
+        grid-template-rows: 50px 250px 200px 1fr 50px;
+    }
+
+    .caracteristics {
+        grid-column: 3 / 4;
+        grid-row: 2 / 3;
+    }
+
+    .new-description {
+        grid-column: 2 / 3;
+        grid-row: 2 / span 2;
+        align-self: flex-start;
+        margin-top: 2rem;
+    }
+
+    #cancel_button {
+        top: -3rem;
+        left: 39rem;
     }
 
 }

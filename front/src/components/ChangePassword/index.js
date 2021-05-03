@@ -19,23 +19,23 @@ const ChangePassword = ({ cancelAction, changePassword }) => {
       <Formik
         initialValues={{
           currentPassword: '',
-          newPassword: '',
-          confirmNewPassword: '',
+          password: '',
+          confirmPassword: '',
         }}
         validate={values => {
           const errors = {};
           if (!values.currentPassword) {
             errors.currentPassword = 'Veuillez remplir ce champ !';
           }
-          if (!values.newPassword) {
-            errors.newPassword = 'Veuillez remplir ce champ !';
-          } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(values.newPassword)) {
-            errors.newPassword = 'Ce champ doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
+          if (!values.password) {
+            errors.password = 'Veuillez remplir ce champ !';
+          } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(values.password)) {
+            errors.password = 'Ce champ doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
           }
-          if (!values.confirmNewPassword) {
-            errors.confirmNewPassword = 'Veuillez remplir ce champ !';
-          } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(values.confirmNewPassword)) {
-            errors.confirmNewPassword = 'Ce champ doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
+          if (!values.confirmPassword) {
+            errors.confirmPassword = 'Veuillez remplir ce champ !';
+          } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(values.confirmPassword)) {
+            errors.confirmPassword = 'Ce champ doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
           }
 
           return errors;
@@ -53,25 +53,25 @@ const ChangePassword = ({ cancelAction, changePassword }) => {
           />
           <ErrorMessage name='currentPassword' component='div' className={styles['error_message']}/>
 
-          <label htmlFor="newPassword" className={styles['form_label']}>Nouveau mot de passe :</label>
+          <label htmlFor="password" className={styles['form_label']}>Nouveau mot de passe :</label>
           <Field 
             className={styles['form_field']}
-            id="newPassword" 
-            name="newPassword" 
+            id="password" 
+            name="password" 
             type="password"
             placeholder="Veuillez saisir un mot de passe" 
           />
-          <ErrorMessage name='newPassword' component='div' className={styles['error_message']}/>
+          <ErrorMessage name='password' component='div' className={styles['error_message']}/>
 
-          <label htmlFor="confirmNewPassword" className={styles['form_label']}>Confirmation mot de passe :</label>
+          <label htmlFor="confirmPassword" className={styles['form_label']}>Confirmation mot de passe :</label>
           <Field
             className={styles['form_field']}
-            id="confirmNewPassword"
-            name="confirmNewPassword"
+            id="confirmPassword"
+            name="confirmPassword"
             type="password"
             placeholder="Veuillez confirmer le mot de passe"
           />
-          <ErrorMessage name='confirmNewPassword' component='div' className={styles['error_message']}/>
+          <ErrorMessage name='confirmPassword' component='div' className={styles['error_message']}/>
 
           <Button id={styles['submit_button']} type="submit" color='#eee' children='Valider'/>
         </Form>

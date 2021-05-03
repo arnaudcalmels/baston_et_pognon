@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import Scenario from '../../pages/Scenario';
 
-// import { editScenario, deleteScenario } from '../../actions/scenario';
+import { editScenario,  } from '../../actions/scenario';
 
 import getItem from '../../utils/getItem';
 
@@ -13,10 +13,10 @@ const mapStateToProps= (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  // editScenario: (id, values) => {
-  //   dispatch(editScenario(id, values));
-  //   ownProps.history.push(`/personnage/${id}`);
-  // },
+  editScenario: (id, values) => {
+    dispatch(editScenario(id, values));
+    ownProps.history.push(`/scenario/${id}`);
+  },
   // deleteScenario: (id) => {
   //   dispatch(deleteScenario(id));
   //   ownProps.history.push('/personnage');

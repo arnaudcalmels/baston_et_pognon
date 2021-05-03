@@ -6,11 +6,11 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
-import { getScenariosSuccess, newScenarioSuccess } from '../actions/scenario';
+import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess,  } from '../actions/scenario';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO,
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, 
  } from '../actions/types';
 
  
@@ -304,6 +304,31 @@ import {
 
       break;
     }
+
+    case EDIT_SCENARIO: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'put',
+        url: process.env.REACT_APP_BASE_URL_API + `api/scenario/edit/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(editScenarioSuccess(response.data));
+        setSuccessToast('Modification effectuée');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
 
     default:
       next(action);

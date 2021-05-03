@@ -1,5 +1,5 @@
 import { 
-  GET_SCENARIOS, GET_SCENARIOS_SUCCESS, NEW_SCENARIO, NEW_SCENARIO_SUCCESS,
+  GET_SCENARIOS, GET_SCENARIOS_SUCCESS, NEW_SCENARIO, NEW_SCENARIO_SUCCESS, EDIT_SCENARIO, EDIT_SCENARIO_SUCCESS
 } from './types';
 
 export const getScenarios = () => ({
@@ -22,3 +22,14 @@ export const newScenarioSuccess = (data) => ({
   data
 });
 
+export const editScenario = (id, values) => ({
+  type: EDIT_SCENARIO,
+  id,
+  values,
+  
+});
+
+export const editScenarioSuccess = (data) => ({
+  type: EDIT_SCENARIO_SUCCESS,
+  data,
+});

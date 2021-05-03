@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import useMediaQuery from '../../utils/useMediaQuery';
@@ -6,6 +6,8 @@ import useMediaQuery from '../../utils/useMediaQuery';
 import Title from '../../components/Title';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
+import Modal from '../../components/Modal';
+import DeleteConfirm from '../../components/DeleteConfirm';
 
 import PropTypes from 'prop-types';
 
@@ -15,7 +17,7 @@ import { faSpider, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './scenario.module.scss';
 
-const Scenario = ({ scenario, editScenario }) => {
+const Scenario = ({ scenario, editScenario, deleteScenario }) => {
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
     const block_scenario = document.getElementById(styles['block_scenario']);
@@ -45,6 +47,13 @@ const Scenario = ({ scenario, editScenario }) => {
     editScenario(scenario.id, JSON.stringify(values, null, 2));
     showForm();
   };
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);  
+
+  const handleDeleteScenario = (id) => {
+    deleteScenario(id);
+  }
+
 
   return (
     <div className={styles['main']}>
@@ -258,19 +267,37 @@ const Scenario = ({ scenario, editScenario }) => {
         <Button 
           color='#eee' 
           children='Supprimer le scénario' 
-          // onClick={() => {
-          //   setOpenDeleteModal(true);
-          // }} 
+          onClick={() => {
+            setOpenDeleteModal(true);
+          }} 
         />
       </div>
+
+      <Modal 
+        isOpen={openDeleteModal} 
+        closeModal={() => {
+          setOpenDeleteModal(false);
+        }}
+        title='Supprimer le scénario ?' 
+        children={
+          <DeleteConfirm 
+            cancelAction={() => setOpenDeleteModal(false)} 
+            confirmAction={() => {
+              handleDeleteScenario(scenario.id);
+              setOpenDeleteModal(false);
+            }}
+          />}
+      />
+
 
     </div>
   );
 };
 
 Scenario.propTypes = {
-  scenario: PropTypes.arrayOf(PropTypes.object,),
+  scenario: PropTypes.object,
   editScenario: PropTypes.func,
+  deleteScenario: PropTypes.func,
 };
 
 export default Scenario;

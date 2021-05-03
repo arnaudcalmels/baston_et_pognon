@@ -13,8 +13,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity("email", message="Cet email est déjà utilisé")
- * @UniqueEntity("pseudo", message="Ce pseudo est déjà utilisé")
+ * @UniqueEntity("email", message="email.unique")
+ * @UniqueEntity("pseudo", message="pseudo.unique")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -269,5 +270,22 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setInitialRole(): void
+    {
+        $this->setRoles(['ROLE_USER']);
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setDefaultPseudo(): void
+    {
+        // On défini un pseudo aléatoire à la création
+        $this->setPseudo('User-'.rand(9999, 99999));
     }
 }

@@ -35,6 +35,11 @@ class UserValidator
 
         $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/";
 
+        $value = '';
+        if ($constraintType !== 'edit') {
+            $value = $datas['password'];
+        }
+
         $constraints = [
             'new' => new Assert\Collection([
                 'fields' => [
@@ -56,7 +61,7 @@ class UserValidator
                             'message' => 'password.regex',
                         ]),
                         new Assert\IdenticalTo([
-                            'value' => $datas['password'],
+                            'value' => $value,
                             'message' => 'password.identical_to',
                             ]),
                     ],
@@ -96,7 +101,7 @@ class UserValidator
                             'message' => 'password.regex',
                         ]),
                         new Assert\IdenticalTo([
-                            'value' => $datas['password'],
+                            'value' => $value,
                             'message' => 'password.identical_to',
                         ]),
                     ],

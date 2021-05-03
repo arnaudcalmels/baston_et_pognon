@@ -11,9 +11,10 @@ export const getCharactersSuccess= (data) => ({
   data
 });
 
-export const newCharacter = (values) => ({
+export const newCharacter = (values, redirect) => ({
   type: NEW_CHARACTER,
-  values
+  values, 
+  redirect
 });
 
 export const newCharacterSuccess = (data) => ({

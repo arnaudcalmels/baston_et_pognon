@@ -242,7 +242,6 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
       <Modal 
         isOpen={openDeleteModal} 
         closeModal={() => {
-          console.log('clic');
           setOpenDeleteModal(false);
         }}
         title='Supprimer le personnage ?' 

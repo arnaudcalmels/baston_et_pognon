@@ -61,7 +61,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
             <li>
               <NavLink 
                 className={styles['navlink']} 
-                exact activeClassName={styles['isActive']} 
+                activeClassName={styles['isActive']} 
                 to="/scenario" 
                 onClick={() => displayMenu()}
               >
@@ -71,7 +71,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
             <li>
               <NavLink 
                 className={styles['navlink']} 
-                exact activeClassName={styles['isActive']} 
+                activeClassName={styles['isActive']} 
                 to="/jeu" 
                 onClick={() => displayMenu()}
               >
@@ -81,7 +81,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
             <li>
               <NavLink 
                 className={styles['navlink']} 
-                exact activeClassName={styles['isActive']} 
+                activeClassName={styles['isActive']} 
                 to="/actualité" 
                 onClick={() => displayMenu()}
               >

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import styles from './card.module.scss';
 
-const Card = ({ image, name, profession, level, onClick }) => {
+const Card = ({ image, name, subtitle, level, onClick }) => {
   return (
     <article className={styles['card']} onClick={onClick}
     >
@@ -12,12 +12,12 @@ const Card = ({ image, name, profession, level, onClick }) => {
         <img 
           id={styles['image']}
           src={image} 
-          alt='photo_personnage'
+          alt='Illustration'
         />
       </div>
       <h3 className={styles['name']}>{name}</h3>
-      <h4 className={styles['profession']}>{profession}</h4>
-      <span className={styles['level']}>Niveau {level}</span>
+      <h4 className={styles['subtitle']}>{subtitle}</h4>
+      <span className={styles['level']}>{level}</span>
     </article>
   );
 };
@@ -25,8 +25,9 @@ const Card = ({ image, name, profession, level, onClick }) => {
 Card.propTypes = {
   image: PropTypes.string,
   name: PropTypes.string,
-  profession: PropTypes.string,
+  subtitle: PropTypes.string,
   level: PropTypes.number,
+  onClick: PropTypes.func,
 };
 
 export default Card;

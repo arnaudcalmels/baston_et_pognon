@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import auth from './auth';
 import user from './user';
 import character from './character';
+import scenario from './scenario';
 
 import { 
   LOGOUT, 
@@ -12,6 +13,7 @@ const appReducer = combineReducers({
   auth,
   user,
   character,
+  scenario,
 });
 
 const rootReducer = (state, action) => {

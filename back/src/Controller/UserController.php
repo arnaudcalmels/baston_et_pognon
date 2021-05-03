@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Validator\UserValidator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,42 +26,29 @@ class UserController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator): JsonResponse
     {
-        $requestContent = json_decode($request->getContent());
-        if (!isset($requestContent->email) && !isset($requestContent->password) && !isset($requestContent->confirmPassword)) {
-            return new JsonResponse(['Format incorrect'], 400);
+        $userValidator = new UserValidator($validator);
+
+        $errors = $userValidator->validateRequestDatas($request->getContent(), 'new');
+
+        if (!count($errors) === 0) {
+            return new JsonResponse($errors, 403);
         }
+
+        $requestContent = json_decode($request->getContent());
 
         $user = new User();
         $user->setEmail($requestContent->email);
-        if ($requestContent->password === $requestContent->confirmPassword) {
-            if (preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $requestContent->password)) {
-                // On enregistre le mot de passe hashé uniquement qu'on la regex correspond pour exploiter le message du NotBlank en cas de non correspondance
-                $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
-            }
-        }
-        $user->setRoles(['ROLE_USER']); // rôle défini par défaut
+        $user->setPassword($passwordEncoder->encodePassword($user, $requestContent->password));
         
-        // On définit un pseudo aléatoire avant de sauvegarder le nouvel utilisateur
-        $user->setPseudo('User-'.rand(9999, 99999));
-
-        $urlAvatar = $this->getParameter('avatar_default_url');
-        $user->setAvatar('$urlAvatar');
-
-        $errors = $validator->validate($user);
-
-        if (count($errors) > 0) {
-            $data = [];
-            foreach ($errors as $error) {
-                /** @var ConstraintViolation $error */
-                $data[] = $error->getMessage();
+        $errorsObject = $userValidator->validateObject($user);
+        
+        if (count($errorsObject) > 0) {
+                $data = $errorsObject;
                 $statusCode = 403;
-            }
         } else {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
-
-            $user->setAvatar($urlAvatar);
-
+            
             $entityManager->flush();
 
             $statusCode = 201;
@@ -108,37 +96,32 @@ class UserController extends AbstractController
         if ($user !== $currentUser) {
             $data = ['Vous n\'êtes pas autorisé à modifier cet utilisateur'];
             $statusCode = 403;
-
         } else {
-            $requestContent = json_decode($request->getContent());
+            $userValidator = new UserValidator($validator);
 
-            if (isset($requestContent->email)) {
-                $user->setEmail($requestContent->email);
-                $emailChanged = true;
-            }
-            if (isset($requestContent->pseudo)) {
-                $user->setPseudo($requestContent->pseudo);
-            }
-            if (isset($requestContent->avatar)) {
-                $user->setAvatar($requestContent->avatar);
-            }
-
-            $errors = $validator->validate($user);
+            $errors = $userValidator->validateRequestDatas($request->getContent(), 'edit');
 
             if (count($errors) > 0) {
-                $data = [];
-                foreach ($errors as $error) {
-                    /** @var ConstraintViolation $error */
-                    $data[] = $error->getMessage();
-                }
+                $data = $errors;
                 $statusCode = 403;
             } else {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->flush();
+                $requestContent = json_decode($request->getContent());
 
-                $statusCode = 200;
-                $data = $this->normalizeUser($user);
-                if (isset($emailChanged) && $emailChanged) {
+                $user->setEmail($requestContent->email);
+                $user->setPseudo($requestContent->pseudo);
+                $user->setAvatar($requestContent->avatar);
+
+                $errorsObject = $userValidator->validateObject($user);
+
+                if (count($errorsObject) > 0) {
+                    $data = $errorsObject;
+                    $statusCode = 403;
+                } else {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->flush();
+
+                    $statusCode = 200;
+                    $data = $this->normalizeUser($user);
                     $data['token'] = $JWTManager->create($user);
                 }
             }
@@ -156,7 +139,8 @@ class UserController extends AbstractController
      */
     public function editPassword(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder): JsonResponse
+        UserPasswordEncoderInterface $passwordEncoder,
+        ValidatorInterface $validator): JsonResponse
     {
         $currentUser = $this->getUser();
 
@@ -164,41 +148,22 @@ class UserController extends AbstractController
             $data = ['Utilisateur non trouvé'];
             $statusCode = 404;
         } else {
-            $requestContent = json_decode($request->getContent());
+            $userValidator = new UserValidator($validator);
 
-            $errors = [];
-    
-            if (!isset($requestContent->currentPassword) || $requestContent->currentPassword === '') {
-                $errors[] = 'Le mot de passe actuel doit-être renseigné';
-            }
-    
-            if (count($errors) === 0) {
-                if (!$passwordEncoder->isPasswordValid($currentUser, $requestContent->currentPassword)) {
-                    $errors[] = 'Le mot de passe actuel est incorrect';
-                }
-            }
-            if (count($errors) === 0) {
-                if (!isset($requestContent->newPassword) || !isset($requestContent->confirmNewPassword) || $requestContent->newPassword !== $requestContent->confirmNewPassword) {
-                    $errors[] = 'Le nouveau mot de passe doit être renseigné et confirmé';
-                }
-            }
-            if (count($errors) === 0) {
-                if (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $requestContent->newPassword)) {
-                    $errors[] = 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial';
-                }
-            }
-            if (count($errors) === 0) {
-                // On enregistre le mot de passe hashé uniquement quand il n'y a aucune erreur
-                $currentUser->setPassword($passwordEncoder->encodePassword($currentUser, $requestContent->newPassword));
+            $errors = $userValidator->validateRequestDatas($request->getContent(), 'editPassword');
+            if (count($errors) > 0) {
+                $data = $errors;
+                $statusCode = 403;
+            } else {
+                $requestContent = json_decode($request->getContent());
+
+                $currentUser->setPassword($passwordEncoder->encodePassword($currentUser, $requestContent->password));
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->flush();
     
                 $data = $this->normalizeUser($currentUser);
                 $statusCode = 200;
-            } else {
-                $data = $errors;
-                $statusCode = 403;
             }    
         }
 
@@ -242,6 +207,11 @@ class UserController extends AbstractController
     {
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers);
+
+        if ($user->getAvatar() === null) {
+            $urlAvatar = $this->getParameter('avatar_default_url');
+            $user->setAvatar($urlAvatar);    
+        }
 
         return $serializer->normalize($user, null, [
             AbstractNormalizer::ATTRIBUTES => [

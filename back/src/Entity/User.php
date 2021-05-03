@@ -13,8 +13,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity("email", message="Cet email est déjà utilisé")
- * @UniqueEntity("pseudo", message="Ce pseudo est déjà utilisé")
+ * @UniqueEntity("email", message="email.unique")
+ * @UniqueEntity("pseudo", message="pseudo.unique")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -27,8 +28,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="L'adresse email est obligatoire")
-     * @Assert\Email(message="L'adresse email n'est pas d'un format valide")
+     * @Assert\NotBlank(message="email.not_blank")
+     * @Assert\Email()
      */
     private $email;
 
@@ -40,13 +41,12 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial")
+     * @Assert\NotBlank(message="password.not_blank")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank(message="Le pseudonyme est obligatoire")
      */
     private $pseudo;
 
@@ -270,5 +270,22 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setInitialRole(): void
+    {
+        $this->setRoles(['ROLE_USER']);
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setDefaultPseudo(): void
+    {
+        // On défini un pseudo aléatoire à la création
+        $this->setPseudo('User-'.rand(9999, 99999));
     }
 }

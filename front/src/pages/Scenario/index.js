@@ -8,6 +8,7 @@ import Card from '../../components/Card';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
+import AddPlace from '../../containers/components/AddPlace';
 
 import PropTypes from 'prop-types';
 
@@ -48,7 +49,8 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
     showForm();
   };
 
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);  
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
+  const [openAddPlaceModal, setOpenAddPlaceModal] = useState(false);
 
   const handleDeleteScenario = (id) => {
     deleteScenario(id);
@@ -109,6 +111,15 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
             : 
             <p>Aucun monstre</p>
           }
+          <FontAwesomeIcon 
+            className={styles['add_group']}
+            onClick={() => console.log('ajouter groupe monstre')} 
+            icon={faPlusCircle} 
+            size="2x" 
+            style={{cursor: 'pointer'}}
+            title="Ajouter un groupe de monstres"
+          />
+
         </div>
       </div>
 
@@ -228,7 +239,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
         className={styles['carousel']}
         naturalSlideWidth={250}
         naturalSlideHeight={350}
-        totalSlides={scenario.places.length}
+        totalSlides={scenario.places.length + 1 }
         visibleSlides={visibleSlides}
       >
         <Slider className={styles['slider']}>
@@ -241,13 +252,23 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
                   subtitle={`Nombre de monstres : ${place.monsters.length}`}
                   id={place.id}
                   key={place.id}
-                  // onClick={() => {
-                  //   history.push(`/personnage/${character.id}`);
-                  // }}
                 />
               </Slide>
             ))
           }
+
+          <Slide>
+            <div className={styles['place']} key={'add_place'}>
+              <FontAwesomeIcon 
+                className={styles['add_place']}
+                onClick={() => setOpenAddPlaceModal(true)} 
+                icon={faPlusCircle} 
+                size="2x" 
+                style={{cursor: 'pointer'}}
+                title="Ajouter un lieu"
+              />
+            </div>
+          </Slide>
         </Slider>
         <ButtonBack>Back</ButtonBack>
         <ButtonNext>Next</ButtonNext>
@@ -289,6 +310,20 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
           />}
       />
 
+      <Modal 
+        isOpen={openAddPlaceModal}
+        closeModal={() => {
+          setOpenAddPlaceModal(false)
+        }}
+        title='Ajouter un lieu'
+        children={
+          <AddPlace 
+            scenarioId={scenario.id}
+            closeModal={() => {
+              setOpenAddPlaceModal(false)
+            }}
+          />}
+      />
 
     </div>
   );

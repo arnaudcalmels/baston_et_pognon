@@ -28,6 +28,7 @@ const NewScenario = ({ newScenario }) => {
     data.append('description', values.description);
     data.append('maxPlayers', values.maxPlayers);
     data.append('characterLevel', values.characterLevel);
+    console.log(data);
     newScenario(data);
   };
 
@@ -72,11 +73,6 @@ const NewScenario = ({ newScenario }) => {
             name="picture" 
             type="file" 
             onChange={(event) => {
-              // let file = { 
-              //     fileName: event.currentTarget.files[0].name, 
-              //     type: event.currentTarget.files[0].type,
-              //     size: `${event.currentTarget.files[0].size} bytes`
-              //   };
               props.setFieldValue("picture", event.currentTarget.files[0]);
               console.log(event.currentTarget);
             }}

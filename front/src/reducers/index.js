@@ -4,6 +4,7 @@ import auth from './auth';
 import user from './user';
 import character from './character';
 import scenario from './scenario';
+import place from './place';
 
 import { 
   LOGOUT, 
@@ -14,6 +15,7 @@ const appReducer = combineReducers({
   user,
   character,
   scenario,
+  place,
 });
 
 const rootReducer = (state, action) => {

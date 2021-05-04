@@ -7,10 +7,11 @@ import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
 import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, getScenarios,  } from '../actions/scenario';
+import { getCategoriesSuccess } from '../actions/place';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, 
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, 
  } from '../actions/types';
 
  
@@ -353,6 +354,56 @@ import {
       break;
     }
 
+    // ----- PLACE -----
+
+    case GET_CATEGORIES: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/categoriesPlaces',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getCategoriesSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
+    case NEW_PLACE: {
+      const { auth: { token } } = store.getState();
+      console.log(action.values);
+      const config = {
+        method: 'post',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/place/new',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(editScenarioSuccess(response.data));
+        setSuccessToast('Lieu créé !');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response.data);
+      });
+
+      break;
+    }
+
+    
     default:
       next(action);
   }

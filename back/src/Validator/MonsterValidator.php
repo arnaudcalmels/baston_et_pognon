@@ -80,7 +80,7 @@ class MonsterValidator
                     new Assert\Positive(),
                 ],
                 'picture' => [
-                    new Assert\Type('string'),
+                    new Assert\Type('array'),
                 ],
                 'caracteristics' => new Assert\Required([
                     new Assert\Collection([

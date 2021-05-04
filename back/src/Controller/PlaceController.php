@@ -81,7 +81,10 @@ class PlaceController extends AbstractController
                 $place->setHiddenBoosterCount($requestContent->hiddenBoosterCount);
             }
             if (isset($requestContent->picture)) {
-                $place->setPicture($requestContent->picture);
+                $normalizers = [new ObjectNormalizer()];
+                $serializer = new Serializer($normalizers);
+
+                $place->setPicture($serializer->normalize($requestContent->picture));
             }
             if (isset($requestContent->categoryId)) {
                 $categoryPlaces = $categoryPlacesRepo->find($requestContent->categoryId);

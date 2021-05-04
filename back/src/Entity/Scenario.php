@@ -44,7 +44,7 @@ class Scenario
     private $characterLevel = 1;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      */
     private $picture;
 
@@ -122,12 +122,12 @@ class Scenario
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getPicture(): ?array
     {
         return $this->picture;
     }
 
-    public function setPicture(?string $picture): self
+    public function setPicture(?array $picture): self
     {
         $this->picture = $picture;
 

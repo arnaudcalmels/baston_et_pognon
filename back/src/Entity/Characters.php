@@ -22,7 +22,7 @@ class Characters
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank(message="Un nom de personnage doit être indiqué")
+     * @Assert\NotBlank(message="name.not_blank")
      */
     private $name;
 
@@ -31,7 +31,7 @@ class Characters
      * @Assert\NotBlank(message="Le sexe doit être indiqué")
      * @Assert\Choice(
      *      choices={"M", "F"},
-     *      message="Le sexe doit être indiqué par M ou F"
+     *      message="sex.choice"
      * )
      */
     private $sex;

@@ -24,7 +24,9 @@ class CharactersValidator extends ObjectValidator
             'professionId' => new ContainsIdOfEntityClass(Profession::class),
             'raceId' => new ContainsIdOfEntityClass(Race::class),
             'sex' => [
-                new Assert\NotNull(),
+                new Assert\NotBlank([
+                    'message' => 'sex.not_blank',
+                ]),
                 new Assert\Choice([
                 'choices' => ['M', 'F'],
                 'message' => 'sex.choice'

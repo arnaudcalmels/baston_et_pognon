@@ -28,7 +28,7 @@ class Characters
 
     /**
      * @ORM\Column(type="string", length=1)
-     * @Assert\NotBlank(message="Le sexe doit être indiqué")
+     * @Assert\NotBlank(message="sex.not_blank")
      * @Assert\Choice(
      *      choices={"M", "F"},
      *      message="sex.choice"

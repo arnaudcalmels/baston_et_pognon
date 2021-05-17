@@ -8,5 +8,6 @@ return [
     'password.identical_to' => 'Les mots de passe doivent être identiques',
     'email.unique' => 'Cet email est déjà utilisé',
     'pseudo.unique' => 'Ce pseudo est déjà utilisé',
+    'sex.not_blank' => 'Le sexe est obligatoire',
     'sex.choice' => 'Le sexe doit être indiqué par M ou F',
 ];

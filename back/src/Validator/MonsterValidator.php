@@ -125,23 +125,4 @@ class MonsterValidator extends ObjectValidator
 
         return $formatedErrorsList;
     }
-
-    /**
-     * Validate the monster object
-     *
-     * @param Monster $monster
-     * @return array
-     */
-    public function validateObject(Monster $monster): array
-    {
-        $errors = $this->validator->validate($monster);
-
-        $formatedErrorsList = [];
-
-        if (count($errors) > 0) {
-            $this->formatErrors($$formatedErrorsList, $errors);
-        }
-
-        return $formatedErrorsList;
-    }
 }

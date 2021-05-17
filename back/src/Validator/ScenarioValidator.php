@@ -2,16 +2,13 @@
 
 namespace App\Validator;
 
-use App\Entity\Race;
-use App\Entity\Characters;
-use App\Entity\Profession;
 use App\Validator\ObjectValidator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CharactersValidator extends ObjectValidator
+class ScenarioValidator extends ObjectValidator
 {
     /**
-     * Validate datas required for character object
+     * Validate datas required for scenario object
      *
      * @param string $requestContent
      * @return array
@@ -21,19 +18,15 @@ class CharactersValidator extends ObjectValidator
         $datas = $this->serializer->decode($requestContent, 'json');
 
         $constraints = new Assert\Collection([
-            'professionId' => new ContainsIdOfEntityClass(Profession::class),
-            'raceId' => new ContainsIdOfEntityClass(Race::class),
-            'sex' => [
-                new Assert\NotBlank([
-                    'message' => 'sex.not_blank',
-                ]),
-                new Assert\Choice([
-                'choices' => ['M', 'F'],
-                'message' => 'sex.choice'
-                ]),
-            ],
             'name' => new Assert\NotBlank([
                 'message' => 'name.not_blank',
+            ]),
+            'description' => new Assert\Type('string'),
+            'maxPlayers' => new Assert\Positive([
+                'message' => 'maxPlayers.positive',
+            ]),
+            'characterLevel' => new Assert\Positive([
+                'message' => 'characterLevel.positive',
             ]),
             'picture' => new Assert\Type('array'),
         ]);

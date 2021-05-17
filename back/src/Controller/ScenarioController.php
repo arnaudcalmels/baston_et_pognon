@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Scenario;
 use App\Repository\ScenarioRepository;
+use App\Validator\ScenarioValidator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -73,47 +74,36 @@ class ScenarioController extends AbstractController
      */
     public function new(Request $request, ValidatorInterface $validator): JsonResponse
     {
-        $currentUser = $this->getUser();
+        $scenarioValidator = new ScenarioValidator($validator);
 
-        $scenario = new Scenario();
-        $scenario->setOwner($currentUser);
+        $errorsDatas = $scenarioValidator->validateRequestDatas($request->getContent());
 
-        $requestContent = json_decode($request->getContent());
-
-        if (isset($requestContent->name)) {
-            $scenario->setName($requestContent->name);
-        }
-        if (isset($requestContent->description)) {
-            $scenario->setDescription($requestContent->description);
-        }
-        if (isset($requestContent->maxPlayers)) {
-            $scenario->setMaxPlayers($requestContent->maxPlayers);
-        }
-        if (isset($requestContent->characterLvl)) {
-            $scenario->setCharacterLevel($requestContent->characterLvl);
-        }
-        if (isset($requestContent->picture)) {
-            $scenario->setPicture($requestContent->picture);
-        }
-
-        $errors = $validator->validate($scenario);
-
-        if (count($errors) > 0 ) {
-                foreach ($errors as $error) {
-                    /** @var ConstraintViolation $error */
-                    $data[] = $error->getMessage();
-                }
+        if (count($errorsDatas) > 0) {
+            $data = $errorsDatas;
             $statusCode = 403;
         } else {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($scenario);
-            $em->flush();
+            $scenario = new Scenario();
     
-            $data = $this->normalizeScenario($scenario);
-            $statusCode = 201;  
+            $requestContent = json_decode($request->getContent());
+
+            $this->setScenarioProperties($scenario, $requestContent);
+
+            $errorsObject = $scenarioValidator->validateObject($scenario);
+
+            if (count($errorsObject) > 0) {
+                $data = $errorsDatas;
+                $statusCode = 403;
+            } else {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($scenario);
+                $em->flush();
+
+                $data = $this->normalizeScenario($scenario);
+                $statusCode = 201;
+            }
         }
 
-        return new JsonResponse($data, $statusCode);
+        return new JsonResponse($data, $statusCode);       
     }
 
     /**
@@ -124,46 +114,43 @@ class ScenarioController extends AbstractController
      * @param ValidatorInterface $validator
      * @return JsonResponse
      */
-    public function edit(Request $request, Scenario $scenario, ValidatorInterface $validator): JsonResponse
+    public function edit(Request $request, Scenario $scenario = null, ValidatorInterface $validator): JsonResponse
     {
         $currentUser = $this->getUser();
+        if (!$scenario) {
+            $error = ['Ce scénario n\'existe pas'];
+            $statusCode = 404;
+        } elseif ($currentUser !== $scenario->getOwner()) {
+            $error = ['Vous n\'êtes pas autorisé à modifier ce scénario'];
+            $statusCode = 403;
+        }
+        if (isset($error)) {
+            return new JsonResponse($error, $statusCode);
+        }
 
-        if ($currentUser !== $scenario->getOwner()) {
-            $data = ['Vous n\'êtes pas autorisé à modifier ce scénario'];
+        $scenarioValidator = new ScenarioValidator($validator);
+
+        $errorsDatas = $scenarioValidator->validateRequestDatas($request->getContent());
+
+        if (count($errorsDatas) > 0) {
+            $data = $errorsDatas;
             $statusCode = 403;
         } else {
             $requestContent = json_decode($request->getContent());
 
-            if (isset($requestContent->name)) {
-                $scenario->setName($requestContent->name);
-            }
-            if (isset($requestContent->description)) {
-                $scenario->setDescription($requestContent->description);
-            }
-            if (isset($requestContent->maxPlayers)) {
-                $scenario->setMaxPlayers($requestContent->maxPlayers);
-            }
-            if (isset($requestContent->characterLvl)) {
-                $scenario->setCharacterLevel($requestContent->characterLvl);
-            }
-            if (isset($requestContent->picture)) {
-                $scenario->setPicture($requestContent->picture);
-            }
-    
-            $errors = $validator->validate($scenario);
-    
-            if (count($errors) > 0 ) {
-                    foreach ($errors as $error) {
-                        /** @var ConstraintViolation $error */
-                        $data[] = $error->getMessage();
-                    }
+            $this->setScenarioProperties($scenario, $requestContent);
+
+            $errorsObject = $scenarioValidator->validateObject($scenario);
+
+            if (count($errorsObject) > 0) {
+                $data = $errorsDatas;
                 $statusCode = 403;
             } else {
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
-        
+
                 $data = $this->normalizeScenario($scenario);
-                $statusCode = 200;  
+                $statusCode = 200;
             }
         }
 
@@ -177,13 +164,16 @@ class ScenarioController extends AbstractController
      * @param Scenario $scenario
      * @return JsonResponse
      */
-    public function delete(Request $request, Scenario $scenario): JsonResponse
+    public function delete(Request $request, Scenario $scenario = null): JsonResponse
     {
         $currentUser = $this->getUser();
-        $owner = $scenario->getOwner();
+        $owner = $scenario ? $scenario->getOwner() : null;
 
-        if ($owner !== $currentUser) {
-            $message = 'Vous n\'êtes pas autorisé à supprimer ce scénario';
+        if (!$scenario) {
+            $message = ['Ce scénario n\'existe pas'];
+            $statusCode = 404;
+        } elseif ($owner !== $currentUser) {
+            $message = ['Vous n\'êtes pas autorisé à supprimer ce scénario'];
             $statusCode = 403;
         } else {
             $entityManager = $this->getDoctrine()->getManager();
@@ -195,6 +185,30 @@ class ScenarioController extends AbstractController
         }
 
         return new JsonResponse($message, $statusCode);
+    }
+
+    /**
+     * Set properties of Scenario
+     *
+     * @param Scenario $scenario
+     * @param \stdClass $datasObject
+     * @return void
+     */
+    private function setScenarioProperties(Scenario &$scenario, \stdClass $datasObject)
+    {
+        $scenario->setName($datasObject->name);
+        $scenario->setDescription($datasObject->description);
+        $scenario->setMaxPlayers($datasObject->maxPlayers);
+        $scenario->setCharacterLevel($datasObject->characterLevel);
+
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers);
+        $picture = $serializer->normalize($datasObject->picture);
+        $scenario->setPicture($picture);
+
+        if (!$scenario->getOwner()) {
+            $scenario->setOwner($this->getUser());
+        }
     }
 
     /**

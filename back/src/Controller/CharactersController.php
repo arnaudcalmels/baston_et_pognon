@@ -178,7 +178,13 @@ class CharactersController extends AbstractController
         return new JsonResponse($message, $statusCode);
     }
 
-    public function setCharacterProperties(Characters &$character, \stdClass $datasObject): Characters
+    /**
+     * Set the properties of a Character
+     *
+     * @param Characters $character
+     * @param \stdClass $datasObject
+     */
+    private function setCharacterProperties(Characters &$character, \stdClass $datasObject)
     {
         $em = $this->getDoctrine()->getManager();
         $race = $em->getRepository(Race::class)->find($datasObject->raceId);
@@ -200,8 +206,6 @@ class CharactersController extends AbstractController
             $em->persist($inventory);
             $character->setInventory($inventory);
         }
-
-        return $character;
     }
 
     /**

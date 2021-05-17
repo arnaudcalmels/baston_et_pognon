@@ -234,7 +234,11 @@ class PlaceController extends AbstractController
                 'monsters' => [
                     'id',
                     'name',
-                ]
+                ],
+                'category' => [
+                    'id',
+                    'name',
+                ],
             ]
         ]);
     }

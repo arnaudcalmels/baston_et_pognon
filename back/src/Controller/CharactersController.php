@@ -155,12 +155,15 @@ class CharactersController extends AbstractController
      * @param Characters $character
      * @return JsonResponse
      */
-    public function delete(Request $request, Characters $character): JsonResponse
+    public function delete(Request $request, Characters $character = null): JsonResponse
     {
         $currentUser = $this->getUser();
         $owner = $character->getOwner();
 
-        if ($owner !== $currentUser) {
+        if (!$character) {
+            $message = ['Ce personnage n\'existe pas'];
+            $statusCode = 404;
+        } elseif ($owner !== $currentUser) {
             $message = 'Vous n\'êtes pas autorisé à supprimer ce personnage';
             $statusCode = 403;
         } else {

@@ -20,7 +20,7 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
-    public function countGamesByCharacter($character)
+    public function countGamesPerCharacter($character)
     {
         return $this->createQueryBuilder('g')
             ->select('COUNT(g.id)')

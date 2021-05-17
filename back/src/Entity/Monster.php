@@ -47,8 +47,8 @@ class Monster
     private $level = 1;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Type("string")
+     * @ORM\Column(type="json", nullable=true)
+     * @Assert\Type("array")
      */
     private $picture;
 
@@ -128,12 +128,12 @@ class Monster
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getPicture(): ?array
     {
         return $this->picture;
     }
 
-    public function setPicture(?string $picture): self
+    public function setPicture(?array $picture): self
     {
         $this->picture = $picture;
 

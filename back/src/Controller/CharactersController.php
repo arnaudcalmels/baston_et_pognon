@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Inventory;
 use App\Entity\Characters;
+use App\Entity\Profession;
+use App\Entity\Race;
 use App\Repository\GameRepository;
 use App\Repository\RaceRepository;
 use App\Repository\CharactersRepository;
@@ -43,55 +45,37 @@ class CharactersController extends AbstractController
      * Create a new character for the current User
      *
      * @param Request $request
-     * @param ProfessionRepository $professionRepo
-     * @param RaceRepository $raceRepo
      * @param ValidatorInterface $validator
      * @return JsonResponse
      */
-    public function new(Request $request, ProfessionRepository $professionRepo, RaceRepository $raceRepo, ValidatorInterface $validator): JsonResponse
+    public function new(Request $request, ValidatorInterface $validator): JsonResponse
     {
-        $currentUser = $this->getUser();
-
-        $requestContent = json_decode($request->getContent());
-
-        $character = new Characters();
-        $character->setOwner($currentUser);
-
-        if (isset($requestContent->professionId)) {
-            $profession = $professionRepo->find($requestContent->professionId);
-            if (!$profession) {
-                $requestContent->professionId = null;
-            }
-            $character->setProfession($profession);
-        }
-        if (isset($requestContent->raceId)) {
-            $race = $raceRepo->find($requestContent->raceId);
-            if (!$race) {
-                $requestContent->raceId = null;
-            }
-            $character->setRace($race);
-        }
-        if (isset($requestContent->name)) {
-            $character->setName($requestContent->name);
-        }
-        if (isset($requestContent->sex)) {
-            $character->setSex($requestContent->sex);
-        }
-        $character->setInventory(new Inventory);
-
         $characterValidator = new CharactersValidator($validator);
-        $errors = $characterValidator->validate($requestContent, $character);
 
-        if (count($errors) > 0 ) {
-            $data = $errors;
+        $errorsDatas = $characterValidator->validateRequestDatas($request->getContent());
+
+        if (count($errorsDatas) > 0) {
+            $data = $errorsDatas;
             $statusCode = 403;
         } else {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($character);
-            $em->flush();
-    
-            $data = $this->normalizeCharacters($character);
-            $statusCode = 201;  
+            $requestContent = json_decode($request->getContent());
+
+            $character = new Characters();
+            $this->setCharacterProperties($character, $requestContent);
+
+            $errorsObject = $characterValidator->validateObject($character);
+
+            if (count($errorsObject) > 0 ) {
+                $data = $errorsObject;
+                $statusCode = 403;
+            } else {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($character);
+                $em->flush();
+        
+                $data = $this->normalizeCharacters($character);
+                $statusCode = 201;  
+            }
         }
 
         return new JsonResponse($data, $statusCode);
@@ -110,52 +94,47 @@ class CharactersController extends AbstractController
      */
     public function edit(
         Request $request,
-        Characters $character,
-        ProfessionRepository $professionRepo,
-        RaceRepository $raceRepo,
+        Characters $character = null,
         GameRepository $gameRepo,
         ValidatorInterface $validator
         ): JsonResponse
     {
         $owner = $character->getOwner();
         $currentUser = $this->getUser();
-        $gameCount = $gameRepo->countGamesByCharacter($character);
+        $gameCount = $gameRepo->countGamesPerCharacter($character);
 
-        if ($owner !== $currentUser) {
-            $data = ['Vous n\'êtes pas autorisé à modifier ce personnage'];
+        if (!$character) {
+            $error = ['Ce personnage n\'existe pas'];
+            $statusCode = 404;
+        } elseif ($owner !== $currentUser) {
+            $error = ['Vous n\'êtes pas autorisé à modifier ce personnage'];
             $statusCode = 403;
         } elseif ($gameCount > 0) {
-            $data = ['Un personnage ayant déjà participé à une partie en ligne ne peut pas être modifié'];
+            $error = ['Un personnage ayant déjà participé à une partie en ligne ne peut pas être modifié'];
+            $statusCode = 403;
+        }
+        if (isset($error)) {
+
+            return new JsonResponse($error, $statusCode);
+        }
+
+        $characterValidator = new CharactersValidator($validator);
+
+        $errorsDatas = $characterValidator->validateRequestDatas($request->getContent());
+
+        if (count($errorsDatas) > 0) {
+            $data = $errorsDatas;
             $statusCode = 403;
         } else {
+
             $requestContent = json_decode($request->getContent());
 
-            if (isset($requestContent->professionId)) {
-                $profession = $professionRepo->find($requestContent->professionId);
-                if (!$profession) {
-                    $requestContent->professionId = null;
-                }
-                $character->setProfession($profession);
-            }
-            if (isset($requestContent->raceId)) {
-                $race = $raceRepo->find($requestContent->raceId);
-                if (!$race) {
-                    $requestContent->raceId = null;
-                }
-                $character->setRace($race);
-            }
-            if (isset($requestContent->name)) {
-                $character->setName($requestContent->name);
-            }
-            if (isset($requestContent->sex)) {
-                $character->setSex($requestContent->sex);
-            }
+            $this->setCharacterProperties($character, $requestContent);
 
-            $characterValidator = new CharactersValidator($validator);
-            $errors = $characterValidator->validate($requestContent, $character);
+            $errorsObject = $characterValidator->validateObject($character);
 
-            if (count($errors) > 0 ) {
-                $data = $errors;
+            if (count($errorsObject) > 0 ) {
+                $data = $errorsObject;
                 $statusCode = 403;
             } else {
                 $em = $this->getDoctrine()->getManager();
@@ -176,12 +155,15 @@ class CharactersController extends AbstractController
      * @param Characters $character
      * @return JsonResponse
      */
-    public function delete(Request $request, Characters $character): JsonResponse
+    public function delete(Request $request, Characters $character = null): JsonResponse
     {
         $currentUser = $this->getUser();
         $owner = $character->getOwner();
 
-        if ($owner !== $currentUser) {
+        if (!$character) {
+            $message = ['Ce personnage n\'existe pas'];
+            $statusCode = 404;
+        } elseif ($owner !== $currentUser) {
             $message = 'Vous n\'êtes pas autorisé à supprimer ce personnage';
             $statusCode = 403;
         } else {
@@ -194,6 +176,32 @@ class CharactersController extends AbstractController
         }
 
         return new JsonResponse($message, $statusCode);
+    }
+
+    public function setCharacterProperties(Characters &$character, \stdClass $datasObject): Characters
+    {
+        $em = $this->getDoctrine()->getManager();
+        $race = $em->getRepository(Race::class)->find($datasObject->raceId);
+        $profession = $em->getRepository(Profession::class)->find($datasObject->professionId);
+
+        $character->setSex($datasObject->sex)
+            ->setName($datasObject->name)
+            ->setRace($race)
+            ->setProfession($profession)
+        ;
+
+        if (!$character->getOwner()) {
+            $character->setOwner($this->getUser());
+        }
+
+
+        if (!$character->getInventory()) {
+            $inventory = new Inventory();
+            $em->persist($inventory);
+            $character->setInventory($inventory);
+        }
+
+        return $character;
     }
 
     /**

@@ -2,38 +2,67 @@
 
 namespace App\Validator;
 
+use App\Entity\Race;
 use App\Entity\Characters;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Entity\Profession;
+use App\Validator\ObjectValidator;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class CharactersValidator
+class CharactersValidator extends ObjectValidator
 {
-    private $validator;
-
-    public function __construct(ValidatorInterface $validator)
+    /**
+     * Validate datas required for character object
+     *
+     * @param string $requestContent
+     * @return array
+     */
+    public function validateRequestDatas(string $requestContent): array
     {
-        $this->validator = $validator;
+        $datas = $this->serializer->decode($requestContent, 'json');
+
+        $constraints = new Assert\Collection([
+            'professionId' => new ContainsIdOfEntityClass(Profession::class),
+            'raceId' => new ContainsIdOfEntityClass(Race::class),
+            'sex' => [
+                new Assert\NotBlank([
+                    'message' => 'sex.not_blank',
+                ]),
+                new Assert\Choice([
+                'choices' => ['M', 'F'],
+                'message' => 'sex.choice'
+                ]),
+            ],
+            'name' => new Assert\NotBlank([
+                'message' => 'name.not_blank',
+            ]),
+            'picture' => new Assert\Type('array'),
+        ]);
+        
+        $validationErrors = $this->validator->validate($datas, $constraints);
+
+        $formatedErrorsList = [];
+
+        $this->formatErrors($formatedErrorsList, $validationErrors);
+
+        return $formatedErrorsList;
     }
 
-    public function validate(\StdClass $requestContent, Characters $character)
+    /**
+     * Validate the characters object
+     *
+     * @param Characters $character
+     * @return array
+     */
+    public function validateObject(Characters $character): array
     {
-        $errors = [];
-        if (!isset($requestContent->professionId)) {
-            $errors[] = 'La profession doit-être définie';
+        $errors = $this->validator->validate($character);
+
+        $formatedErrorsList = [];
+
+        if (count($errors) > 0) {
+            $this->formatErrors($$formatedErrorsList, $errors);
         }
 
-        if (!isset($requestContent->raceId)) {
-            $errors[] = 'La race doit-être définie';
-        }
-
-        $errorsValidator = $this->validator->validate($character);
-
-        if (count($errorsValidator) > 0) {
-            foreach ($errorsValidator as $error) {
-                /** @var ConstraintViolation $error */
-                $errors[] = $error->getMessage();
-            }
-        }
-
-        return $errors;
+        return $formatedErrorsList;
     }
 }

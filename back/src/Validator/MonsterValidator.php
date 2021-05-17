@@ -2,29 +2,16 @@
 
 namespace App\Validator;
 
-use App\Entity\Monster;
 use App\Entity\Place;
+use App\Entity\Monster;
 use App\Entity\Scenario;
+use App\Validator\ObjectValidator;
 use App\Entity\WanderingMonsterGroup;
 use App\Validator\ContainsIdOfEntityClass;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class MonsterValidator
+class MonsterValidator extends ObjectValidator
 {
-    private $serializer;
-    private $validator;
-
-    public function __construct(ValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-        $this->serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-    }
-
     /**
      * Validate datas required for monster object
      *
@@ -80,7 +67,7 @@ class MonsterValidator
                     new Assert\Positive(),
                 ],
                 'picture' => [
-                    new Assert\Type('string'),
+                    new Assert\Type('array'),
                 ],
                 'caracteristics' => new Assert\Required([
                     new Assert\Collection([
@@ -156,19 +143,5 @@ class MonsterValidator
         }
 
         return $formatedErrorsList;
-    }
-
-    /**
-     * Format list of errors
-     *
-     * @param array $formatedErrorsList
-     * @param ConstraintViolationList $errorsList
-     * @return void
-     */
-    private function formatErrors(array &$formatedErrorsList, ConstraintViolationList $errorsList)
-    {
-        foreach ($errorsList as $error) {
-            $formatedErrorsList[$error->getPropertyPath()] = $error->getMessage();
-        }
     }
 }

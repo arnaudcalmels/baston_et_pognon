@@ -209,8 +209,14 @@ class UserController extends AbstractController
         $serializer = new Serializer($normalizers);
 
         if ($user->getAvatar() === null) {
-            $urlAvatar = $this->getParameter('avatar_default_url');
-            $user->setAvatar($urlAvatar);    
+            $path = $this->getParameter('avatar_default_url');
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);  
+            $user->setAvatar([
+                'name' => 'defaultAvatar',
+                'base64' => $base64,
+            ]);
         }
 
         return $serializer->normalize($user, null, [

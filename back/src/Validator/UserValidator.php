@@ -4,12 +4,7 @@ namespace App\Validator;
 
 use App\Entity\User;
 use App\Validator\ObjectValidator;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 class UserValidator extends ObjectValidator

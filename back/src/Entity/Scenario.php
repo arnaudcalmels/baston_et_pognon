@@ -22,7 +22,7 @@ class Scenario
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Le nom est obligatoire")
+     * @Assert\NotBlank(message="name.not_blank")
      */
     private $name;
 
@@ -33,13 +33,13 @@ class Scenario
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\Positive(message="Le nombre de joueur doit être un entier positif")
+     * @Assert\Positive(message="maxPlayers.positive")
      */
     private $maxPlayers;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\Positive(message="Le niveau des personnages doit être un entier positif")
+     * @Assert\Positive(message="characterLevel.positive")
      */
     private $characterLevel = 1;
 

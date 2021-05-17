@@ -10,4 +10,6 @@ return [
     'pseudo.unique' => 'Ce pseudo est déjà utilisé',
     'sex.not_blank' => 'Le sexe est obligatoire',
     'sex.choice' => 'Le sexe doit être indiqué par M ou F',
+    'maxPlayers.positive' => 'Le nombre de joueur maximum doit être un entier positif',
+    'characterLevel.positive' => 'Le niveau de personnage doit être un entier positif',
 ];

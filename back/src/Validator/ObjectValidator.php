@@ -32,7 +32,7 @@ class ObjectValidator
         $formatedErrorsList = [];
 
         if (count($errors) > 0) {
-            $this->formatErrors($$formatedErrorsList, $errors);
+            $this->formatErrors($formatedErrorsList, $errors);
         }
 
         return $formatedErrorsList;

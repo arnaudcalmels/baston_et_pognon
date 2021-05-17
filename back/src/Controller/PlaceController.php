@@ -2,18 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\CategoryPlaces;
 use App\Entity\Place;
-use App\Repository\CategoryPlacesRepository;
-use App\Repository\PlaceRepository;
+use App\Entity\Scenario;
+use App\Validator\PlaceValidator;
 use App\Repository\ScenarioRepository;
+use App\Repository\CategoryPlacesRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PlaceController extends AbstractController
 {
@@ -45,77 +47,34 @@ class PlaceController extends AbstractController
      */
     public function new(Request $request, ScenarioRepository $scenarioRepo, CategoryPlacesRepository $categoryPlacesRepo, ValidatorInterface $validator)
     {
-        $currentUser = $this->getUser();
+        $placeValidator = new PlaceValidator($validator);
 
-        $requestContent = json_decode($request->getContent());
+        $errorsDatas = $placeValidator->validateRequestDatas($request->getContent(), true);
 
-        $scenarioNotFound = false;
-        if (isset($requestContent->scenarioId)) {
-            $scenario = $scenarioRepo->find($requestContent->scenarioId);
-            if (!$scenario) {
-                $scenarioNotFound = true;
-            }
-        } else {
-            $scenarioNotFound = true;
-        }
-
-        if ($scenarioNotFound) {
-            $data = ['Scénario non trouvé'];
-            $statusCode = 404;
-        } elseif ($scenario->getOwner() !== $currentUser) {
-            $data = ['Vous n\'êtes pas autorisé à modifier ce scénario'];
+        if (count($errorsDatas) > 0) {
+            $data = $errorsDatas;
             $statusCode = 403;
-        } else {
+        } else {           
             $place = new Place();
-            $place->setScenario($scenario);
 
-            $errors = [];
+            $requestContent = json_decode($request->getContent());
+            $this->setPlaceProperties($place, $requestContent);
 
-            if (isset($requestContent->name)) {
-                $place->setName($requestContent->name);
-            }
-            if (isset($requestContent->description)) {
-                $place->setDescription($requestContent->description);
-            }
-            if (isset($requestContent->hiddenBoosterCount)) {
-                $place->setHiddenBoosterCount($requestContent->hiddenBoosterCount);
-            }
-            if (isset($requestContent->picture)) {
-                $normalizers = [new ObjectNormalizer()];
-                $serializer = new Serializer($normalizers);
+            $errorsObject = $placeValidator->validateObject($place);
 
-                $place->setPicture($serializer->normalize($requestContent->picture));
-            }
-            if (isset($requestContent->categoryId)) {
-                $categoryPlaces = $categoryPlacesRepo->find($requestContent->categoryId);
-                if ($categoryPlaces) {
-                    $place->setCategory($categoryPlaces);
-                } else {
-                    $errors[] = "La catégorie ($requestContent->categoryId) n'existe pas";
-                }
-            } else {
-                $errors[] = 'La catégorie est obligatoire';
-            }
-
-            $errorsValidation = $validator->validate($place);
-            if (count($errorsValidation) > 0 ) {
-                    foreach ($errorsValidation as $error) {
-                        /** @var ConstraintViolation $error */
-                        $errors[] = $error->getMessage();
-                    }
-            }
-
-            if (count($errors) > 0) {
-                $data = $errors;
+            if (count($errorsObject) > 0) {
+                $data = $errorsObject;
                 $statusCode = 403;
             } else {
                 $em = $this->getDoctrine()->getManager();
+
                 $em->persist($place);
                 $em->flush();
-        
-                return $this->redirectToRoute('api_scenario', ['id' => $requestContent->scenarioId]);
+
+                $data = $this->normalizePlace($place);
+                $statusCode = 201;
             }
-        } 
+        }
 
         return new JsonResponse($data, $statusCode);
     }
@@ -138,48 +97,29 @@ class PlaceController extends AbstractController
             $data = ['Vous n\'êtes pas autorisé à modifier ce lieu'];
             $statusCode = 403;
         } else {
-            $requestContent = json_decode($request->getContent());
+            $placeValidator = new PlaceValidator($validator);
 
-            if (isset($requestContent->name)) {
-                $place->setName($requestContent->name);
-            }
-            if (isset($requestContent->description)) {
-                $place->setDescription($requestContent->description);
-            }
-            if (isset($requestContent->hiddenBoosterCount)) {
-                $place->setHiddenBoosterCount($requestContent->hiddenBoosterCount);
-            }
-            if (isset($requestContent->picture)) {
-                $place->setPicture($requestContent->picture);
-            }
-            if (isset($requestContent->categoryId)) {
-                $categoryPlaces = $categoryPlacesRepo->find($requestContent->categoryId);
-                if ($categoryPlaces) {
-                    $place->setCategory($categoryPlaces);
-                } else {
-                    $errors[] = 'La catégorie est obligatoire';
-                }
-            } else {
-                $errors[] = 'La catégorie est obligatoire';
-            }
+            $errorsDatas = $placeValidator->validateRequestDatas($request->getContent());
 
-            $errorsValidation = $validator->validate($place);
-            if (count($errorsValidation) > 0 ) {
-                    foreach ($errorsValidation as $error) {
-                        /** @var ConstraintViolation $error */
-                        $errors[] = $error->getMessage();
-                    }
-            }
-
-            if (count($errors) > 0) {
-                $data = $errors;
+            if (count($errorsDatas) > 0) {
+                $data = $errorsDatas;
                 $statusCode = 403;
-             } else {
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
-        
-                $data = $this->normalizePlace($place);
-                $statusCode = 200;  
+            } else {   
+                $requestContent = json_decode($request->getContent());
+                $this->setPlaceProperties($place, $requestContent);
+    
+                $errorsObject = $placeValidator->validateObject($place);
+    
+                if (count($errorsObject) > 0) {
+                    $data = $errorsObject;
+                    $statusCode = 403;
+                } else {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+    
+                    $data = $this->normalizePlace($place);
+                    $statusCode = 200;
+                }
             }
         }
 
@@ -211,6 +151,29 @@ class PlaceController extends AbstractController
         }
 
         return new JsonResponse($message, $statusCode);
+    }
+
+    private function setPlaceProperties(Place &$place, \stdClass $datasObject)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        if (!$place->getScenario()) {
+            $scenarioRepo = $em->getRepository(Scenario::class);
+            $scenario = $scenarioRepo->find($datasObject->scenarioId);
+            $place->setScenario($scenario);
+        }
+        $categoryPlacesRepo = $em->getRepository(CategoryPlaces::class);
+        $category = $categoryPlacesRepo->find($datasObject->categoryId);
+        $place->setCategory($category);
+
+        $place->setName($datasObject->name);
+        $place->setDescription($datasObject->description);
+        $place->setHiddenBoosterCount($datasObject->hiddenBoosterCount);
+
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers);
+
+        $place->setPicture($serializer->normalize(null));
     }
 
     /**

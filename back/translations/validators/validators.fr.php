@@ -12,4 +12,9 @@ return [
     'sex.choice' => 'Le sexe doit être indiqué par M ou F',
     'maxPlayers.positive' => 'Le nombre de joueur maximum doit être un entier positif',
     'characterLevel.positive' => 'Le niveau de personnage doit être un entier positif',
+    'hiddenBoostCount.positive_or_zero' => 'Le nombre de booster ne peut pas être négatif',
+    'hiddenBoostCount.not_blank' => 'Le nombre de booster ne doit pas être vide',
+    'scenario.not_blank' => 'Le scénario ne doit pas être vide',
+    'category.not_blank' => 'La categéorie ne doit pas être vide',
+
 ];

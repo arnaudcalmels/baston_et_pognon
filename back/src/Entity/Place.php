@@ -22,7 +22,7 @@ class Place
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="name.not_blank")
      */
     private $name;
 
@@ -33,8 +33,8 @@ class Place
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\PositiveOrZero()
-     * @Assert\NotNull()
+     * @Assert\PositiveOrZero(message="hiddenBoostCount.positive_or_zero")
+     * @Assert\NotBlank(message="hiddenBoostCount.not_blank")
      */
     private $hiddenBoosterCount;
 

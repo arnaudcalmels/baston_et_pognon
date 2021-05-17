@@ -33,5 +33,10 @@ services:
         arguments:
             $entityManager: "@doctrine.orm.entity_manager"
 
+    Entity_Owner_validator:
+        class: App\Validator\EntityHasCurrentUserAsOwnerValidator
+        arguments:
+            $entityManager: "@doctrine.orm.entity_manager"
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

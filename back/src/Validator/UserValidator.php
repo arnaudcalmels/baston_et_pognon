@@ -103,23 +103,4 @@ class UserValidator extends ObjectValidator
 
         return $formatedErrorsList;
     }
-
-    /**
-     * Validate the user object
-     *
-     * @param User $user
-     * @return array
-     */
-    public function validateObject(User $user): array
-    {
-        $errors = $this->validator->validate($user);
-
-        $formatedErrorsList = [];
-
-        if (count($errors) > 0) {
-            $this->formatErrors($formatedErrorsList, $errors);
-        }
-
-        return $formatedErrorsList;
-    }
 }

@@ -46,23 +46,4 @@ class CharactersValidator extends ObjectValidator
 
         return $formatedErrorsList;
     }
-
-    /**
-     * Validate the characters object
-     *
-     * @param Characters $character
-     * @return array
-     */
-    public function validateObject(Characters $character): array
-    {
-        $errors = $this->validator->validate($character);
-
-        $formatedErrorsList = [];
-
-        if (count($errors) > 0) {
-            $this->formatErrors($$formatedErrorsList, $errors);
-        }
-
-        return $formatedErrorsList;
-    }
 }

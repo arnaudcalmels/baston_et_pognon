@@ -20,6 +20,26 @@ class ObjectValidator
     }
 
     /**
+     * Validate the object
+     *
+     * @param object $object
+     * @return array
+     */
+    protected function validateObject(object $object): array
+    {
+        $errors = $this->validator->validate($object);
+
+        $formatedErrorsList = [];
+
+        if (count($errors) > 0) {
+            $this->formatErrors($$formatedErrorsList, $errors);
+        }
+
+        return $formatedErrorsList;
+    }
+
+
+    /**
      * Format list of errors
      *
      * @param array $formatedErrorsList

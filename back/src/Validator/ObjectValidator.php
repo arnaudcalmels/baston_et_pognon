@@ -25,7 +25,7 @@ class ObjectValidator
      * @param object $object
      * @return array
      */
-    protected function validateObject(object $object): array
+    public function validateObject(object $object): array
     {
         $errors = $this->validator->validate($object);
 

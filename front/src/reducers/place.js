@@ -1,7 +1,8 @@
-import { GET_CATEGORIES_SUCCESS } from "../actions/types";
+import { GET_CATEGORIES_SUCCESS, GET_PLACE_SUCCESS } from "../actions/types";
 
 const initialState = {
   categories: [],
+  currentPlace: {},
 };
 
 const reducer = (oldState = initialState, action) => {
@@ -12,6 +13,12 @@ const reducer = (oldState = initialState, action) => {
         categories: action.data
       }
 
+    case GET_PLACE_SUCCESS:
+      return {
+        ...oldState,
+        currentPlace: action.data
+      }
+  
     default:
       return oldState;
   }

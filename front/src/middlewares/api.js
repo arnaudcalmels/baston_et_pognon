@@ -7,11 +7,11 @@ import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
 import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, getScenarios,  } from '../actions/scenario';
-import { getCategoriesSuccess } from '../actions/place';
+import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, 
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE,
  } from '../actions/types';
 
  
@@ -36,7 +36,7 @@ import {
           setSuccessToast('Inscription réussie !');
         })
         .catch ((error) => {
-          setErrorToasts(error.response.data);
+          setErrorToasts(error.response?.data);
         });
 
       break;
@@ -60,7 +60,7 @@ import {
           store.dispatch(getProfile());
         })
         .catch ((error) => {
-          setErrorToasts(error.response.data);
+          setErrorToasts(error.response?.data);
         });
 
       break;
@@ -85,7 +85,7 @@ import {
         setSuccessToast('Connecté !');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -107,7 +107,7 @@ import {
         setSuccessToast('Suppression effectuée');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -132,7 +132,7 @@ import {
         setSuccessToast('Modification effectuée !');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -155,7 +155,7 @@ import {
         setSuccessToast('Modification effectuée !');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -179,7 +179,7 @@ import {
         store.dispatch(getCharactersSuccess(response.data));
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -204,7 +204,7 @@ import {
         action.redirect(`/personnage/${response.data.id}`);
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -227,7 +227,7 @@ import {
         store.dispatch(getCharacters());
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -251,7 +251,7 @@ import {
         setSuccessToast('Modification effectuée');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -275,7 +275,7 @@ import {
         store.dispatch(getScenariosSuccess(response.data));
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -301,7 +301,7 @@ import {
         action.redirect(`/scenario/${response.data.id}`);
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -325,7 +325,7 @@ import {
         setSuccessToast('Modification effectuée');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -348,7 +348,7 @@ import {
         store.dispatch(getScenarios());
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -372,7 +372,7 @@ import {
         store.dispatch(getCategoriesSuccess(response.data));
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -397,13 +397,34 @@ import {
         setSuccessToast('Lieu créé !');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
     }
 
-    
+    case GET_PLACE: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + `api/place/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getPlaceSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
     default:
       next(action);
   }

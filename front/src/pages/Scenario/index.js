@@ -9,6 +9,7 @@ import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
 import AddPlace from '../../containers/components/AddPlace';
+import EditPlace from '../../containers/components/EditPlace';
 
 import PropTypes from 'prop-types';
 
@@ -51,11 +52,13 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false); 
   const [openAddPlaceModal, setOpenAddPlaceModal] = useState(false);
+  const [openEditPlaceModal, setOpenEditPlaceModal] = useState(false);
+  const [placeId, setPlaceId] = useState();
 
   const handleDeleteScenario = (id) => {
     deleteScenario(id);
   }
-
+  
 
   return (
     <div className={styles['main']}>
@@ -256,6 +259,10 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
                   id={place.id}
                   key={place.id}
                   alt={place.picture?.name}
+                  onClick={() => {
+                    setOpenEditPlaceModal(true);
+                    setPlaceId(place.id)
+                  }}
                 />
               </Slide>
             ))
@@ -325,6 +332,22 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
             scenarioId={scenario.id}
             closeModal={() => {
               setOpenAddPlaceModal(false)
+            }}
+          />}
+      />
+
+      <Modal 
+        isOpen={openEditPlaceModal}
+        closeModal={() => {
+          setOpenEditPlaceModal(false)
+        }}
+        title='Modifier un lieu'
+        children={
+          <EditPlace 
+            scenarioId={scenario.id}
+            placeId={placeId}
+            closeModal={() => {
+              setOpenEditPlaceModal(false)
             }}
           />}
       />

@@ -1,5 +1,5 @@
 import {
-  GET_CATEGORIES, GET_CATEGORIES_SUCCESS, NEW_PLACE, NEW_PLACE_SUCCESS,
+  GET_CATEGORIES, GET_CATEGORIES_SUCCESS, NEW_PLACE, NEW_PLACE_SUCCESS, GET_PLACE, GET_PLACE_SUCCESS,
 } from './types';
 
 export const getCategories = () => ({
@@ -10,6 +10,7 @@ export const getCategoriesSuccess = (data) => ({
   type: GET_CATEGORIES_SUCCESS,
   data,
 });
+
 export const newPlace = (values) => ({
   type: NEW_PLACE,
   values,
@@ -17,5 +18,15 @@ export const newPlace = (values) => ({
 
 export const newPlaceSuccess = (data) => ({
   type: NEW_PLACE_SUCCESS,
+  data,
+});
+
+export const getPlace = (id) => ({
+  type: GET_PLACE,
+  id,
+});
+
+export const getPlaceSuccess = (data) => ({
+  type: GET_PLACE_SUCCESS,
   data,
 });

@@ -65,6 +65,11 @@
     left: 18rem;
 }
 
+#image_preview {
+    max-width: 150px;
+    max-height: 200px;
+    align-self: center;
+}
 
 @media screen and (min-width: 1200px) {
     .form {
@@ -93,7 +98,13 @@
         grid-column: 1 / span 4;
         grid-row: 3 / 4;
     }
-    
+
+    #image_preview {
+        grid-column: 1 / span 4;
+        grid-row: 4 / 5;
+        justify-self: center;
+    }
+       
     .newPlace_description {
         grid-column: 5 / span 5;
         grid-row: 1 / 4;

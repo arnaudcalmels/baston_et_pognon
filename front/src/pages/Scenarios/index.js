@@ -48,7 +48,7 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios }) => {
           {
             scenarios.map(scenario => (
               <Card 
-                image={scenario.picture}
+                image={scenario.picture?.base64}
                 name={scenario.name}
                 subtitle={`Nombre de joueurs : ${scenario.maxPlayers}`}
                 level={`Niveau de départ : ${scenario.characterLevel}`}

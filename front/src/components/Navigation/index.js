@@ -98,7 +98,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
           <div className={styles['user_menu']}>
             <img 
               id={styles['avatar']} 
-              src={avatar} 
+              src={avatar.base64} 
               alt='photo_avatar'
             />
 

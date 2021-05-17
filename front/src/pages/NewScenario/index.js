@@ -1,35 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useHistory } from 'react-router-dom';
-import FormData from 'form-data';
+import FileBase64 from 'react-file-base64';
 
 import Title from '../../components/Title';
 import Button from '../../components/Button';
 
 import PropTypes from 'prop-types';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './newScenario.module.scss';
 
 const NewScenario = ({ newScenario }) => {
   let history = useHistory(); 
+  let [ picture, setPicture ] = useState();
 
   const backToList = () => {
     history.push('/scenario');
   };
 
+  const getFile = (props, file) => {
+    props.setFieldValue("picture", file);
+    setPicture(file);
+  };
+
   const handleSubmit = (values) => {
-    let data = new FormData();
-    data.append('name', values.name);
-    data.append('picture', values.picture);
-    data.append('description', values.description);
-    data.append('maxPlayers', values.maxPlayers);
-    data.append('characterLevel', values.characterLevel);
-    console.log(data);
-    newScenario(data);
+    console.log(JSON.stringify(values, null, 2));
+    newScenario(JSON.stringify(values, null, 2));
   };
 
   return (
@@ -42,7 +42,7 @@ const NewScenario = ({ newScenario }) => {
           description: '',
           maxPlayers: 1,
           characterLevel: 1,
-          picture: ''
+          picture: null
         }}
         validate={values => {
           const errors = {};
@@ -57,8 +57,9 @@ const NewScenario = ({ newScenario }) => {
           (props) => (
           <Form className={styles['form']}>
             <div className={styles['overlay-image']}>
-              <img src="https://cdn.pixabay.com/photo/2020/06/21/17/06/village-5325891__340.png" alt="photo_scenario"/>  
-              <div className={styles['hover']}>
+            {/* eslint-disable-next-line */}
+            <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+              {/* <div className={styles['hover']}>
                 <FontAwesomeIcon 
                   onClick={() => console.log('ajouter photo')} 
                   icon={faPlusCircle} 
@@ -66,17 +67,16 @@ const NewScenario = ({ newScenario }) => {
                   style={{cursor: 'pointer'}}
                   title="Ajouter une image"
                 />
-              </div>
+              </div> */}
             </div>
 
-            <input 
-            name="picture" 
-            type="file" 
-            onChange={(event) => {
-              props.setFieldValue("picture", event.currentTarget.files[0]);
-              console.log(event.currentTarget);
-            }}
-            />
+            <div className={styles['scenario_picture']}>
+                <label htmlFor="picture" className={styles['form_label']}>Ajouter une image :</label>
+                <FileBase64
+                  multiple={false}
+                  onDone={getFile.bind(this, props)}
+                />
+              </div>
 
             <div className={styles['scenario_name']}>
               <label htmlFor="name" className={styles['form_label']}>Nom * :</label>

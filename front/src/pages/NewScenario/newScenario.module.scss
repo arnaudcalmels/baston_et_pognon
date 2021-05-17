@@ -34,29 +34,30 @@
     position: relative;
     width: 300px;
     justify-self: center;
+    display: flex;
+    justify-content: center;    
 
-    
-    & img {
-        width: 300px;
-        height: auto;
-        opacity: 0.5;
+    & #image_preview {
+        max-width: 300px;
+        max-height: 200px;
+        // opacity: 0.5;
     }
 
-    & .hover {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        opacity: 0.2;
-        transition: .5s ease;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-    }
+    // & .hover {
+    //     position: absolute;
+    //     top: 0;
+    //     height: 100%;
+    //     width: 100%;
+    //     opacity: 0.2;
+    //     transition: .5s ease;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: flex-end;
+    // }
 
-    &:hover .hover {
-        opacity: 1;
-    }
+    // &:hover .hover {
+    //     opacity: 1;
+    // }
 }
 
 .scenario_name {
@@ -70,8 +71,24 @@
     }
 }
 
-.description {
+.scenario_picture {
+    grid-column: 1 / 2;
     grid-row: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    max-width: 300px;
+    overflow: hidden;
+
+    & .form_label {
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+
+}
+
+.description {
+    grid-row: 4 / 5;
     grid-column: 1 / span 2;
     width: 600px;
     height: 300px;
@@ -91,7 +108,8 @@
 }
 
 .caracteristics {
-
+    grid-column: 2 / 3;
+    grid-row: 2 / 4;
     border: 3px solid $color-secondary;
     border-radius: 5px;
     padding: 0.5rem;
@@ -140,7 +158,7 @@
     .form {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 50px 400px 200px 1fr 50px;
+        grid-template-rows: 50px 300px 100px 200px 1fr 50px;
         justify-content: center;
         align-items: center;  
     }
@@ -148,15 +166,25 @@
     .scenario_name {
         grid-column: 1 / span 3;
     }
+
+    .overlay-image {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+    }
     
+    .scenario_picture {
+        grid-column: 1 / 2;
+        grid-row: 3 / 4;
+    }
+
     .description {
         grid-column: 2 / span 2;
-        grid-row: 2 / 3;
+        grid-row: 2 / 4;
         align-self: flex-start;
     }
 
     .caracteristics {
-        grid-row: 3 / 4;
+        grid-row: 4 / 5;
         grid-column: 1 / 2;
     }
 
@@ -177,8 +205,9 @@
 
 @media screen and (min-width: 1500px) {
     .form {
-        grid-template-rows: 50px 250px 200px 1fr 50px;
+        grid-template-rows: 50px 300px 100px 1fr 50px;
     }
+
     .caracteristics {
         grid-column: 3 / 4;
         grid-row: 2 / 3;
@@ -192,6 +221,6 @@
     }
 
     #cancel_button {
-        top: -5rem;
+        top: -7rem;
     }
 }

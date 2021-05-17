@@ -63,7 +63,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
 
     <div className={styles['show_scenario']} id={styles['block_scenario']}>
       <div className={styles['overlay-image']}>
-        <img src={scenario.picture} alt="photo_scenario"/>  
+        <img src={scenario.picture.base64} alt="photo_scenario"/>  
         <div className={styles['hover']}>
           <FontAwesomeIcon 
             onClick={() => console.log('ajouter photo')} 
@@ -106,6 +106,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
                 size="2x" 
                 style={{cursor: 'pointer'}}
                 title={`${group.monsters.length} monstre(s)`}
+                key={group.id}
               />
             ))
             : 
@@ -235,6 +236,8 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
 
       </div>
 
+      <Title title={'Lieux'} id={styles['sub_title']}/>
+
       <CarouselProvider
         className={styles['carousel']}
         naturalSlideWidth={250}
@@ -247,11 +250,12 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
             scenario.places.map(place => (
               <Slide index={0}>
                 <Card
-                  image={place.picture}
+                  image={place.picture?.base64}
                   name={place.name}
                   subtitle={`Nombre de monstres : ${place.monsters.length}`}
                   id={place.id}
                   key={place.id}
+                  alt={place.picture?.name}
                 />
               </Slide>
             ))

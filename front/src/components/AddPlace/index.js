@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import FormData from 'form-data';
+import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
 import PropTypes from 'prop-types';
@@ -14,16 +14,16 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, openMonsterModal, getCateg
   // eslint-disable-next-line
   []);
 
+  let [ picture, setPicture ] = useState();
+
+  const getFile = (props, file) => {
+    props.setFieldValue("picture", file);
+    setPicture(file);
+  };
+
   const handleSubmit = (values) => {
-    let data = new FormData();
-    data.append('name', values.name);
-    data.append('picture', values.picture);
-    data.append('description', values.description);
-    data.append('categoryId', values.categoryId);
-    data.append('hiddenBoosterCount', values.hiddenBoosterCount);
-    data.append('scenarioId', values.scenarioId);
-    console.log(data);
-    newPlace(data);
+    console.log(JSON.stringify(values, null, 2));
+    newPlace(JSON.stringify(values, null, 2));
     closeModal();
   };
 
@@ -33,15 +33,18 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, openMonsterModal, getCateg
         initialValues={{
           scenarioId: scenarioId,
           name: '',
-          categoryId: '',
+          categoryId: 0,
           description: '',
           hiddenBoosterCount: 0,
-          picture: ''
+          picture: null
         }}
         validate={values => {
             const errors = {};
             if (!values.name) {
               errors.name = 'Veuillez remplir ce champ !';
+            }
+            if (values.categoryId === 0) {
+              errors.categoryId = 'Veuillez sélectionner une catégorie !';
             }
             return errors;
           }}
@@ -78,15 +81,14 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, openMonsterModal, getCateg
 
               <div className={`${styles['newPlace_picture']} ${styles['form_item']}`}>
                 <label htmlFor="picture" className={styles['form_label']}>Image :</label>
-                <input 
-                  name="picture" 
-                  type="file" 
-                  onChange={(event) => {
-                    props.setFieldValue("picture", event.currentTarget.files[0]);
-                    console.log(event.currentTarget);
-                  }}
-                  />
+                <FileBase64
+                  multiple={false}
+                  onDone={getFile.bind(this, props)}
+                />
               </div>
+
+              {/* eslint-disable-next-line */}
+              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
 
               <div className={`${styles['newPlace_description']} ${styles['form_item']}`}>
                 <label htmlFor="description" className={styles['form_label']}>Description :</label>
@@ -98,18 +100,22 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, openMonsterModal, getCateg
               </div>
 
               <div className={`${styles['newPlace_category']} ${styles['form_item']}`}>
-                <label htmlFor="categoryId" className={styles['form_label']}>Catégorie :</label>
+                <label htmlFor="categoryId" className={styles['form_label']}>Catégorie * :</label>
                 <Field
                   as="select"
                   name="categoryId"
+                  onChange={props.handleChange}
                   className={styles['form_field']}
                 >
+                  <option defaultValue>Sélectionnez une catégorie</option>
                   {
                     categories.map(category => (
                       <option value={category.id}>{category.name}</option>
                     ))
                   }
                 </Field>
+                <ErrorMessage name='categoryId' component='div' className={styles['error_message']}/>
+
               </div>
 
             </div>

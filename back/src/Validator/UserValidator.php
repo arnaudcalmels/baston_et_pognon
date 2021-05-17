@@ -3,6 +3,7 @@
 namespace App\Validator;
 
 use App\Entity\User;
+use App\Validator\ObjectValidator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,17 +12,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
-class UserValidator
+class UserValidator extends ObjectValidator
 {
-    private $serializer;
-    private $validator;
-
-    public function __construct(ValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-        $this->serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-    }
-
     /**
      * Validate datas required for user object
      *
@@ -134,19 +126,5 @@ class UserValidator
         }
 
         return $formatedErrorsList;
-    }
-
-    /**
-     * Format list of errors
-     *
-     * @param array $formatedErrorsList
-     * @param ConstraintViolationList $errorsList
-     * @return void
-     */
-    private function formatErrors(array &$formatedErrorsList, ConstraintViolationList $errorsList)
-    {
-        foreach ($errorsList as $error) {
-            $formatedErrorsList[] = $error->getMessage();
-        }
     }
 }

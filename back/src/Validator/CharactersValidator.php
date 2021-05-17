@@ -5,26 +5,13 @@ namespace App\Validator;
 use App\Entity\Race;
 use App\Entity\Characters;
 use App\Entity\Profession;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use App\Validator\ObjectValidator;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CharactersValidator
+class CharactersValidator extends ObjectValidator
 {
-    private $validator;
-    private $serializer;
-
-    public function __construct(ValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-        $this->serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
-    }
-
     /**
-     * Undocumented function
+     * Validate datas required for character object
      *
      * @param string $requestContent
      * @return array
@@ -36,10 +23,13 @@ class CharactersValidator
         $constraints = new Assert\Collection([
             'professionId' => new ContainsIdOfEntityClass(Profession::class),
             'raceId' => new ContainsIdOfEntityClass(Race::class),
-            'sex' => new Assert\Choice([
+            'sex' => [
+                new Assert\NotNull(),
+                new Assert\Choice([
                 'choices' => ['M', 'F'],
                 'message' => 'sex.choice'
-            ]),
+                ]),
+            ],
             'name' => new Assert\NotBlank([
                 'message' => 'name.not_blank',
             ]),
@@ -73,20 +63,4 @@ class CharactersValidator
 
         return $formatedErrorsList;
     }
-
-
-    /**
-     * Format list of errors
-     *
-     * @param array $formatedErrorsList
-     * @param ConstraintViolationList $errorsList
-     * @return void
-     */
-    private function formatErrors(array &$formatedErrorsList, ConstraintViolationList $errorsList)
-    {
-        foreach ($errorsList as $error) {
-            $formatedErrorsList[$error->getPropertyPath()] = $error->getMessage();
-        }
-    }
-
 }

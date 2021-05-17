@@ -4,9 +4,9 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-class EntityHasCurrentUserAsOwner extends Constraint
+class ScenarioHasCurrentUserAsOwner extends Constraint
 {
-    public $message = 'Vous n\'êtes pas le propriétaire de cette {{ classname }}';
+    public $message = 'Vous n\'êtes pas le propriétaire de ce scénario';
     public $className;
 
     public function __construct($className, array $groups = null, $payload = null, array $options = [])

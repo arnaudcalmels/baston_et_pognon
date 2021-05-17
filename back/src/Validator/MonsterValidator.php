@@ -3,7 +3,6 @@
 namespace App\Validator;
 
 use App\Entity\Place;
-use App\Entity\Monster;
 use App\Entity\Scenario;
 use App\Validator\ObjectValidator;
 use App\Entity\WanderingMonsterGroup;
@@ -26,6 +25,7 @@ class MonsterValidator extends ObjectValidator
 
         if ($isNew) {
             // S'il s'agit d'une création on vérifie que l'entité parent est définie et existe
+            // Et que l'utilisateur est bien l'auteur du scénario correspondant
             $availableParentEntity = [
                 'scenario' => Scenario::class,
                 'place' => Place::class,
@@ -39,8 +39,8 @@ class MonsterValidator extends ObjectValidator
                 'fields' => [
                     $parentEntityName.'Id' => [
                         new Assert\NotBlank(),
-                        new Assert\Positive(),
                         new ContainsIdOfEntityClass($className),
+                        new ScenarioHasCurrentUserAsOwner($className)
                     ],    
                 ],
             ]);

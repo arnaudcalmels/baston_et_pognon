@@ -2,15 +2,18 @@
 
 namespace App\Validator;
 
+use App\Entity\Place;
+use App\Entity\Scenario;
+use App\Entity\WanderingMonsterGroup;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Security\Core\Security;
-use App\Validator\EntityHasCurrentUserAsOwner;
+use App\Validator\ScenarioHasCurrentUserAsOwner;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class EntityHasCurrentUserAsOwnerValidator extends ConstraintValidator
+class ScenarioHasCurrentUserAsOwnerValidator extends ConstraintValidator
 {
     private $em;
     private $security;
@@ -23,8 +26,8 @@ class EntityHasCurrentUserAsOwnerValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {  
-        if (!$constraint instanceof EntityHasCurrentUserAsOwner) {
-            throw new UnexpectedTypeException($constraint, EntityHasCurrentUserAsOwner::class);
+        if (!$constraint instanceof ScenarioHasCurrentUserAsOwner) {
+            throw new UnexpectedTypeException($constraint, ScenarioHasCurrentUserAsOwner::class);
         }
 
         // custom constraints should ignore null and empty values to allow
@@ -45,9 +48,13 @@ class EntityHasCurrentUserAsOwnerValidator extends ConstraintValidator
 
         if (!$object) {
             return;
+        } elseif ($object instanceof Scenario) {
+            $scenario = $object;
+        } elseif ($object instanceof WanderingMonsterGroup || $object instanceof Place) {
+            $scenario = $object->getScenario();
         }
 
-        if ($object->getOwner() !== $this->security->getUser()) {
+        if ($scenario->getOwner() !== $this->security->getUser()) {
             $this->context->buildViolation($constraint->message)
                 ->setParameters([
                     '{{ classname }}' => $className,

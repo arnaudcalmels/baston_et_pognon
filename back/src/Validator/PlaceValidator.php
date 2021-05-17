@@ -5,6 +5,8 @@ namespace App\Validator;
 use App\Entity\CategoryPlaces;
 use App\Entity\Scenario;
 use App\Validator\ObjectValidator;
+use App\Validator\ContainsIdOfEntityClass;
+use App\Validator\ScenarioHasCurrentUserAsOwner;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PlaceValidator extends ObjectValidator
@@ -18,10 +20,10 @@ class PlaceValidator extends ObjectValidator
     public function validateRequestDatas(string $requestContent, $isNew = false): array
     {
         $datas = $this->serializer->decode($requestContent, 'json');
-        // dd();
 
         if ($isNew) {
             // S'il s'agit d'une création on vérifie que l'entité parent est définie et existe
+            // Et que l'utilisateur est bien l'auteur du scénario correspondant
             $parentConstraints = new Assert\Collection([
                 'allowExtraFields' => true,
                 'fields' => [
@@ -30,7 +32,7 @@ class PlaceValidator extends ObjectValidator
                             'message' => 'scenario.not_blank',
                         ]),
                         new ContainsIdOfEntityClass(Scenario::class),
-                        new EntityHasCurrentUserAsOwner(Scenario::class),
+                        new ScenarioHasCurrentUserAsOwner(Scenario::class),
                     ],    
                 ],
             ]);

@@ -8,10 +8,11 @@ import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/u
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
 import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, getScenarios,  } from '../actions/scenario';
 import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
+import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE,
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE,
  } from '../actions/types';
 
  
@@ -288,7 +289,7 @@ import {
         method: 'post',
         url: process.env.REACT_APP_BASE_URL_API + 'api/scenario/new',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
         data: action.values     
@@ -385,7 +386,7 @@ import {
         method: 'post',
         url: process.env.REACT_APP_BASE_URL_API + 'api/place/new',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
         data: action.values     
@@ -404,6 +405,7 @@ import {
     }
 
     case GET_PLACE: {
+      store.dispatch(setLoadingTrue());
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -417,6 +419,9 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(getPlaceSuccess(response.data));
+        store.dispatch(setLoadingFalse());
+        console.log(response.data);
+
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -424,6 +429,31 @@ import {
 
       break;
     }
+
+    case EDIT_PLACE: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'put',
+        url: process.env.REACT_APP_BASE_URL_API + `api/place/edit/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(editScenarioSuccess(response.data));
+        setSuccessToast('Modification effectuée');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
 
     default:
       next(action);

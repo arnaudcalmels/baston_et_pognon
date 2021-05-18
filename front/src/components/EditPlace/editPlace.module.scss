@@ -10,7 +10,7 @@
 
     &_content {
         grid-column: 1 / span 12;
-        grid-row: 2 / 3;
+        grid-row: 1 / 2;
         display: flex;
         flex-direction: column;
     }
@@ -59,7 +59,7 @@
     left: 18rem;
 }
 
-#image_preview {
+#image_preview, #new_image_preview {
     max-width: 150px;
     max-height: 200px;
     align-self: center;
@@ -70,8 +70,6 @@
         max-width: 1000px;
         
         &_content {
-            grid-column: 1 / span 12;
-            grid-row: 2 / 3;
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             grid-gap: 0.5rem;
@@ -93,7 +91,7 @@
         grid-row: 3 / 4;
     }
 
-    #image_preview {
+    #image_preview, #new_image_preview {
         grid-column: 1 / span 4;
         grid-row: 4 / 5;
         justify-self: center;

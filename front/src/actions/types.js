@@ -42,3 +42,8 @@ export const NEW_PLACE = 'NEW_PLACE';
 export const NEW_PLACE_SUCCESS = 'NEW_PLACE_SUCCESS';
 export const GET_PLACE = 'GET_PLACE';
 export const GET_PLACE_SUCCESS = 'GET_PLACE_SUCCESS';
+export const EDIT_PLACE = 'EDIT_PLACE';
+
+// Other
+export const SET_LOADING_TRUE = 'SET_LOADING_TRUE';
+export const SET_LOADING_FALSE = 'SET_LOADING_FALSE';

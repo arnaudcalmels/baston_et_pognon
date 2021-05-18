@@ -261,7 +261,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
                   alt={place.picture?.name}
                   onClick={() => {
                     setOpenEditPlaceModal(true);
-                    setPlaceId(place.id)
+                    setPlaceId(place.id);
                   }}
                 />
               </Slide>

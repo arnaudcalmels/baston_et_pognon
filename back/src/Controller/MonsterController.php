@@ -48,10 +48,8 @@ class MonsterController extends AbstractController
     * @param ValidatorInterface $validator
     * @return JsonResponse|void
     */
-    public function new(Request $request, string $slug, ValidatorInterface $validator)
+    public function new(Request $request, string $slug, MonsterValidator $monsterValidator)
     {
-        $monsterValidator = new MonsterValidator($validator);
-
         $errors = $monsterValidator->validateRequestDatas($request->getContent(), true, $slug);
 
         if (count($errors) > 0) {
@@ -62,41 +60,24 @@ class MonsterController extends AbstractController
 
             $requestContent = json_decode($request->getContent());
 
-            switch($slug) {
-                case 'place':
-                    $monster = $this->createMonsterForAPlace($requestContent, $em);
-                    break;
+            $monster = new Monster();
 
-                case 'scenario':
-                    $monster = $this->createMonsterForAScenario($requestContent, $em);
-                    break;
+            $this->setMonsterAndSubObjects($monster, $requestContent, $em);
 
-                case 'wanderGroup':
-                    $monster = $this->createMonsterForAWanderingMonsterGroup($requestContent, $em);
-                    break;
-            }
+            $em->persist($monster);
 
-            if (!$monster) {
-                // Le current user n'est pas le owner
-                $data = ['Vous n\'êtes pas autorisé à effectuer cette action'];
+            $errorsObject = $monsterValidator->validateObject($monster);
+
+            if (count($errorsObject) > 0) {
+                $data = $errorsObject;
                 $statusCode = 403;
-
             } else {
-                $em->persist($monster);
+                $em->flush();
 
-                $errorsObject = $monsterValidator->validateObject($monster);
+                $place = $monster->getPlace();
+                $scenarioId = $place ? $place->getScenario()->getId() : $monster->getWanderingMonsterGroup()->getScenario()->getId();
 
-                if (count($errorsObject) > 0) {
-                    $data = $errorsObject;
-                    $statusCode = 403;
-                } else {
-                    $em->flush();
-
-                    $place = $monster->getPlace();
-                    $scenarioId = $place ? $place->getScenario()->getId() : $monster->getWanderingMonsterGroup()->getScenario()->getId();
-
-                    return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
-                }
+                return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
             }               
         }
 
@@ -112,7 +93,7 @@ class MonsterController extends AbstractController
      * @param ValidatorInterface $validator
      * @return JsonResponse
      */
-    public function edit(Request $request, Monster $monster = null, int $id, ValidatorInterface $validator): JsonResponse
+    public function edit(Request $request, Monster $monster = null, int $id, MonsterValidator $monsterValidator): JsonResponse
     {
         if (!$monster) {
 
@@ -121,15 +102,14 @@ class MonsterController extends AbstractController
 
         $place = $monster->getPlace();
 
-        $owner = $place ? $place->getScenario()->getOwner() : $monster->getWanderingMonsterGroup()->getScenario()->getOwner();
+        $scenario = $place ? $place->getScenario() : $monster->getWanderingMonsterGroup()->getScenario();
+        $owner = $scenario->getOwner();
         $currentUser = $this->getUser();
 
         if ($owner !== $currentUser) {
 
-            return new JsonResponse(['Vous n\'êtes pas autorisé à modifier ce monstre'], 404);
+            return new JsonResponse(['Vous n\'êtes pas autorisé à modifier ce monstre'], 403);
         }
-
-        $monsterValidator = new MonsterValidator($validator);
 
         $errors = $monsterValidator->validateRequestDatas($request->getContent());
 
@@ -151,8 +131,9 @@ class MonsterController extends AbstractController
             } else {
                 $em->flush();         
 
-                $data = $this->normalizeMonster($monster);
-                $statusCode = 200;
+                $scenarioId = $scenario->getId();
+
+                return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
             }
         }
 
@@ -176,110 +157,23 @@ class MonsterController extends AbstractController
 
         $currentUser = $this->getUser();
         $place = $monster->getPlace();
-        $owner = $place ? $place->getScenario()->getOwner() : $monster->getWanderingMonsterGroup()->getScenario()->getOwner();
+        $scenario = $place ? $place->getScenario() : $monster->getWanderingMonsterGroup()->getScenario();
+        $owner = $scenario->getOwner();
 
         if ($owner !== $currentUser) {
-            $message = 'Vous n\'êtes pas autorisé à supprimer ce scénario';
+            $message = ['Vous n\'êtes pas autorisé à supprimer ce scénario'];
             $statusCode = 403;
-        } else {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($monster);
-            $entityManager->flush();  
-            
-            $message = 'Suppression OK';
-            $statusCode = 200;
-        }
 
-        return new JsonResponse($message, $statusCode);
-    }
+            return new JsonResponse($message, $statusCode);
+        } 
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($monster);
+        $entityManager->flush();  
+        
+        $scenarioId = $scenario->getId();
 
-    /**
-    * Create a monster object in Place context
-    *
-    * @param \StdClass $object
-    * @param EntityManager $em
-    * @return Monster|null
-    */
-    private function createMonsterForAPlace(\StdClass $object, EntityManager $em): ?Monster
-    {
-        $currentUser = $this->getUser();
-
-        $place = $em->getRepository(Place::class)->find($object->placeId);
-
-        if ($place->getScenario()->getOwner() !== $currentUser) {
-
-            return null;
-        } else {
-
-            $monster = new Monster();
-
-            $this->setMonsterAndSubObjects($monster, $object, $em);
-
-            $place->addMonster($monster);
-
-            return $monster;
-        }
-    }
-
-    /**
-     * Create a monster object in Scenario context
-     *
-     * @param \StdClass $object
-     * @param EntityManager $em
-     * @return Monster|null
-     */
-    private function createMonsterForAScenario(\StdClass $object, EntityManager $em): ?Monster
-    {
-        $currentUser = $this->getUser();
-
-        $scenario = $em->getRepository(Scenario::class)->find($object->scenarioId);
-
-        if ($scenario->getOwner() !== $currentUser) {
-
-            return null;
-        } else {
-
-            $wanderingGroup = new WanderingMonsterGroup();
-            $em->persist($wanderingGroup);
-
-            $monster = new Monster();
-
-            $this->setMonsterAndSubObjects($monster, $object, $em);
-            
-            $wanderingGroup->addMonster($monster);
-            $scenario->addWanderingMonster($wanderingGroup);
-
-            return $monster;
-        }
-    }
-
-    /**
-     * Create a monster object in WanderingMonsterGroup context
-     *
-     * @param \StdClass $object
-     * @param EntityManager $em
-     * @return Monster|null
-     */
-    private function createMonsterForAWanderingMonsterGroup(\StdClass $object, EntityManager $em): ?Monster
-    {
-        $currentUser = $this->getUser();
-
-        $wanderingGroup = $em->getRepository(WanderingMonsterGroup::class)->find($object->wanderGroupId);
-
-        if ($wanderingGroup->getScenario()->getOwner() !== $currentUser) {
-
-            return null;
-        } else {
-
-
-            $monster = new Monster();
-
-            $this->setMonsterAndSubObjects($monster, $object, $em);
-
-            $wanderingGroup->addMonster($monster);
-
-            return $monster;
-        }
+        return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
     }
 
     /**
@@ -342,8 +236,6 @@ class MonsterController extends AbstractController
         $monster->setLevel($datasObject->level);
         $monster->setPicture($datasObject->picture);
         $monster->setCaracteristics($caracteristicsObject);
-
-        // return $monster;
     }
 
     /**

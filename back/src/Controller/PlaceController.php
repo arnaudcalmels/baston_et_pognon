@@ -6,8 +6,6 @@ use App\Entity\CategoryPlaces;
 use App\Entity\Place;
 use App\Entity\Scenario;
 use App\Validator\PlaceValidator;
-use App\Repository\ScenarioRepository;
-use App\Repository\CategoryPlacesRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,10 +43,8 @@ class PlaceController extends AbstractController
      * @param ValidatorInterface $validator
      * @return JsonResponse|RedirectResponse
      */
-    public function new(Request $request, ScenarioRepository $scenarioRepo, CategoryPlacesRepository $categoryPlacesRepo, ValidatorInterface $validator)
+    public function new(Request $request, PlaceValidator $placeValidator)
     {
-        $placeValidator = new PlaceValidator($validator);
-
         $errorsDatas = $placeValidator->validateRequestDatas($request->getContent(), true);
 
         if (count($errorsDatas) > 0) {
@@ -71,8 +67,9 @@ class PlaceController extends AbstractController
                 $em->persist($place);
                 $em->flush();
 
-                $data = $this->normalizePlace($place);
-                $statusCode = 201;
+                $scenarioId = $place->getScenario()->getId();
+
+                return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
             }
         }
 
@@ -85,9 +82,9 @@ class PlaceController extends AbstractController
      * @param Request $request
      * @param Place $place
      * @param ValidatorInterface $validator
-     * @return JsonResponse
+     * @return JsonResponse|RedirectResponse
      */
-    public function edit(Request $request, Place $place = null, CategoryPlacesRepository $categoryPlacesRepo, ValidatorInterface $validator): JsonResponse
+    public function edit(Request $request, Place $place = null, PlaceValidator $placeValidator)
     {
         $currentUser = $this->getUser();
         if (!$place) {
@@ -97,8 +94,6 @@ class PlaceController extends AbstractController
             $data = ['Vous n\'êtes pas autorisé à modifier ce lieu'];
             $statusCode = 403;
         } else {
-            $placeValidator = new PlaceValidator($validator);
-
             $errorsDatas = $placeValidator->validateRequestDatas($request->getContent());
 
             if (count($errorsDatas) > 0) {
@@ -117,8 +112,9 @@ class PlaceController extends AbstractController
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
     
-                    $data = $this->normalizePlace($place);
-                    $statusCode = 200;
+                    $scenarioId = $place->getScenario()->getId();
+
+                    return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
                 }
             }
         }
@@ -132,7 +128,7 @@ class PlaceController extends AbstractController
      * @param Place $place
      * @return JsonResponse
      */
-    public function delete(Place $place = null): JsonResponse
+    public function delete(Place $place = null)
     {
         $currentUser = $this->getUser();
         if (!$place) {
@@ -142,15 +138,15 @@ class PlaceController extends AbstractController
             $data = ['Vous n\'êtes pas autorisé à modifier ce lieu'];
             $statusCode = 403;
         } else {
+            $scenarioId = $place->getScenario()->getId();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($place);
             $entityManager->flush();  
             
-            $message = 'Suppression OK';
-            $statusCode = 200;
+            return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
         }
 
-        return new JsonResponse($message, $statusCode);
+        return new JsonResponse($data, $statusCode);
     }
 
     private function setPlaceProperties(Place &$place, \stdClass $datasObject)
@@ -173,7 +169,7 @@ class PlaceController extends AbstractController
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers);
 
-        $place->setPicture($serializer->normalize(null));
+        $place->setPicture($serializer->normalize($datasObject->picture));
     }
 
     /**
@@ -192,7 +188,7 @@ class PlaceController extends AbstractController
                 'id',
                 'name',
                 'description',
-                'hiddentBoosterCount',
+                'hiddenBoosterCount',
                 'picture',
                 'monsters' => [
                     'id',

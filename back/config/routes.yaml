@@ -79,7 +79,6 @@ api_character_delete:
 # Scenario
 api_scenario:
     path: api/scenario/{id}
-    methods: [GET]
     controller: App\Controller\ScenarioController::scenario
     requirements:
         id: '\d+'

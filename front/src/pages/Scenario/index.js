@@ -66,7 +66,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
 
     <div className={styles['show_scenario']} id={styles['block_scenario']}>
       <div className={styles['overlay-image']}>
-        <img src={scenario.picture.base64} alt="photo_scenario"/>  
+        <img src={scenario.picture?.base64} alt="photo_scenario"/>  
         <div className={styles['hover']}>
           <FontAwesomeIcon 
             onClick={() => console.log('ajouter photo')} 

@@ -1,5 +1,5 @@
 import {
-  GET_CATEGORIES, GET_CATEGORIES_SUCCESS, NEW_PLACE, NEW_PLACE_SUCCESS, GET_PLACE, GET_PLACE_SUCCESS, EDIT_PLACE, 
+  GET_CATEGORIES, GET_CATEGORIES_SUCCESS, NEW_PLACE, NEW_PLACE_SUCCESS, GET_PLACE, GET_PLACE_SUCCESS, EDIT_PLACE, DELETE_PLACE, 
 } from './types';
 
 export const getCategories = () => ({
@@ -35,4 +35,9 @@ export const editPlace = (id, values) => ({
   type: EDIT_PLACE,
   id,
   values
+});
+
+export const deletePlace = (id) => ({
+  type: DELETE_PLACE,
+  id,
 });

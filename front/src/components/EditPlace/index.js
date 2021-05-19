@@ -4,12 +4,14 @@ import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
 import Loader from '../Loader';
+import Modal from '../../components/Modal';
+import DeleteConfirm from '../../components/DeleteConfirm';
 
 import PropTypes from 'prop-types';
 
 import styles from './editPlace.module.scss';
 
-const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, categories, placeId, getPlace, place, isLoading, editPlace }) => {
+const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, categories, placeId, getPlace, place, isLoading, editPlace, deletePlace }) => {
   
   useEffect(() => {
     getCategories();
@@ -18,7 +20,8 @@ const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, ca
   // eslint-disable-next-line
   []);
 
-  let [ newPicture, setNewPicture ] = useState();
+  let [newPicture, setNewPicture] = useState();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
 
   const getFile = (props, file) => {
     props.setFieldValue("picture", file);
@@ -30,6 +33,10 @@ const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, ca
     editPlace(placeId, JSON.stringify(values, null, 2));
     closeModal();
   };
+
+  const handleDeletePlace = (id, scenarioId) => {
+    deletePlace(id, scenarioId);
+  }
 
   return (
     isLoading ?
@@ -157,6 +164,29 @@ const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, ca
         onClick={openMonsterModal}
       />
   
+      <Button 
+        id={styles['delete_button']} 
+        color='#eee' 
+        children='Supprimer le lieu' 
+        onClick={() => setOpenDeleteModal(true)}
+      />
+
+      <Modal 
+        isOpen={openDeleteModal} 
+        closeModal={() => {
+          setOpenDeleteModal(false);
+        }}
+        title='Supprimer le lieu ?' 
+        children={
+          <DeleteConfirm 
+            cancelAction={() => setOpenDeleteModal(false)} 
+            confirmAction={() => {
+              handleDeletePlace(place.id, scenarioId);
+              setOpenDeleteModal(false);
+            }}
+          />}
+      />
+
       </div>
   );
 };
@@ -172,7 +202,8 @@ EditPlace.propTypes = {
   getPlace: PropTypes.func,
   place: PropTypes.object,
   isLoading: PropTypes.bool,
-  editPlace:PropTypes.func,
+  editPlace: PropTypes.func,
+  deletePlace: PropTypes.func,
 };
 
 export default EditPlace;

@@ -40,7 +40,8 @@
 
 @media screen and (min-width: 600px) {
     .content {
-        width: 400px;
+        width: max-content;
+        height: max-content;
     }
 
     .title {

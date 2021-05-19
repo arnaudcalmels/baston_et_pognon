@@ -119,6 +119,10 @@
     margin: 1rem;
 }
 
+#sub_title {
+    font-size: 1.3rem;
+}
+
 .carousel {
     width: 250px;
     text-align: center;
@@ -127,6 +131,10 @@
 
 .slider {
     margin-bottom: 1rem;
+}
+
+.place {
+    display: none;
 }
 
 .wanderingMonsters  {
@@ -148,6 +156,15 @@
 
 .monster_group {
     padding: 0.5rem;
+}
+
+.add_group, .add_place {
+    padding: 0.5rem;
+    opacity: 0.2;
+
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .buttons {
@@ -195,6 +212,14 @@
         width: 520px;
         grid-column: 1 / span 2;
         justify-self: center;
+    }
+    
+    .place {
+        width: 250px;
+        height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     
     .wanderingMonsters  {

@@ -7,10 +7,12 @@ import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
 import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, getScenarios,  } from '../actions/scenario';
+import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
+import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, 
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE,
  } from '../actions/types';
 
  
@@ -35,7 +37,7 @@ import {
           setSuccessToast('Inscription réussie !');
         })
         .catch ((error) => {
-          setErrorToasts(error.response.data);
+          setErrorToasts(error.response?.data);
         });
 
       break;
@@ -59,7 +61,7 @@ import {
           store.dispatch(getProfile());
         })
         .catch ((error) => {
-          setErrorToasts(error.response.data);
+          setErrorToasts(error.response?.data);
         });
 
       break;
@@ -84,7 +86,7 @@ import {
         setSuccessToast('Connecté !');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -106,7 +108,7 @@ import {
         setSuccessToast('Suppression effectuée');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -131,7 +133,7 @@ import {
         setSuccessToast('Modification effectuée !');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -154,7 +156,7 @@ import {
         setSuccessToast('Modification effectuée !');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -178,7 +180,7 @@ import {
         store.dispatch(getCharactersSuccess(response.data));
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -203,7 +205,7 @@ import {
         action.redirect(`/personnage/${response.data.id}`);
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -226,7 +228,7 @@ import {
         store.dispatch(getCharacters());
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -250,7 +252,7 @@ import {
         setSuccessToast('Modification effectuée');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -274,7 +276,7 @@ import {
         store.dispatch(getScenariosSuccess(response.data));
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -282,6 +284,7 @@ import {
     
     case NEW_SCENARIO: {
       const { auth: { token } } = store.getState();
+      console.log(action.values);
       const config = {
         method: 'post',
         url: process.env.REACT_APP_BASE_URL_API + 'api/scenario/new',
@@ -299,7 +302,7 @@ import {
         action.redirect(`/scenario/${response.data.id}`);
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -323,7 +326,7 @@ import {
         setSuccessToast('Modification effectuée');
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
@@ -346,11 +349,134 @@ import {
         store.dispatch(getScenarios());
       })
       .catch ((error) => {
-        setErrorToasts(error.response.data);
+        setErrorToasts(error.response?.data);
       });
 
       break;
     }
+
+    // ----- PLACE -----
+
+    case GET_CATEGORIES: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/categoriesPlaces',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getCategoriesSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case NEW_PLACE: {
+      const { auth: { token } } = store.getState();
+      console.log(action.values);
+      const config = {
+        method: 'post',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/place/new',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(editScenarioSuccess(response.data));
+        setSuccessToast('Lieu créé !');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case GET_PLACE: {
+      store.dispatch(setLoadingTrue());
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + `api/place/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getPlaceSuccess(response.data));
+        store.dispatch(setLoadingFalse());
+        console.log(response.data);
+
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case EDIT_PLACE: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'put',
+        url: process.env.REACT_APP_BASE_URL_API + `api/place/edit/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(editScenarioSuccess(response.data));
+        setSuccessToast('Modification effectuée');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case DELETE_PLACE: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'delete',
+        url: process.env.REACT_APP_BASE_URL_API + `api/place/delete/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        setSuccessToast('Suppression effectuée');
+        store.dispatch(editScenarioSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
 
     default:
       next(action);

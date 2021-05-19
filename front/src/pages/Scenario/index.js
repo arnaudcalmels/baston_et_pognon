@@ -8,6 +8,8 @@ import Card from '../../components/Card';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
+import AddPlace from '../../containers/components/AddPlace';
+import EditPlace from '../../containers/components/EditPlace';
 
 import PropTypes from 'prop-types';
 
@@ -48,12 +50,15 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
     showForm();
   };
 
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);  
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
+  const [openAddPlaceModal, setOpenAddPlaceModal] = useState(false);
+  const [openEditPlaceModal, setOpenEditPlaceModal] = useState(false);
+  const [placeId, setPlaceId] = useState();
 
   const handleDeleteScenario = (id) => {
     deleteScenario(id);
   }
-
+  
 
   return (
     <div className={styles['main']}>
@@ -61,7 +66,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
 
     <div className={styles['show_scenario']} id={styles['block_scenario']}>
       <div className={styles['overlay-image']}>
-        <img src={scenario.picture} alt="photo_scenario"/>  
+        <img src={scenario.picture?.base64} alt="photo_scenario"/>  
         <div className={styles['hover']}>
           <FontAwesomeIcon 
             onClick={() => console.log('ajouter photo')} 
@@ -104,11 +109,21 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
                 size="2x" 
                 style={{cursor: 'pointer'}}
                 title={`${group.monsters.length} monstre(s)`}
+                key={group.id}
               />
             ))
             : 
             <p>Aucun monstre</p>
           }
+          <FontAwesomeIcon 
+            className={styles['add_group']}
+            onClick={() => console.log('ajouter groupe monstre')} 
+            icon={faPlusCircle} 
+            size="2x" 
+            style={{cursor: 'pointer'}}
+            title="Ajouter un groupe de monstres"
+          />
+
         </div>
       </div>
 
@@ -224,11 +239,13 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
 
       </div>
 
+      <Title title={'Lieux'} id={styles['sub_title']}/>
+
       <CarouselProvider
         className={styles['carousel']}
         naturalSlideWidth={250}
         naturalSlideHeight={350}
-        totalSlides={scenario.places.length}
+        totalSlides={scenario.places.length + 1 }
         visibleSlides={visibleSlides}
       >
         <Slider className={styles['slider']}>
@@ -236,18 +253,33 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
             scenario.places.map(place => (
               <Slide index={0}>
                 <Card
-                  image={place.picture}
+                  image={place.picture?.base64}
                   name={place.name}
                   subtitle={`Nombre de monstres : ${place.monsters.length}`}
                   id={place.id}
                   key={place.id}
-                  // onClick={() => {
-                  //   history.push(`/personnage/${character.id}`);
-                  // }}
+                  alt={place.picture?.name}
+                  onClick={() => {
+                    setOpenEditPlaceModal(true);
+                    setPlaceId(place.id);
+                  }}
                 />
               </Slide>
             ))
           }
+
+          <Slide>
+            <div className={styles['place']} key={'add_place'}>
+              <FontAwesomeIcon 
+                className={styles['add_place']}
+                onClick={() => setOpenAddPlaceModal(true)} 
+                icon={faPlusCircle} 
+                size="2x" 
+                style={{cursor: 'pointer'}}
+                title="Ajouter un lieu"
+              />
+            </div>
+          </Slide>
         </Slider>
         <ButtonBack>Back</ButtonBack>
         <ButtonNext>Next</ButtonNext>
@@ -289,6 +321,36 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
           />}
       />
 
+      <Modal 
+        isOpen={openAddPlaceModal}
+        closeModal={() => {
+          setOpenAddPlaceModal(false)
+        }}
+        title='Ajouter un lieu'
+        children={
+          <AddPlace 
+            scenarioId={scenario.id}
+            closeModal={() => {
+              setOpenAddPlaceModal(false)
+            }}
+          />}
+      />
+
+      <Modal 
+        isOpen={openEditPlaceModal}
+        closeModal={() => {
+          setOpenEditPlaceModal(false)
+        }}
+        title='Modifier un lieu'
+        children={
+          <EditPlace 
+            scenarioId={scenario.id}
+            placeId={placeId}
+            closeModal={() => {
+              setOpenEditPlaceModal(false)
+            }}
+          />}
+      />
 
     </div>
   );

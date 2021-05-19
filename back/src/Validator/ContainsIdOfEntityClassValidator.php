@@ -30,7 +30,7 @@ class ContainsIdOfEntityClassValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_int($value) || $value <= 0) {
+        if ($value <= 0) {
             // throw this exception if your validator cannot handle the passed type so that it can be marked as invalid
             throw new UnexpectedValueException($value, 'id');
         }

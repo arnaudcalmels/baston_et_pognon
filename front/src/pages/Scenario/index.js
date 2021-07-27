@@ -10,6 +10,7 @@ import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
 import AddPlace from '../../containers/components/AddPlace';
 import EditPlace from '../../containers/components/EditPlace';
+import AddMonster from '../../containers/components/AddMonster';
 
 import PropTypes from 'prop-types';
 
@@ -53,6 +54,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false); 
   const [openAddPlaceModal, setOpenAddPlaceModal] = useState(false);
   const [openEditPlaceModal, setOpenEditPlaceModal] = useState(false);
+  const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
   const [placeId, setPlaceId] = useState();
 
   const handleDeleteScenario = (id) => {
@@ -117,7 +119,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
           }
           <FontAwesomeIcon 
             className={styles['add_group']}
-            onClick={() => console.log('ajouter groupe monstre')} 
+            onClick={() => setOpenAddMonsterModal(true)} 
             icon={faPlusCircle} 
             size="2x" 
             style={{cursor: 'pointer'}}
@@ -214,7 +216,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
                   scenario.wanderingMonsters.map(group => (
                     <FontAwesomeIcon
                       className={styles['monster_group']}
-                      // onClick={() => console.log('monstres')} 
+                      onClick={() => console.log('monstres')} 
                       icon={faSpider} 
                       size="2x" 
                       style={{cursor: 'pointer'}}
@@ -351,6 +353,25 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
             }}
           />}
       />
+
+      <Modal 
+        isOpen={openAddMonsterModal}
+        closeModal={() => {
+          setOpenAddMonsterModal(false)
+        }}
+        title='Ajouter un monstre errant'
+        children={
+          <AddMonster 
+            scenarioId={scenario.id}
+            placeId={null}
+            wanderGroupId={null}
+            slug="scenario"
+            closeModal={() => {
+              setOpenAddMonsterModal(false)
+            }}
+          />}
+      />
+
 
     </div>
   );

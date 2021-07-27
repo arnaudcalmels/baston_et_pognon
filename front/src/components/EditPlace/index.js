@@ -6,12 +6,13 @@ import Button from '../Button';
 import Loader from '../Loader';
 import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
+import AddMonster from '../../containers/components/AddMonster';
 
 import PropTypes from 'prop-types';
 
 import styles from './editPlace.module.scss';
 
-const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, categories, placeId, getPlace, place, isLoading, editPlace, deletePlace }) => {
+const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId, getPlace, place, isLoading, editPlace, deletePlace }) => {
   
   useEffect(() => {
     getCategories();
@@ -22,6 +23,7 @@ const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, ca
 
   let [newPicture, setNewPicture] = useState();
   const [openDeleteModal, setOpenDeleteModal] = useState(false); 
+  const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
 
   const getFile = (props, file) => {
     props.setFieldValue("picture", file);
@@ -161,7 +163,7 @@ const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, ca
         id={styles['addMonsters_button']} 
         color='#eee' 
         children='Ajouter des monstres' 
-        onClick={openMonsterModal}
+        onClick={() => setOpenAddMonsterModal(true)}
       />
   
       <Button 
@@ -187,6 +189,25 @@ const EditPlace = ({ scenarioId, closeModal, openMonsterModal, getCategories, ca
           />}
       />
 
+      <Modal 
+        isOpen={openAddMonsterModal}
+        closeModal={() => {
+          setOpenAddMonsterModal(false)
+        }}
+        title='Ajouter un monstre'
+        children={
+          <AddMonster 
+            scenarioId={null}
+            placeId={place.id}
+            wanderGroupId={null}
+            slug="place"
+            closeModal={() => {
+              setOpenAddMonsterModal(false)
+            }}
+          />}
+      />
+
+
       </div>
   );
 };
@@ -195,7 +216,6 @@ EditPlace.propTypes = {
   scenarioId: PropTypes.number,  
   newPlace: PropTypes.func,
   closeModal: PropTypes.func,
-  openMonsterModal: PropTypes.func,
   getCategories: PropTypes.func,
   categories: PropTypes.arrayOf(PropTypes.object,),
   placeId: PropTypes.number,

@@ -1,4 +1,4 @@
-import { NEW_MONSTER, GET_MONSTER, GET_MONSTER_SUCCESS } from './types';
+import { NEW_MONSTER, GET_MONSTER, GET_MONSTER_SUCCESS, EDIT_MONSTER } from './types';
 
 export const newMonster = (slug, values) => ({
   type: NEW_MONSTER,
@@ -14,4 +14,10 @@ export const getMonster = (id) => ({
 export const getMonsterSuccess = (data) => ({
   type: GET_MONSTER_SUCCESS,
   data,
+});
+
+export const editMonster = (id, values) => ({
+  type: EDIT_MONSTER,
+  id,
+  values,
 });

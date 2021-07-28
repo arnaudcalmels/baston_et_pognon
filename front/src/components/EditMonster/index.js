@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 import styles from './editMonster.module.scss';
 
-const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, getMonster, monsterId, currentMonster, isLoading }) => {
+const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, getMonster, monsterId, currentMonster, isLoading, editMonster }) => {
   useEffect(() => {
     getMonster(monsterId);
   },
@@ -25,7 +25,7 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    // editMonster(slug, JSON.stringify(values, null, 2));
+    editMonster(monsterId, JSON.stringify(values, null, 2));
     closeModal();
   };
 
@@ -150,8 +150,8 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
                   {
                     ({ insert, remove, push }) => (
                       <div>
-                        {props.values.caracteristics.actions.length > 0 &&
-                        props.values.caracteristics.actions.map((action, index) => (
+                        {props.values.caracteristics.actions?.length > 0 &&
+                        props.values.caracteristics.actions?.map((action, index) => (
                           <div className="" key={index}>
                             Action {index+1}
                             <div className="">
@@ -263,6 +263,7 @@ EditMonster.propTypes = {
   monsterId: PropTypes.number,
   monster: PropTypes.object,
   isLoading: PropTypes.bool, 
+  editMonster: PropTypes.func,
 };
 
 export default EditMonster;

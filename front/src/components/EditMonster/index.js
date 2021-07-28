@@ -4,29 +4,36 @@ import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
 import Loader from '../Loader';
+import Modal from '../../components/Modal';
+import DeleteConfirm from '../../components/DeleteConfirm';
 
 import PropTypes from 'prop-types';
 
 import styles from './editMonster.module.scss';
 
-const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, getMonster, monsterId, currentMonster, isLoading, editMonster }) => {
+const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, getMonster, monsterId, currentMonster, isLoading, editMonster, deleteMonster }) => {
   useEffect(() => {
     getMonster(monsterId);
   },
   // eslint-disable-next-line
   []);
 
-  let [ picture, setPicture ] = useState();
+  let [newPicture, setNewPicture] = useState();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
 
   const getFile = (props, file) => {
     props.setFieldValue("picture", file);
-    setPicture(file);
+    setNewPicture(file);
   };
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
     editMonster(monsterId, JSON.stringify(values, null, 2));
     closeModal();
+  };
+
+  const handleDeleteMonster = (id) => {
+    deleteMonster(id);
   };
 
   return (
@@ -85,8 +92,13 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
                   />
                 </div>
 
-                {/* eslint-disable-next-line */}
-                <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+                {
+                  newPicture ?
+                    <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                    : 
+                    // eslint-disable-next-line
+                    <img id={styles['image_preview']} src={currentMonster.picture?.base64} alt={currentMonster.picture?.name}/>
+                }
 
                 <div className={`${styles['newMonster_isBoss']} ${styles['form_checkbox']}`}>
                   <div className={styles['form_label']}>Boss :</div>
@@ -248,6 +260,31 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
         children='Annuler' 
         onClick={closeModal}
       />
+
+      <Button 
+        id={styles['delete_button']} 
+        color='#eee' 
+        children='Supprimer le monstre' 
+        onClick={() => setOpenDeleteModal(true)}
+      />
+
+      <Modal 
+        isOpen={openDeleteModal} 
+        closeModal={() => {
+          setOpenDeleteModal(false);
+        }}
+        title='Supprimer le monstre ?' 
+        children={
+          <DeleteConfirm 
+            cancelAction={() => setOpenDeleteModal(false)} 
+            confirmAction={() => {
+              handleDeleteMonster(monsterId);
+              setOpenDeleteModal(false);
+              closeModal();
+            }}
+          />}
+      />
+
 
       </div>
   );

@@ -13,7 +13,7 @@ import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE, NEW_MONSTER, GET_MONSTER, EDIT_MONSTER
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE, NEW_MONSTER, GET_MONSTER, EDIT_MONSTER, DELETE_MONSTER
  } from '../actions/types';
 
  
@@ -547,6 +547,29 @@ import {
       .then ((response) => { 
         store.dispatch(getMonsterSuccess(response.data));
         setSuccessToast('Modification effectuée');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case DELETE_MONSTER: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'delete',
+        url: process.env.REACT_APP_BASE_URL_API + `api/monster/delete/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        setSuccessToast('Suppression effectuée');
+        store.dispatch(editScenarioSuccess(response.data));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

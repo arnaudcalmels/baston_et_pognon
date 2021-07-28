@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import EditMonster from "../../components/EditMonster";
 
-import { getMonster, editMonster } from '../../actions/monster';
+import { getMonster, editMonster, deleteMonster } from '../../actions/monster';
 
 const mapStateToProps = (state) => ({
   currentMonster: state.monster.currentMonster,
@@ -15,6 +15,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   editMonster: (id, values) => {
     dispatch(editMonster(id, values));
+  },
+  deleteMonster: (id) => {
+    dispatch(deleteMonster(id));
   }
 });
 

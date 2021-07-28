@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Modal from '../Modal';
 import AddMonster from '../../containers/components/AddMonster';
+import EditMonster from '../../containers/components/EditMonster';
 import Button from '../Button';
 
 import PropTypes from 'prop-types';
@@ -14,12 +15,18 @@ import styles from './monsterGroup.module.scss';
 const MonsterGroup = ({ closeModal, wanderGroupId, monsters }) => {
   
   const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
+  const [openEditMonsterModal, setOpenEditMonsterModal] = useState(false);
+
+  const [monsterId, setMonsterId] = useState();
   
   return (
     <div className={styles['content']}>
       {
         monsters.map(monster => (
-          <div className={styles['monster']}>
+          <div className={styles['monster']} onClick={() => {
+            setOpenEditMonsterModal(true);
+            setMonsterId(monster.id)
+          }}>
             {monster.name}
           </div>
         ))
@@ -59,6 +66,26 @@ const MonsterGroup = ({ closeModal, wanderGroupId, monsters }) => {
             }}
           />}
       />
+
+      <Modal 
+        isOpen={openEditMonsterModal}
+        closeModal={() => {
+          setOpenEditMonsterModal(false)
+        }}
+        title='Modifier un monstre'
+        children={
+          <EditMonster 
+            scenarioId={null}
+            placeId={null}
+            wanderGroupId={wanderGroupId}
+            slug="wanderGroup"
+            closeModal={() => {
+              setOpenEditMonsterModal(false)
+            }}
+            monsterId={monsterId}
+          />}
+      />
+
 
     </div>
   )

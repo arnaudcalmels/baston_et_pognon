@@ -47,6 +47,8 @@ export const DELETE_PLACE = 'DELETE_PLACE';
 
 // Monster
 export const NEW_MONSTER = 'NEW_MONSTER';
+export const GET_MONSTER = 'GET_MONSTER';
+export const GET_MONSTER_SUCCESS = 'GET_MONSTER_SUCCESS';
 
 // Other
 export const SET_LOADING_TRUE = 'SET_LOADING_TRUE';

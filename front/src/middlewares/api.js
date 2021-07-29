@@ -8,11 +8,12 @@ import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/u
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
 import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, getScenarios,  } from '../actions/scenario';
 import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
+import { getMonsterSuccess } from '../actions/monster';
 import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE,
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE, NEW_MONSTER, GET_MONSTER, EDIT_MONSTER, DELETE_MONSTER
  } from '../actions/types';
 
  
@@ -477,6 +478,105 @@ import {
       break;
     }
 
+      // ----- MONSTER -----
+
+    case NEW_MONSTER: {
+      const { auth: { token } } = store.getState();
+      console.log(action.values);
+      const config = {
+        method: 'post',
+        url: process.env.REACT_APP_BASE_URL_API + `api/monster/new/${action.slug}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(editScenarioSuccess(response.data));
+        setSuccessToast('Monstre créé !');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+  
+    case GET_MONSTER: {
+      store.dispatch(setLoadingTrue());
+      const { auth: { token } } = store.getState();
+      console.log(action.values);
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + `api/monster/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getMonsterSuccess(response.data));
+        store.dispatch(setLoadingFalse());
+        console.log(response.data);
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case EDIT_MONSTER: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'put',
+        url: process.env.REACT_APP_BASE_URL_API + `api/monster/edit/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        data: action.values     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getMonsterSuccess(response.data));
+        setSuccessToast('Modification effectuée');
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case DELETE_MONSTER: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'delete',
+        url: process.env.REACT_APP_BASE_URL_API + `api/monster/delete/${action.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        setSuccessToast('Suppression effectuée');
+        store.dispatch(editScenarioSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
 
     default:
       next(action);

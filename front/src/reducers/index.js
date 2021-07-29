@@ -5,6 +5,7 @@ import user from './user';
 import character from './character';
 import scenario from './scenario';
 import place from './place';
+import monster from './monster';
 import other from './other';
 
 import { 
@@ -17,6 +18,7 @@ const appReducer = combineReducers({
   character,
   scenario,
   place,
+  monster,
   other,
 });
 

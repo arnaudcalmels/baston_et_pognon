@@ -30,4 +30,14 @@ class GameRepository extends ServiceEntityRepository
             ->getResult(Query::HYDRATE_SINGLE_SCALAR)
         ;
     }
+
+    public function findPlayablesGames()
+    {
+        return $this->createQueryBuilder('g')
+            ->where('g.finishedAt IS NULL')
+            ->andWhere('g.waitingPlayers = true')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

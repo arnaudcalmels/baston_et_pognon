@@ -167,3 +167,10 @@ api_monster_delete:
     controller: App\Controller\MonsterController::delete
     requirements:
         id: '\d+'
+
+# Games
+api_playables_games:
+    path: api/games
+    methods: [GET]
+    controller: App\Controller\GameController::indexPlayables
+    

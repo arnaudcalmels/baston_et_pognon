@@ -51,6 +51,11 @@ class Game
      */
     private $characters;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $waitingPlayers;
+
     public function __construct()
     {
         $this->characters = new ArrayCollection();
@@ -144,6 +149,18 @@ class Game
         if ($this->characters->removeElement($character)) {
             $character->removeGame($this);
         }
+
+        return $this;
+    }
+
+    public function getWaitingPlayers(): ?bool
+    {
+        return $this->waitingPlayers;
+    }
+
+    public function setWaitingPlayers(?bool $waitingPlayers): self
+    {
+        $this->waitingPlayers = $waitingPlayers;
 
         return $this;
     }

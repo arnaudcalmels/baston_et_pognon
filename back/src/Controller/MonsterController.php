@@ -93,7 +93,7 @@ class MonsterController extends AbstractController
      * @param ValidatorInterface $validator
      * @return JsonResponse
      */
-    public function edit(Request $request, Monster $monster = null, int $id, MonsterValidator $monsterValidator): JsonResponse
+    public function edit(Request $request, Monster $monster = null, int $id, MonsterValidator $monsterValidator)
     {
         if (!$monster) {
 

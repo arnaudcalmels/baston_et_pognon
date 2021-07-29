@@ -84,25 +84,28 @@ class MonsterValidator extends ObjectValidator
                             new Assert\Count(['min' => 1]),
                             new Assert\All([
                                 new Assert\Collection([
-                                    'damages' => [
-                                        new Assert\NotNull(),
-                                        new Assert\Positive(),
-                                    ],
-                                    'distance' => [
-                                        new Assert\NotNull(),
-                                        new Assert\Type('bool'),
-                                    ],
-                                    'frequency' => [
-                                        new Assert\NotNull(),
-                                        new Assert\Positive(),
-                                    ],
-                                    'heal' => [
-                                        new Assert\NotNull(),
-                                        new Assert\Type('bool'),
-                                    ],
-                                    'isSpecial' => [
-                                        new Assert\NotNull(),
-                                        new Assert\Type('bool'),
+                                    'allowExtraFields' => true,
+                                    'fields' => [
+                                        'damages' => [
+                                            new Assert\NotNull(),
+                                            new Assert\Positive(),
+                                        ],
+                                        'distance' => [
+                                            new Assert\NotNull(),
+                                            new Assert\Type('bool'),
+                                        ],
+                                        'frequency' => [
+                                            new Assert\NotNull(),
+                                            new Assert\Positive(),
+                                        ],
+                                        'heal' => [
+                                            new Assert\NotNull(),
+                                            new Assert\Type('bool'),
+                                        ],
+                                        'isSpecial' => [
+                                            new Assert\NotNull(),
+                                            new Assert\Type('bool'),
+                                        ],
                                     ],
                                 ]),
                             ]),

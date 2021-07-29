@@ -173,4 +173,15 @@ api_playables_games:
     path: api/games
     methods: [GET]
     controller: App\Controller\GameController::indexPlayables
-    
+
+api_game_new:
+    path: api/game/new
+    methods: [POST]
+    controller: App\Controller\GameController::new
+
+api_game_end_session:
+    path: api/game/endsession/{id}
+    methods: [GET]
+    controller: App\Controller\GameController::endSession
+    requirements:
+        id: '\d+'

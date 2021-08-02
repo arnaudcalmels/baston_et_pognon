@@ -448,6 +448,7 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Modification effectuée');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -471,6 +472,7 @@ import {
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
         store.dispatch(editScenarioSuccess(response.data));
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

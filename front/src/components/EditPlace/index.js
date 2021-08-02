@@ -32,12 +32,12 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    editPlace(placeId, JSON.stringify(values, null, 2));
-    closeModal();
+    editPlace(placeId, JSON.stringify(values, null, 2), closeModal);
+    
   };
 
-  const handleDeletePlace = (id, scenarioId) => {
-    deletePlace(id, scenarioId);
+  const handleDeletePlace = (id) => {
+    deletePlace(id, closeModal);
   }
 
   return (

@@ -31,13 +31,15 @@ export const getPlaceSuccess = (data) => ({
   data,
 });
 
-export const editPlace = (id, values) => ({
+export const editPlace = (id, values, closeFunction) => ({
   type: EDIT_PLACE,
   id,
-  values
+  values,
+  closeFunction
 });
 
-export const deletePlace = (id) => ({
+export const deletePlace = (id, closeFunction) => ({
   type: DELETE_PLACE,
   id,
+  closeFunction
 });

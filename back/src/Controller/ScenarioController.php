@@ -237,6 +237,23 @@ class ScenarioController extends AbstractController
                     'monsters' => [
                         'id',
                         'name',
+                        'isBoss',
+                        'hasBooster',
+                        'level',
+                        'picture',
+                        'caracteristics' => [
+                            'id',
+                            'armor',
+                            'lifePoints',
+                            'actions' => [
+                                'id',
+                                'damages',
+                                'distance',
+                                'frequency',
+                                'heal',
+                                'isSpecial',
+                            ],
+                        ],  
                     ],
                 ],
                 'wanderingMonsters' => [
@@ -244,7 +261,24 @@ class ScenarioController extends AbstractController
                     'monsters' => [
                         'id',
                         'name',
-                    ]
+                        'isBoss',
+                        'hasBooster',
+                        'level',
+                        'picture',
+                        'caracteristics' => [
+                            'id',
+                            'armor',
+                            'lifePoints',
+                            'actions' => [
+                                'id',
+                                'damages',
+                                'distance',
+                                'frequency',
+                                'heal',
+                                'isSpecial',
+                            ],
+                        ],  
+                    ],
                 ]
             ]
         ]);

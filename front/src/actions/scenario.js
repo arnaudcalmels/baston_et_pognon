@@ -22,11 +22,11 @@ export const newScenarioSuccess = (data) => ({
   data
 });
 
-export const editScenario = (id, values) => ({
+export const editScenario = (id, values, callback) => ({
   type: EDIT_SCENARIO,
   id,
   values,
-  
+  callback
 });
 
 export const editScenarioSuccess = (data) => ({

@@ -325,6 +325,7 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Modification effectuée');
+        action.callback();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

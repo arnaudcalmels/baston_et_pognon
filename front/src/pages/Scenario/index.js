@@ -48,8 +48,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    editScenario(scenario.id, JSON.stringify(values, null, 2));
-    showForm();
+    editScenario(scenario.id, JSON.stringify(values, null, 2), showForm);
   };
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false); 
@@ -147,6 +146,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
             description: scenario.description,
             maxPlayers: scenario.maxPlayers,
             characterLevel: scenario.characterLevel,
+            picture: null
           }}
           validate={values => {
             const errors = {};

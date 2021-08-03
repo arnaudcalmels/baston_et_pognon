@@ -240,6 +240,7 @@ class CharactersController extends AbstractController
                         'name',
                     ],
                 ],
+                'picture',
             ]
         ]);
     }

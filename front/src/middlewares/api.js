@@ -107,6 +107,8 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
+        action.logout();
+        action.redirect('/');
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -155,6 +157,7 @@ import {
       axios(config)
       .then (() => { 
         setSuccessToast('Modification effectuée !');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

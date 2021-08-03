@@ -23,14 +23,17 @@ export const editProfileSuccess = (data) => ({
   data
 });
 
-export const deleteProfile = (id) => ({
+export const deleteProfile = (id, logout, redirect) => ({
   type: DELETE_PROFILE,
-  id
+  id,
+  logout, 
+  redirect
 });
 
-export const changePassword = (values) => ({
+export const changePassword = (values, closeFunction) => ({
   type: CHANGE_PASSWORD,
-  values
+  values,
+  closeFunction
 });
 
 export const changePasswordSuccess = (data) => ({

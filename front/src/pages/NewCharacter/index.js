@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useHistory } from 'react-router-dom';
+import FileBase64 from 'react-file-base64';
 
 import Button from '../../components/Button';
 
@@ -14,6 +15,13 @@ import styles from './newCharacter.module.scss';
 const NewCharacter = ({ newCharacter }) => {
   let history = useHistory(); 
 
+  let [ picture, setPicture ] = useState();
+
+  const getFile = (props, file) => {
+    props.setFieldValue("picture", file);
+    setPicture(file);
+  };
+
   const backToList = () => {
     history.push('/personnage');
   };
@@ -25,18 +33,6 @@ const NewCharacter = ({ newCharacter }) => {
 
   return (
     <div className={styles['main']}>
-      <div className={styles['overlay-image']}>
-        <img src="https://cdn.pixabay.com/photo/2017/07/14/16/48/skeleton-2504341__340.jpg" alt="photo_perso"/>  
-        <div className={styles['hover']}>
-          <FontAwesomeIcon 
-            onClick={() => console.log('ajouter photo')} 
-            icon={faPlusCircle} 
-            size="2x" 
-            style={{cursor: 'pointer'}}
-            title="Ajouter une image"
-          />
-        </div>
-      </div>
 
       <h2 className={styles['name']}>{'Créer un nouveau personnage'}</h2>
 
@@ -47,6 +43,7 @@ const NewCharacter = ({ newCharacter }) => {
           sex: '',
           professionId: '',
           raceId: '',
+          picture: null
           }}
           validate={values => {
             const errors = {};
@@ -57,57 +54,74 @@ const NewCharacter = ({ newCharacter }) => {
           }}
           onSubmit={(values) => handleSubmit(values)}
         >
-          <Form className={styles['form']}>
-            {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
+        {
+          (props) => (
+            <Form className={styles['form']}>
+              {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
 
-            <label htmlFor="name" className={styles['form_label']}>Nom :</label>
-            <Field
-              className={styles['form_field']}
-              id="name"
-              name="name"
-              type="text"
-            />
+              <label htmlFor="name" className={styles['form_label']}>Nom :</label>
+              <Field
+                className={styles['form_field']}
+                id="name"
+                name="name"
+                type="text"
+              />
 
-            <div className={styles['form_label']}>Sexe :</div>
-            <div role="group" className={styles['form_group']}>
-              <label className={styles['form_radio']}>
-                <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
-                M
-              </label>
-              <label className={styles['form_radio']}>
-                <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
-                F
-              </label>
-            </div>
+              <div className={styles['form_label']}>Sexe :</div>
+              <div role="group" className={styles['form_group']}>
+                <label className={styles['form_radio']}>
+                  <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
+                  M
+                </label>
+                <label className={styles['form_radio']}>
+                  <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
+                  F
+                </label>
+              </div>
 
-            <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
-            <Field
-              className={styles['form_field']}
-              id="professionId"
-              name="professionId"
-              type="select"
-            />
-              {/* <option value='1'>Guerrier</option> */}
+              <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
+              <Field
+                className={styles['form_field']}
+                id="professionId"
+                name="professionId"
+                type="select"
+              />
+                {/* <option value='1'>Guerrier</option> */}
 
-            <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
-            <Field
-              className={styles['form_field']}
-              id="raceId"
-              name="raceId"
-              type="select"
-            />
-              {/* <option value='1'>Humain</option> */}
+              <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
+              <Field
+                className={styles['form_field']}
+                id="raceId"
+                name="raceId"
+                type="select"
+              />
+                {/* <option value='1'>Humain</option> */}
 
-          <span className={styles['info']}>Tous les champs sont obligatoires.</span>
+            <span className={styles['info']}>Tous les champs sont obligatoires.</span>
 
-            <Button
-              id={styles['submit_button']}
-              type="submit"
-              color='#eee'
-              children='Valider'
-            />
-        
-          </Form>
+            <div className={`${styles['newCharacter_picture']} ${styles['form_item']}`}>
+                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+                <FileBase64
+                  multiple={false}
+                  onDone={getFile.bind(this, props)}
+                />
+              </div>
+
+              {/* eslint-disable-next-line */}
+              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+
+
+              <Button
+                id={styles['submit_button']}
+                type="submit"
+                color='#eee'
+                children='Valider'
+              />
+          
+            </Form>
+
+          )
+        }
         </Formik>
 
         <Button

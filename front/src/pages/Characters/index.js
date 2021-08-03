@@ -50,7 +50,7 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
           {
             characters.map(character => (
               <Card 
-                image={'https://cdn.pixabay.com/photo/2016/12/07/17/44/man-1889980__340.png'}
+                image={character.picture?.base64}
                 name={character.name}
                 subtitle={character.profession.name}
                 level={`Niveau ${character.level}`}

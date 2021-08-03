@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
+import FileBase64 from 'react-file-base64';
 
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
@@ -23,7 +24,13 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
     window.scrollTo(0, 0);
   }
   
+  let [newPicture, setNewPicture] = useState();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
+
+  const getFile = (props, file) => {
+    props.setFieldValue("picture", file);
+    setNewPicture(file);
+  };
 
   const handleDeleteCharacter = (id) => {
     deleteCharacter(id);
@@ -39,7 +46,7 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
     <div className={styles['main']}>
 
       <div className={styles['overlay-image']}>
-        <img src="https://cdn.pixabay.com/photo/2016/12/07/17/44/man-1889980__340.png" alt="photo_perso"/>  
+        <img src={character.picture?.base64} alt="photo_perso"/>  
         <div className={styles['hover']}>
           <FontAwesomeIcon 
             onClick={() => console.log('modifier photo')} 
@@ -77,6 +84,7 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
           sex: character.sex,
           professionId: character.profession.id,
           raceId: character.race.id,
+          picture: character.picture?.base64,
           }}
           validate={values => {
             const errors = {};
@@ -87,57 +95,78 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
           }}
           onSubmit={(values) => handleSubmit(values)}
         >
-          <Form className={styles['form']}>
-            {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
+        {
+          (props) => (
+            <Form className={styles['form']}>
+              {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
 
-            <label htmlFor="name" className={styles['form_label']}>Nom :</label>
-            <Field
-              className={styles['form_field']}
-              id="name"
-              name="name"
-              type="text"
-            />
+              <label htmlFor="name" className={styles['form_label']}>Nom :</label>
+              <Field
+                className={styles['form_field']}
+                id="name"
+                name="name"
+                type="text"
+              />
 
-            <div className={styles['form_label']}>Sexe :</div>
-            <div role="group" className={styles['form_group']}>
-              <label className={styles['form_radio']}>
-                <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
-                M
-              </label>
-              <label className={styles['form_radio']}>
-                <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
-                F
-              </label>
+              <div className={styles['form_label']}>Sexe :</div>
+              <div role="group" className={styles['form_group']}>
+                <label className={styles['form_radio']}>
+                  <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
+                  M
+                </label>
+                <label className={styles['form_radio']}>
+                  <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
+                  F
+                </label>
+              </div>
+
+              <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
+              <Field
+                className={styles['form_field']}
+                id="professionId"
+                name="professionId"
+                type="select"
+              />
+                {/* <option></option> */}
+
+              <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
+              <Field
+                className={styles['form_field']}
+                id="raceId"
+                name="raceId"
+                type="select"
+              />
+                {/* <option></option> */}
+
+            <span className={styles['info']}>Tous les champs sont obligatoires.</span>
+
+            <div className={`${styles['newCharacter_picture']} ${styles['form_item']}`}>
+              <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+              <FileBase64
+                multiple={false}
+                onDone={getFile.bind(this, props)}
+              />
             </div>
 
-            <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
-            <Field
-              className={styles['form_field']}
-              id="professionId"
-              name="professionId"
-              type="select"
-            />
-              {/* <option></option> */}
+              {
+                newPicture ?
+                  <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                  : 
+                  // eslint-disable-next-line
+                  <img id={styles['image_preview']} src={character.picture?.base64} alt={character.picture?.name}/>
+              }
 
-            <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
-            <Field
-              className={styles['form_field']}
-              id="raceId"
-              name="raceId"
-              type="select"
-            />
-              {/* <option></option> */}
+              <Button
+                id={styles['submit_button']}
+                type="submit"
+                color='#eee'
+                children='Valider'
+              />
+          
+            </Form>
 
-          <span className={styles['info']}>Tous les champs sont obligatoires.</span>
-
-            <Button
-              id={styles['submit_button']}
-              type="submit"
-              color='#eee'
-              children='Valider'
-            />
-        
-          </Form>
+          )
+        }
         </Formik>
         <Button
           id={styles['cancel_button']}

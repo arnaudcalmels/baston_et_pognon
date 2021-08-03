@@ -64,7 +64,7 @@ class UserValidator extends ObjectValidator
                         new Assert\Type('string'),
                     ],
                     'avatar' => [
-                        new Assert\Type('string'),
+                        new Assert\Type('array'),
                     ],
                 ],
             ]),

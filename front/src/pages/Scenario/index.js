@@ -16,7 +16,7 @@ import MonsterGroup from '../../components/MonsterGroup';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpider, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './scenario.module.scss';
@@ -55,10 +55,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
   const [openAddPlaceModal, setOpenAddPlaceModal] = useState(false);
   const [openEditPlaceModal, setOpenEditPlaceModal] = useState(false);
   const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
-  const [openWanderingMonstersGroupModal, setOpenWanderingMonstersGroupModal] = useState(false);
   const [placeId, setPlaceId] = useState();
-  const [groupId, setGroupId] = useState();
-  const [monsters, setMonsters] = useState();
 
   const handleDeleteScenario = (id) => {
     deleteScenario(id);
@@ -107,18 +104,10 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
           {
             scenario.wanderingMonsters.length > 0 ?
             scenario.wanderingMonsters.map(group => (
-              <FontAwesomeIcon
-                className={styles['monster_group']}
-                icon={faSpider} 
-                size="2x" 
-                style={{cursor: 'pointer'}}
-                title={`${group.monsters.length} monstre(s)`}
+              <MonsterGroup 
                 key={group.id}
-                onClick={() => {
-                  setOpenWanderingMonstersGroupModal(true);
-                  setGroupId(group.id);
-                  setMonsters(group.monsters);
-                }}
+                monsters={group.monsters}
+                wanderGroupId={group.id}
               />
             ))
             : 
@@ -222,13 +211,10 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
                 {
                   scenario.wanderingMonsters.length > 0 ?
                   scenario.wanderingMonsters.map(group => (
-                    <FontAwesomeIcon
-                      className={styles['monster_group']}
-                      onClick={() => console.log('monstres')} 
-                      icon={faSpider} 
-                      size="2x" 
-                      style={{cursor: 'pointer'}}
-                      title={`${group.monsters.length} monstre(s)`}
+                    <MonsterGroup 
+                      key={group.id}
+                      monsters={group.monsters}
+                      wanderGroupId={group.id}
                     />
                   ))
                   : 
@@ -377,22 +363,6 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
             closeModal={() => {
               setOpenAddMonsterModal(false)
             }}
-          />}
-      />
-
-      <Modal 
-        isOpen={openWanderingMonstersGroupModal}
-        closeModal={() => {
-          setOpenWanderingMonstersGroupModal(false)
-        }}
-        title='Détail du groupe de monstres'
-        children={
-          <MonsterGroup 
-            closeModal={() => {
-              setOpenWanderingMonstersGroupModal(false)
-            }}
-            wanderGroupId={groupId}
-            monsters={monsters}
           />}
       />
 

@@ -485,7 +485,6 @@ import {
 
     case NEW_MONSTER: {
       const { auth: { token } } = store.getState();
-      console.log(action.values);
       const config = {
         method: 'post',
         url: process.env.REACT_APP_BASE_URL_API + `api/monster/new/${action.slug}`,
@@ -500,6 +499,7 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Monstre créé !');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -511,7 +511,6 @@ import {
     case GET_MONSTER: {
       store.dispatch(setLoadingTrue());
       const { auth: { token } } = store.getState();
-      console.log(action.values);
       const config = {
         method: 'get',
         url: process.env.REACT_APP_BASE_URL_API + `api/monster/${action.id}`,
@@ -525,7 +524,6 @@ import {
       .then ((response) => { 
         store.dispatch(getMonsterSuccess(response.data));
         store.dispatch(setLoadingFalse());
-        console.log(response.data);
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -548,8 +546,9 @@ import {
 
       axios(config)
       .then ((response) => { 
-        store.dispatch(getMonsterSuccess(response.data));
+        store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Modification effectuée');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -573,6 +572,7 @@ import {
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
         store.dispatch(editScenarioSuccess(response.data));
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

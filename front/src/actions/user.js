@@ -11,10 +11,11 @@ export const getProfileSuccess = (data) => ({
   data
 });
 
-export const editProfile = (id, values) => ({
+export const editProfile = (id, values, closeFunction) => ({
   type: EDIT_PROFILE,
   id,
-  values
+  values,
+  closeFunction
 });
 
 export const editProfileSuccess = (data) => ({

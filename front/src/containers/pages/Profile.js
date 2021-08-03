@@ -9,13 +9,13 @@ import { logout } from '../../actions/auth';
 const mapStateToProps= (state) => ({
   username: state.user.pseudo,
   email: state.user.email,
-  avatar: state.user.avatar,
+  avatar: state.user.avatar?.base64,
   id: state.user.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  editProfile: (id, values) => {
-    dispatch(editProfile(id, values));
+  editProfile: (id, values, closeFunction) => {
+    dispatch(editProfile(id, values, closeFunction));
   },
   deleteProfile: (id) => {
     dispatch(deleteProfile(id));

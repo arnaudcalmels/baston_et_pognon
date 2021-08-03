@@ -129,9 +129,9 @@ import {
 
       axios(config)
       .then ((response) => { 
-        console.log(response);
         store.dispatch(editProfileSuccess(response.data));
         setSuccessToast('Modification effectuée !');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

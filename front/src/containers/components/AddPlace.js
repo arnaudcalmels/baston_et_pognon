@@ -12,8 +12,8 @@ const mapDispatchToProps = (dispatch) => ({
   getCategories: () => {
     dispatch(getCategories());
   },
-  newPlace: (data) => {
-    dispatch(newPlace(data));
+  newPlace: (data, closeFunction) => {
+    dispatch(newPlace(data, closeFunction));
   },
 });
 

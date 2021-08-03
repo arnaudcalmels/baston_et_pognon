@@ -23,8 +23,7 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, openMonsterModal, getCateg
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    newPlace(JSON.stringify(values, null, 2));
-    closeModal();
+    newPlace(JSON.stringify(values, null, 2), closeModal);
   };
 
   return (

@@ -398,6 +398,7 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Lieu créé !');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

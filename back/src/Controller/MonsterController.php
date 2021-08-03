@@ -62,9 +62,37 @@ class MonsterController extends AbstractController
 
             $monster = new Monster();
 
-            $this->setMonsterAndSubObjects($monster, $requestContent, $em);
-
             $em->persist($monster);
+
+            $availableParentEntity = [
+                'scenario' => Scenario::class,
+                'place' => Place::class,
+                'wanderGroup' => WanderingMonsterGroup::class,
+            ];
+
+            $repo = $this->getDoctrine()->getRepository($availableParentEntity[$slug]);
+
+            switch($slug) {
+                case 'place':
+                    $place = $repo->find($requestContent->placeId);
+                    $monster->setPlace($place);
+                    break;
+    
+                case 'scenario':
+                    $scenario = $repo->find($requestContent->scenarioId);
+                    $wmg = new WanderingMonsterGroup();
+                    $em->persist($wmg);
+                    $scenario->addWanderingMonster($wmg);
+                    $monster->setWanderingMonsterGroup($wmg);
+                    break;
+    
+                case 'wanderGroup':
+                    $wmg = $repo->find($requestContent->wanderGroupId);
+                    $monster->setWanderingMonsterGroup($wmg);
+                    break;
+            }
+
+            $this->setMonsterAndSubObjects($monster, $requestContent, $em);
 
             $errorsObject = $monsterValidator->validateObject($monster);
 
@@ -148,7 +176,7 @@ class MonsterController extends AbstractController
      * @param integer $id
      * @return JsonResponse
      */
-    public function delete(Request $request, Monster $monster = null, int $id): JsonResponse
+    public function delete(Request $request, Monster $monster = null, int $id)
     {
         if (!$monster) {
 
@@ -166,11 +194,22 @@ class MonsterController extends AbstractController
 
             return new JsonResponse($message, $statusCode);
         } 
-        
+
+        // Check if this monster is in WanderingMonsterGroup
+        $wanderingMonsterGroup = $monster->getWanderingMonsterGroup();
+        $hasWanderingMonsterGroup = $wanderingMonsterGroup ? true : false;
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($monster);
-        $entityManager->flush();  
+        $entityManager->flush();
+
+        // if WanderingMonsterGroup has no more children remove it
+        if ($hasWanderingMonsterGroup && count($wanderingMonsterGroup->getMonsters()) === 0) {
+            $entityManager->remove($wanderingMonsterGroup);
+            $entityManager->flush();
+        }
         
+
         $scenarioId = $scenario->getId();
 
         return $this->redirectToRoute('api_scenario', ['id' => $scenarioId]);
@@ -234,8 +273,13 @@ class MonsterController extends AbstractController
         $monster->setIsBoss($datasObject->isBoss);
         $monster->setHasBooster($datasObject->hasBooster);
         $monster->setLevel($datasObject->level);
-        $monster->setPicture($datasObject->picture);
         $monster->setCaracteristics($caracteristicsObject);
+
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers);
+    
+        $picture = $serializer->normalize($datasObject->picture);
+        $monster->setPicture($picture);
     }
 
     /**

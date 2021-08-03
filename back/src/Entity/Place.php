@@ -55,7 +55,7 @@ class Place
     private $scenario;
 
     /**
-     * @ORM\OneToMany(targetEntity=Monster::class, mappedBy="place")
+     * @ORM\OneToMany(targetEntity=Monster::class, mappedBy="place", orphanRemoval=true, cascade={"remove"})
      */
     private $monsters;
 

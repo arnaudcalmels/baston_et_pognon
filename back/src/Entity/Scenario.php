@@ -49,12 +49,12 @@ class Scenario
     private $picture;
 
     /**
-     * @ORM\OneToMany(targetEntity=Place::class, mappedBy="scenario")
+     * @ORM\OneToMany(targetEntity=Place::class, mappedBy="scenario", cascade={"remove"})
      */
     private $places;
 
     /**
-     * @ORM\OneToMany(targetEntity=WanderingMonsterGroup::class, mappedBy="scenario", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=WanderingMonsterGroup::class, mappedBy="scenario", orphanRemoval=true, cascade={"remove"})
      */
     private $wanderingMonsters;
 

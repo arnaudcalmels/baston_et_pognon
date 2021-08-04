@@ -196,6 +196,11 @@ class CharactersController extends AbstractController
             ->setProfession($profession)
         ;
 
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers);
+        $picture = $serializer->normalize($datasObject->picture);
+        $character->setPicture($picture);
+
         if (!$character->getOwner()) {
             $character->setOwner($this->getUser());
         }

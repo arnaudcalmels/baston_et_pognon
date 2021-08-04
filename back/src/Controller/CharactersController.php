@@ -233,6 +233,19 @@ class CharactersController extends AbstractController
                 'profession' => [
                     'id',
                     'name',
+                    'caracteristics' => [
+                        'id',
+                        'armor',
+                        'lifePoints',
+                        'actions' => [
+                            'id',
+                            'damages',
+                            'distance',
+                            'frequency',
+                            'isSpecial',
+                            'heal',
+                        ],
+                    ],
                 ],
                 'race' => [
                     'id',

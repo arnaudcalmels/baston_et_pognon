@@ -230,6 +230,7 @@ import {
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
         store.dispatch(getCharacters());
+        action.redirect('/personnage');
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -254,6 +255,8 @@ import {
       .then ((response) => { 
         store.dispatch(editCharacterSuccess(response.data));
         setSuccessToast('Modification effectuée');
+        action.closeFunction();
+        action.redirect(`/personnage/${response.data.id}`);
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

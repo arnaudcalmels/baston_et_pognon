@@ -23,15 +23,18 @@ export const newCharacterSuccess = (data) => ({
 });
 
 
-export const deleteCharacter = (id) => ({
+export const deleteCharacter = (id, redirect) => ({
   type: DELETE_CHARACTER,
-  id
+  id,
+  redirect
 });
 
-export const editCharacter = (id, values) => ({
+export const editCharacter = (id, values, closeFunction, redirect) => ({
   type: EDIT_CHARACTER,
   id, 
-  values
+  values,
+  closeFunction,
+  redirect
 });
 
 export const editCharacterSuccess = (data) => ({

@@ -13,13 +13,11 @@ const mapStateToProps= (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  editCharacter: (id, values) => {
-    dispatch(editCharacter(id, values));
-    ownProps.history.push(`/personnage/${id}`);
+  editCharacter: (id, values, closeFunction) => {
+    dispatch(editCharacter(id, values, closeFunction, ownProps.history.push));
   },
   deleteCharacter: (id) => {
-    dispatch(deleteCharacter(id));
-    ownProps.history.push('/personnage');
+    dispatch(deleteCharacter(id, ownProps.history.push));
   },
 });
 

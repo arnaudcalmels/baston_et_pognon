@@ -22,7 +22,7 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
     identity.classList.toggle(styles['hide_identity']);
     
     window.scrollTo(0, 0);
-  }
+  };
   
   let [newPicture, setNewPicture] = useState();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
@@ -34,12 +34,11 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
 
   const handleDeleteCharacter = (id) => {
     deleteCharacter(id);
-  }
+  };
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    editCharacter(character.id, JSON.stringify(values, null, 2));
-    showForm();
+    editCharacter(character.id, JSON.stringify(values, null, 2), showForm);
   };
 
   return (

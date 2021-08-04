@@ -202,21 +202,38 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
           <tr className={styles['table_title']}>
             <td>Niveau {character.level}</td>
           </tr>
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Attaque normale :</td>
-            <td className={styles['table_cell-value']}>10</td>
-          </tr>
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Attaque spéciale :</td>
-            <td className={styles['table_cell-value']}>20</td>
-          </tr>
+          {
+            character.profession?.caracteristics?.actions.map(action => (
+              action.isSpecial && !action.heal ?
+                <tr className={styles['table_row']}>
+                  <td className={styles['table_cell-name']}>Attaque spéciale :</td>
+                  <td className={styles['table_cell-value']}>{action.damages}</td>
+                </tr>
+              : action.isSpecial && action.heal ?
+                <tr className={styles['table_row']}>
+                  <td className={styles['table_cell-name']}>Soin spécial :</td>
+                  <td className={styles['table_cell-value']}>{action.damages}</td>
+                </tr>
+              : action.heal ?
+                <tr className={styles['table_row']}>
+                  <td className={styles['table_cell-name']}>Soin :</td>
+                  <td className={styles['table_cell-value']}>{action.damages}</td>
+                </tr>
+              :
+              <tr className={styles['table_row']}>
+                <td className={styles['table_cell-name']}>Attaque normale :</td>
+                <td className={styles['table_cell-value']}>{action.damages}</td>
+              </tr>
+            ))
+          }
+          
           <tr className={styles['table_row']}>
             <td className={styles['table_cell-name']}>PV :</td>
-            <td className={styles['table_cell-value']}>100</td>
+            <td className={styles['table_cell-value']}>{character.profession?.caracteristics?.lifePoints}</td>
           </tr>
           <tr className={styles['table_row']}>
             <td className={styles['table_cell-name']}>Armure :</td>
-            <td className={styles['table_cell-value']}>25</td>
+            <td className={styles['table_cell-value']}>{character.profession?.caracteristics?.armor}</td>
           </tr>
         </tbody>
       </table>

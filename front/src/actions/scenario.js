@@ -22,11 +22,12 @@ export const newScenarioSuccess = (data) => ({
   data
 });
 
-export const editScenario = (id, values, callback) => ({
+export const editScenario = (id, values, closeFunction, redirect) => ({
   type: EDIT_SCENARIO,
   id,
   values,
-  callback
+  closeFunction,
+  redirect
 });
 
 export const editScenarioSuccess = (data) => ({
@@ -34,7 +35,8 @@ export const editScenarioSuccess = (data) => ({
   data,
 });
 
-export const deleteScenario = (id) => ({
+export const deleteScenario = (id, redirect) => ({
   type: DELETE_SCENARIO,
   id,
+  redirect
 });

@@ -5,8 +5,8 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
-import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters, getProfessionsSuccess, getRacesSuccess } from '../actions/character';
-import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, getScenarios,  } from '../actions/scenario';
+import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getProfessionsSuccess, getRacesSuccess } from '../actions/character';
+import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, } from '../actions/scenario';
 import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
 import { getMonsterSuccess } from '../actions/monster';
 import { setLoadingTrue, setLoadingFalse } from '../actions/other';
@@ -273,7 +273,6 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
-        store.dispatch(getCharacters());
         action.redirect('/personnage');
       })
       .catch ((error) => {
@@ -375,7 +374,9 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Modification effectuée');
-        action.callback();
+        action.closeFunction();
+        action.redirect(`/scenario/${response.data.id}`);
+
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -398,7 +399,7 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
-        store.dispatch(getScenarios());
+        action.redirect('/scenario');
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

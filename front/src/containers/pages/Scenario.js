@@ -13,13 +13,11 @@ const mapStateToProps= (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  editScenario: (id, values, callback) => {
-    dispatch(editScenario(id, values, callback));
-    ownProps.history.push(`/scenario/${id}`);
+  editScenario: (id, values, closeFunction) => {
+    dispatch(editScenario(id, values, closeFunction, ownProps.history.push));
   },
   deleteScenario: (id) => {
-    dispatch(deleteScenario(id));
-    ownProps.history.push('/scenario');
+    dispatch(deleteScenario(id, ownProps.history.push));
   },
 });
 

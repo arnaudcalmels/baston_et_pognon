@@ -22,12 +22,12 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
   };
 
   useEffect(() => {
-    if (isLoggedIn && characters.length === 0) {
+    if (isLoggedIn ) {
       getCharacters();
     }
   }, 
   // eslint-disable-next-line
-  [isLoggedIn]);
+  []);
 
   return (
     <div className={styles['main']}>

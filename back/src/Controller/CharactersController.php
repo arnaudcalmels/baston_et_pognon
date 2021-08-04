@@ -196,6 +196,11 @@ class CharactersController extends AbstractController
             ->setProfession($profession)
         ;
 
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers);
+        $picture = $serializer->normalize($datasObject->picture);
+        $character->setPicture($picture);
+
         if (!$character->getOwner()) {
             $character->setOwner($this->getUser());
         }
@@ -228,6 +233,19 @@ class CharactersController extends AbstractController
                 'profession' => [
                     'id',
                     'name',
+                    'caracteristics' => [
+                        'id',
+                        'armor',
+                        'lifePoints',
+                        'actions' => [
+                            'id',
+                            'damages',
+                            'distance',
+                            'frequency',
+                            'isSpecial',
+                            'heal',
+                        ],
+                    ],
                 ],
                 'race' => [
                     'id',
@@ -240,6 +258,7 @@ class CharactersController extends AbstractController
                         'name',
                     ],
                 ],
+                'picture',
             ]
         ]);
     }

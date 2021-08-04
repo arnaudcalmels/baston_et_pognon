@@ -20,7 +20,7 @@ class WanderingMonsterGroup
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Monster::class, mappedBy="wanderingMonsterGroup")
+     * @ORM\OneToMany(targetEntity=Monster::class, mappedBy="wanderingMonsterGroup", orphanRemoval=true, cascade={"remove"})
      */
     private $monsters;
 

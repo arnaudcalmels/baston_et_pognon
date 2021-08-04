@@ -7,6 +7,7 @@ use App\Validator\UserValidator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -105,11 +106,13 @@ class UserController extends AbstractController
                 $data = $errors;
                 $statusCode = 403;
             } else {
-                $requestContent = json_decode($request->getContent());
+                $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+                $requestContent = $serializer->decode($request->getContent(), 'json');
 
-                $user->setEmail($requestContent->email);
-                $user->setPseudo($requestContent->pseudo);
-                $user->setAvatar($requestContent->avatar);
+                $user->setEmail($requestContent['email']);
+                $user->setPseudo($requestContent['pseudo']);
+
+                $user->setAvatar($requestContent['avatar']);
 
                 $errorsObject = $userValidator->validateObject($user);
 

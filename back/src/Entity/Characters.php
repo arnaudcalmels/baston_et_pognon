@@ -70,6 +70,11 @@ class Characters
      */
     private $games;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $picture = [];
+
     public function __construct()
     {
         $this->games = new ArrayCollection();
@@ -184,6 +189,18 @@ class Characters
     public function removeGame(Game $game): self
     {
         $this->games->removeElement($game);
+
+        return $this;
+    }
+
+    public function getPicture(): ?array
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?array $picture): self
+    {
+        $this->picture = $picture;
 
         return $this;
     }

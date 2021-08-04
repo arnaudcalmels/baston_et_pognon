@@ -54,7 +54,7 @@ const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) =
                 <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
                 : 
                 // eslint-disable-next-line
-                <img id={styles['image_preview']} src={avatar} alt='photo_avatar'/>
+                <img id={styles['image_preview']} src={avatar.base64} alt='photo_avatar'/>
             }
 
             <label htmlFor="pseudo" className={styles['form_label']}>Pseudo :</label>

@@ -186,6 +186,7 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
               handleDeletePlace(place.id, scenarioId);
               setOpenDeleteModal(false);
             }}
+            context='place'
           />}
       />
 

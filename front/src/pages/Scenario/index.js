@@ -314,6 +314,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
               handleDeleteScenario(scenario.id);
               setOpenDeleteModal(false);
             }}
+            context='scenario'
           />}
       />
 

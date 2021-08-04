@@ -23,7 +23,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
     <div className={styles['main']}>
       <img 
         className={styles['avatar']}
-        src={avatar} 
+        src={avatar.base64} 
         alt='photo_avatar'/>
       <h2 className={styles['name']}>{username}</h2>
       <p className={styles['email']}>Email : {email}</p>
@@ -68,6 +68,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
               handleDeleteProfile(id)
               setOpenDeleteModal(false);
             }}
+            context='profile'
           />}
       />
 

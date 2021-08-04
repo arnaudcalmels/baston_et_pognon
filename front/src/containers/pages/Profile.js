@@ -10,7 +10,7 @@ import { logout } from '../../actions/auth';
 const mapStateToProps= (state) => ({
   username: state.user.pseudo,
   email: state.user.email,
-  avatar: state.user.avatar?.base64,
+  avatar: state.user.avatar,
   id: state.user.id,
 });
 

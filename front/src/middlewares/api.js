@@ -5,7 +5,7 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
-import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
+import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters, getProfessionsSuccess, getRacesSuccess } from '../actions/character';
 import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, getScenarios,  } from '../actions/scenario';
 import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
 import { getMonsterSuccess } from '../actions/monster';
@@ -13,7 +13,7 @@ import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE, NEW_MONSTER, GET_MONSTER, EDIT_MONSTER, DELETE_MONSTER
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE, NEW_MONSTER, GET_MONSTER, EDIT_MONSTER, DELETE_MONSTER, GET_PROFESSIONS, GET_RACES
  } from '../actions/types';
 
  
@@ -167,6 +167,50 @@ import {
     }
 
     // ----- CHARACTER -----
+
+    case GET_PROFESSIONS: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/profession',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getProfessionsSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case GET_RACES: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/race',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getRacesSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
 
     case GET_CHARACTERS: {
       const { auth: { token } } = store.getState();

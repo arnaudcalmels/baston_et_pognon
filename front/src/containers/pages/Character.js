@@ -3,13 +3,15 @@ import { withRouter } from 'react-router-dom';
 
 import Character from '../../pages/Character';
 
-import { editCharacter, deleteCharacter } from '../../actions/character';
+import { editCharacter, deleteCharacter, getProfessions, getRaces } from '../../actions/character';
 
 import getItem from '../../utils/getItem';
 
 const mapStateToProps= (state, ownProps) => ({
   characters: state.character.characters,
   character: getItem(ownProps.match.params.id, 'characters'),
+  professions: state.character.professions,
+  races: state.character.races,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -18,6 +20,12 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   deleteCharacter: (id) => {
     dispatch(deleteCharacter(id, ownProps.history.push));
+  },
+  getProfessions: () => {
+    dispatch(getProfessions());
+  },
+  getRaces: () => {
+    dispatch(getRaces());
   },
 });
 

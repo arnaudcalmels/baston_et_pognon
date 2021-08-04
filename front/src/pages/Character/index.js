@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import FileBase64 from 'react-file-base64';
 
@@ -13,7 +13,14 @@ import { faPlusCircle, faRing, faCoins } from '@fortawesome/free-solid-svg-icons
 
 import styles from './character.module.scss';
 
-const Character = ({ deleteCharacter, editCharacter, character }) => { 
+const Character = ({ deleteCharacter, editCharacter, character, getProfessions, getRaces, professions, races }) => { 
+  useEffect(() => {
+    getProfessions();
+    getRaces();
+  },
+  // eslint-disable-next-line
+  []);
+  
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
     const identity = document.getElementById(styles['identity']);
@@ -83,7 +90,7 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
           sex: character.sex,
           professionId: character.profession.id,
           raceId: character.race.id,
-          picture: character.picture?.base64,
+          picture: character.picture,
           }}
           validate={values => {
             const errors = {};
@@ -124,18 +131,33 @@ const Character = ({ deleteCharacter, editCharacter, character }) => {
                 className={styles['form_field']}
                 id="professionId"
                 name="professionId"
-                type="select"
-              />
-                {/* <option></option> */}
+                as="select"
+                onChange={props.handleChange}
+              >
+                <option defaultValue>Sélectionnez une classe</option>
+                  {
+                    professions.map(profession => (
+                      <option value={profession.id}>{profession.name}</option>
+                    ))
+                  }
+                </Field>
+
 
               <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
               <Field
                 className={styles['form_field']}
                 id="raceId"
                 name="raceId"
-                type="select"
-              />
-                {/* <option></option> */}
+                as="select"
+                onChange={props.handleChange}
+              >
+                <option defaultValue>Sélectionnez une race</option>
+                  {
+                    races.map(race => (
+                      <option value={race.id}>{race.name}</option>
+                    ))
+                  }
+              </Field>
 
             <span className={styles['info']}>Tous les champs sont obligatoires.</span>
 
@@ -291,6 +313,10 @@ Character.propTypes = {
   deleteCharacter: PropTypes.func,
   editCharacter: PropTypes.func,
   character: PropTypes.object,
+  getProfessions: PropTypes.func,
+  getRaces: PropTypes.func,
+  professions: PropTypes.arrayOf(PropTypes.object,),
+  races: PropTypes.arrayOf(PropTypes.object,),
 };
 
 export default Character;

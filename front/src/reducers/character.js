@@ -1,9 +1,11 @@
 import {
-  EDIT_CHARACTER_SUCCESS, GET_CHARACTERS_SUCCESS, NEW_CHARACTER_SUCCESS
+  EDIT_CHARACTER_SUCCESS, GET_CHARACTERS_SUCCESS, NEW_CHARACTER_SUCCESS, GET_PROFESSIONS_SUCCESS, GET_RACES_SUCCESS
 } from '../actions/types';
 
 const initialState = {
   characters: [],
+  professions: [],
+  races: [],
 };
 
 const reducer = (oldState = initialState, action) => {
@@ -37,6 +39,18 @@ const reducer = (oldState = initialState, action) => {
       }
       return newState
   
+    case GET_PROFESSIONS_SUCCESS:
+      return {
+        ...oldState,
+        professions: action.data
+      }
+
+    case GET_RACES_SUCCESS:
+      return {
+        ...oldState,
+        races: action.data
+      }
+    
     default: 
       return oldState;
   }

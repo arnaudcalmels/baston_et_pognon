@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useHistory } from 'react-router-dom';
 import FileBase64 from 'react-file-base64';
@@ -7,12 +7,16 @@ import Button from '../../components/Button';
 
 import PropTypes from 'prop-types';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-
 import styles from './newCharacter.module.scss';
 
-const NewCharacter = ({ newCharacter }) => {
+const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, races }) => {
+  useEffect(() => {
+    getProfessions();
+    getRaces();
+  },
+  // eslint-disable-next-line
+  []);
+
   let history = useHistory(); 
 
   let [ picture, setPicture ] = useState();
@@ -84,18 +88,33 @@ const NewCharacter = ({ newCharacter }) => {
                 className={styles['form_field']}
                 id="professionId"
                 name="professionId"
-                type="select"
-              />
-                {/* <option value='1'>Guerrier</option> */}
+                as="select"
+                onChange={props.handleChange}
+              >
+                <option defaultValue>Sélectionnez une classe</option>
+                  {
+                    professions.map(profession => (
+                      <option value={profession.id}>{profession.name}</option>
+                    ))
+                  }
+                </Field>
+
 
               <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
               <Field
                 className={styles['form_field']}
                 id="raceId"
                 name="raceId"
-                type="select"
-              />
-                {/* <option value='1'>Humain</option> */}
+                as="select"
+                onChange={props.handleChange}
+              >
+                <option defaultValue>Sélectionnez une race</option>
+                  {
+                    races.map(race => (
+                      <option value={race.id}>{race.name}</option>
+                    ))
+                  }
+              </Field>
 
             <span className={styles['info']}>Tous les champs sont obligatoires.</span>
 
@@ -141,8 +160,11 @@ const NewCharacter = ({ newCharacter }) => {
 };
 
 NewCharacter.propTypes = {
-  id: PropTypes.number,
   newCharacter: PropTypes.func,
+  getProfessions: PropTypes.func,
+  getRaces: PropTypes.func,
+  professions: PropTypes.arrayOf(PropTypes.object,),
+  races: PropTypes.arrayOf(PropTypes.object,),
 };
 
 export default NewCharacter;

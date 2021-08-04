@@ -10,8 +10,7 @@ import styles from './changePassword.module.scss';
 const ChangePassword = ({ cancelAction, changePassword }) => {
 
   const handleSubmit = (values) => {
-    changePassword(JSON.stringify(values, null, 2));
-    cancelAction();
+    changePassword(JSON.stringify(values, null, 2), cancelAction);
   };
 
   return (

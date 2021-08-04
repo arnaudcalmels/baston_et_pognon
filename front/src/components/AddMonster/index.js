@@ -23,8 +23,7 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    newMonster(slug, JSON.stringify(values, null, 2));
-    closeModal();
+    newMonster(slug, JSON.stringify(values, null, 2), closeModal);
   };
 
   return (

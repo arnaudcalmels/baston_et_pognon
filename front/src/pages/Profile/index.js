@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
@@ -16,19 +15,15 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
   const [openEditProfileModal, setOpenEditProfileModal] = useState(false);  
   const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);  
 
-  let history = useHistory(); 
   const handleDeleteProfile = (id) => {
-    deleteProfile(id);
-    logout();
-    history.push('/');
+    deleteProfile(id, logout);
   }
-
 
   return (
     <div className={styles['main']}>
       <img 
         className={styles['avatar']}
-        src={avatar} 
+        src={avatar.base64} 
         alt='photo_avatar'/>
       <h2 className={styles['name']}>{username}</h2>
       <p className={styles['email']}>Email : {email}</p>
@@ -73,6 +68,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
               handleDeleteProfile(id)
               setOpenDeleteModal(false);
             }}
+            context='profile'
           />}
       />
 
@@ -118,7 +114,6 @@ Profile.propTypes = {
   deleteProfile: PropTypes.func,
   logout: PropTypes.func,
   changePassword: PropTypes.func,
-
 };
 
 export default Profile;

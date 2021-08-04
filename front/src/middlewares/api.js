@@ -5,15 +5,15 @@ import { setErrorToasts, setSuccessToast } from '../utils/toasts';
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
-import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getCharacters } from '../actions/character';
-import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, getScenarios,  } from '../actions/scenario';
+import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getProfessionsSuccess, getRacesSuccess } from '../actions/character';
+import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, } from '../actions/scenario';
 import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
 import { getMonsterSuccess } from '../actions/monster';
 import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
 // types
 import { 
-  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE, NEW_MONSTER, GET_MONSTER, EDIT_MONSTER, DELETE_MONSTER
+  SIGN_UP, LOGIN, GET_PROFILE, DELETE_PROFILE, EDIT_PROFILE, CHANGE_PASSWORD, DELETE_CHARACTER, EDIT_CHARACTER, NEW_CHARACTER, GET_CHARACTERS, GET_SCENARIOS, NEW_SCENARIO, EDIT_SCENARIO, DELETE_SCENARIO, GET_CATEGORIES, NEW_PLACE, GET_PLACE, EDIT_PLACE, DELETE_PLACE, NEW_MONSTER, GET_MONSTER, EDIT_MONSTER, DELETE_MONSTER, GET_PROFESSIONS, GET_RACES
  } from '../actions/types';
 
  
@@ -107,6 +107,8 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
+        action.logout();
+        action.redirect('/');
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -129,9 +131,9 @@ import {
 
       axios(config)
       .then ((response) => { 
-        console.log(response);
         store.dispatch(editProfileSuccess(response.data));
         setSuccessToast('Modification effectuée !');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -155,6 +157,7 @@ import {
       axios(config)
       .then (() => { 
         setSuccessToast('Modification effectuée !');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -164,6 +167,50 @@ import {
     }
 
     // ----- CHARACTER -----
+
+    case GET_PROFESSIONS: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/profession',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getProfessionsSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
+
+    case GET_RACES: {
+      const { auth: { token } } = store.getState();
+      const config = {
+        method: 'get',
+        url: process.env.REACT_APP_BASE_URL_API + 'api/race',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }     
+      };
+
+      axios(config)
+      .then ((response) => { 
+        store.dispatch(getRacesSuccess(response.data));
+      })
+      .catch ((error) => {
+        setErrorToasts(error.response?.data);
+      });
+
+      break;
+    }
 
     case GET_CHARACTERS: {
       const { auth: { token } } = store.getState();
@@ -226,7 +273,7 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
-        store.dispatch(getCharacters());
+        action.redirect('/personnage');
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -251,6 +298,8 @@ import {
       .then ((response) => { 
         store.dispatch(editCharacterSuccess(response.data));
         setSuccessToast('Modification effectuée');
+        action.closeFunction();
+        action.redirect(`/personnage/${response.data.id}`);
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -325,6 +374,9 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Modification effectuée');
+        action.closeFunction();
+        action.redirect(`/scenario/${response.data.id}`);
+
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -347,7 +399,7 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
-        store.dispatch(getScenarios());
+        action.redirect('/scenario');
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -397,6 +449,7 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Lieu créé !');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -447,6 +500,7 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Modification effectuée');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -470,6 +524,7 @@ import {
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
         store.dispatch(editScenarioSuccess(response.data));
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -482,7 +537,6 @@ import {
 
     case NEW_MONSTER: {
       const { auth: { token } } = store.getState();
-      console.log(action.values);
       const config = {
         method: 'post',
         url: process.env.REACT_APP_BASE_URL_API + `api/monster/new/${action.slug}`,
@@ -497,6 +551,7 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Monstre créé !');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -508,7 +563,6 @@ import {
     case GET_MONSTER: {
       store.dispatch(setLoadingTrue());
       const { auth: { token } } = store.getState();
-      console.log(action.values);
       const config = {
         method: 'get',
         url: process.env.REACT_APP_BASE_URL_API + `api/monster/${action.id}`,
@@ -522,7 +576,6 @@ import {
       .then ((response) => { 
         store.dispatch(getMonsterSuccess(response.data));
         store.dispatch(setLoadingFalse());
-        console.log(response.data);
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -545,8 +598,9 @@ import {
 
       axios(config)
       .then ((response) => { 
-        store.dispatch(getMonsterSuccess(response.data));
+        store.dispatch(editScenarioSuccess(response.data));
         setSuccessToast('Modification effectuée');
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -570,6 +624,7 @@ import {
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
         store.dispatch(editScenarioSuccess(response.data));
+        action.closeFunction();
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

@@ -61,23 +61,23 @@ class MonsterController extends AbstractController
             $requestContent = json_decode($request->getContent());
 
             $monster = new Monster();
-
+          
             $em->persist($monster);
-
+          
             $availableParentEntity = [
                 'scenario' => Scenario::class,
                 'place' => Place::class,
                 'wanderGroup' => WanderingMonsterGroup::class,
             ];
-
+          
             $repo = $this->getDoctrine()->getRepository($availableParentEntity[$slug]);
-
+          
             switch($slug) {
                 case 'place':
                     $place = $repo->find($requestContent->placeId);
                     $monster->setPlace($place);
                     break;
-    
+
                 case 'scenario':
                     $scenario = $repo->find($requestContent->scenarioId);
                     $wmg = new WanderingMonsterGroup();
@@ -85,12 +85,12 @@ class MonsterController extends AbstractController
                     $scenario->addWanderingMonster($wmg);
                     $monster->setWanderingMonsterGroup($wmg);
                     break;
-    
+
                 case 'wanderGroup':
                     $wmg = $repo->find($requestContent->wanderGroupId);
                     $monster->setWanderingMonsterGroup($wmg);
                     break;
-            }
+                }         
 
             $this->setMonsterAndSubObjects($monster, $requestContent, $em);
 
@@ -277,7 +277,6 @@ class MonsterController extends AbstractController
 
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers);
-    
         $picture = $serializer->normalize($datasObject->picture);
         $monster->setPicture($picture);
     }

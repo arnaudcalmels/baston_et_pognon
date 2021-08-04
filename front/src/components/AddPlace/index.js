@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import styles from './addPlace.module.scss';
 
-const AddPlace = ({ scenarioId, newPlace, closeModal, openMonsterModal, getCategories, categories }) => {
+const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories }) => {
   useEffect(() => {
     getCategories();
   },
@@ -23,8 +23,7 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, openMonsterModal, getCateg
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    newPlace(JSON.stringify(values, null, 2));
-    closeModal();
+    newPlace(JSON.stringify(values, null, 2), closeModal);
   };
 
   return (
@@ -138,13 +137,6 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, openMonsterModal, getCateg
       onClick={closeModal}
     />
 
-    <Button 
-      id={styles['addMonsters_button']} 
-      color='#eee' 
-      children='Ajouter des monstres' 
-      onClick={openMonsterModal}
-    />
-
     </div>
   );
 };
@@ -153,7 +145,6 @@ AddPlace.propTypes = {
   scenarioId: PropTypes.number,  
   newPlace: PropTypes.func,
   closeModal: PropTypes.func,
-  openMonsterModal: PropTypes.func,
   getCategories: PropTypes.func,
   categories: PropTypes.arrayOf(PropTypes.object,),
 };

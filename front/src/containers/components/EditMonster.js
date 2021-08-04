@@ -13,11 +13,11 @@ const mapDispatchToProps = (dispatch) => ({
   getMonster: (id) => {
     dispatch(getMonster(id));
   },
-  editMonster: (id, values) => {
-    dispatch(editMonster(id, values));
+  editMonster: (id, values, closeFunction) => {
+    dispatch(editMonster(id, values, closeFunction));
   },
-  deleteMonster: (id) => {
-    dispatch(deleteMonster(id));
+  deleteMonster: (id, closeFunction) => {
+    dispatch(deleteMonster(id, closeFunction));
   }
 });
 

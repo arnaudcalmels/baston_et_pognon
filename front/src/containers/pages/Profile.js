@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import Profile from '../../pages/Profile';
 
@@ -13,21 +14,21 @@ const mapStateToProps= (state) => ({
   id: state.user.id,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  editProfile: (id, values) => {
-    dispatch(editProfile(id, values));
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  editProfile: (id, values, closeFunction) => {
+    dispatch(editProfile(id, values, closeFunction));
   },
-  deleteProfile: (id) => {
-    dispatch(deleteProfile(id));
+  deleteProfile: (id, logout) => {
+    dispatch(deleteProfile(id, logout, ownProps.history.push));
   },
   logout: () => {
     dispatch(logout());
   },
-  changePassword: (values) => {
-    dispatch(changePassword(values));
+  changePassword: (values, closeFunction) => {
+    dispatch(changePassword(values, closeFunction));
   }
 
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile));

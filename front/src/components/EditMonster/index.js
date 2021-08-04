@@ -28,12 +28,11 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    editMonster(monsterId, JSON.stringify(values, null, 2));
-    closeModal();
+    editMonster(monsterId, JSON.stringify(values, null, 2), closeModal);
   };
 
   const handleDeleteMonster = (id) => {
-    deleteMonster(id);
+    deleteMonster(id, closeModal);
   };
 
   return (
@@ -247,7 +246,7 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
                 id={styles['submit_button']} 
                 type="submit" 
                 color='#eee' 
-                children='Modifier'
+                children='Valider'
               />
             </Form>
           )
@@ -280,7 +279,6 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
             confirmAction={() => {
               handleDeleteMonster(monsterId);
               setOpenDeleteModal(false);
-              closeModal();
             }}
           />}
       />

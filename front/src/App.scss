@@ -1,8 +1,7 @@
 .App {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 55px auto 100px;
-  gap: 1.5rem;
+  grid-template-rows: 55px 1fr 100px;
   min-height: 100vh;
 }
 

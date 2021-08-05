@@ -1,0 +1,11 @@
+@import '../../styles/vars';
+
+.main {
+    border: 3px solid $color-secondary;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}

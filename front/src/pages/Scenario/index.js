@@ -12,6 +12,8 @@ import AddPlace from '../../containers/components/AddPlace';
 import EditPlace from '../../containers/components/EditPlace';
 import AddMonster from '../../containers/components/AddMonster'
 import MonsterGroup from '../../components/MonsterGroup';
+import Section from '../../components/Section';
+import Column from '../../components/Column';
 
 import PropTypes from 'prop-types';
 
@@ -98,35 +100,35 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
         <p>{scenario.description}</p>
       </div>
 
-      <div className={styles['wanderingMonsters']}>
-        <h3>Monstres errants</h3>
-        <div className={styles['monsters']}>
-          {
-            scenario.wanderingMonsters.length > 0 ?
-            scenario.wanderingMonsters.map(group => (
-              <MonsterGroup 
-                key={group.id}
-                monsters={group.monsters}
-                wanderGroupId={group.id}
-              />
-            ))
-            : 
-            <p>Aucun monstre</p>
-          }
-          <FontAwesomeIcon 
-            className={styles['add_group']}
-            onClick={() => setOpenAddMonsterModal(true)} 
-            icon={faPlusCircle} 
-            size="2x" 
-            style={{cursor: 'pointer'}}
-            title="Ajouter un monstre"
-          />
-
-        </div>
-      </div>
-
     </div>
-      
+
+    <Section title='Monstres errants'>
+      <Column>
+        {
+          scenario.wanderingMonsters.length > 0 ?
+          scenario.wanderingMonsters.map(group => (
+            <MonsterGroup 
+              key={group.id}
+              monsters={group.monsters}
+              wanderGroupId={group.id}
+            />
+          ))
+          : 
+          <p>Aucun monstre</p>
+        }
+      <FontAwesomeIcon 
+        className={styles['add_group']}
+        onClick={() => setOpenAddMonsterModal(true)} 
+        icon={faPlusCircle} 
+        size="2x" 
+        style={{cursor: 'pointer'}}
+        title="Ajouter un monstre"
+      />
+      </Column>
+      <Column>
+        <p>Détails d'un monstre</p>
+      </Column>
+    </Section>
 
       <div id={styles['block_form']} className={styles['hide_form']}>
       <Formik

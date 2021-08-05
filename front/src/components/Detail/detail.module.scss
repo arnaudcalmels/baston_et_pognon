@@ -4,6 +4,7 @@
     margin: 1rem;
     display: flex;
     flex-direction: column;
+    width: max-content;
 }
 
 #image {
@@ -18,7 +19,7 @@
 }
 
 .name {
-    
+
 }
 
 .level {
@@ -27,7 +28,7 @@
 
 .icon {
     &_booster {
-    color: gold;
+        color: gold;
     }
 
     &_lifepoints {

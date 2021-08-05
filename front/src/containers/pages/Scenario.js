@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import Scenario from '../../pages/Scenario';
 
-import { editScenario, deleteScenario } from '../../actions/scenario';
+import { editScenario, deleteScenario, setItem } from '../../actions/scenario';
 
 import getItem from '../../utils/getItem';
 
@@ -19,6 +19,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   deleteScenario: (id) => {
     dispatch(deleteScenario(id, ownProps.history.push));
   },
+  setItem: (data) => {
+    dispatch(setItem(data));
+  }
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Scenario));

@@ -6,7 +6,7 @@ const initialState = {
   id: '',
   email: '',
   pseudo: '',
-  avatar: '',
+  avatar: {},
 }
 
 const reducer = (oldState = initialState, action) => {

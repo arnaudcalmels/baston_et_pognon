@@ -1,0 +1,40 @@
+@import '../../styles/vars';
+
+.main {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#image {
+    max-width: 150px;
+    max-height: 200px;
+}
+
+.image {
+    width: 150px;
+    height: 200px;
+    border: 1px solid black;
+}
+
+.name {
+    
+}
+
+.level {
+
+}
+
+.icon {
+    &_booster {
+    color: gold;
+    }
+
+    &_lifepoints {
+        color: red;
+    }
+
+    &_armor {
+        color: darkblue;
+    }
+}

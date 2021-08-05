@@ -14,6 +14,7 @@ import AddMonster from '../../containers/components/AddMonster'
 import MonsterGroup from '../../components/MonsterGroup';
 import Section from '../../components/Section';
 import Column from '../../components/Column';
+import Detail from '../../containers/components/Detail';
 
 import PropTypes from 'prop-types';
 
@@ -23,7 +24,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './scenario.module.scss';
 
-const Scenario = ({ scenario, editScenario, deleteScenario }) => {
+const Scenario = ({ scenario, editScenario, deleteScenario, setItem }) => {
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
     const block_scenario = document.getElementById(styles['block_scenario']);
@@ -111,6 +112,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
               key={group.id}
               monsters={group.monsters}
               wanderGroupId={group.id}
+              setItem={setItem}
             />
           ))
           : 
@@ -126,7 +128,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario }) => {
       />
       </Column>
       <Column>
-        <p>Détails d'un monstre</p>
+        <Detail></Detail>
       </Column>
     </Section>
 
@@ -377,6 +379,7 @@ Scenario.propTypes = {
   scenario: PropTypes.object,
   editScenario: PropTypes.func,
   deleteScenario: PropTypes.func,
+  setItem: PropTypes.func,
 };
 
 export default Scenario;

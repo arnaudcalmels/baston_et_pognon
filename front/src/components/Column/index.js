@@ -13,7 +13,7 @@ const Column = ( { children } ) => {
 };
 
 Column.propTypes = {
-  
+  children: PropTypes.array,
 };
 
 export default Column;

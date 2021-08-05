@@ -1,9 +1,10 @@
 import {
-  GET_SCENARIOS_SUCCESS, NEW_SCENARIO_SUCCESS, EDIT_SCENARIO_SUCCESS, 
+  GET_SCENARIOS_SUCCESS, NEW_SCENARIO_SUCCESS, EDIT_SCENARIO_SUCCESS, SET_ITEM, 
 } from '../actions/types';
 
 const initialState = {
   scenarios: [],
+  currentItem: {}
 };
 
 const reducer = (oldState = initialState, action) => {
@@ -33,6 +34,11 @@ const reducer = (oldState = initialState, action) => {
       }
       return newState
       
+    case SET_ITEM:
+      return {
+        ...oldState,
+        currentItem: action.data
+      }
     default: 
       return oldState;
   }

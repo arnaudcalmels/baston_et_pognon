@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Modal from '../Modal';
 import AddMonster from '../../containers/components/AddMonster';
-import EditMonster from '../../containers/components/EditMonster';
+// import EditMonster from '../../containers/components/EditMonster';
 
 import PropTypes from 'prop-types';
 
@@ -11,20 +11,24 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './monsterGroup.module.scss';
 
-const MonsterGroup = ({ wanderGroupId, monsters }) => {
+const MonsterGroup = ({ wanderGroupId, monsters, setItem }) => {
   
   const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
-  const [openEditMonsterModal, setOpenEditMonsterModal] = useState(false);
+  // const [openEditMonsterModal, setOpenEditMonsterModal] = useState(false);
 
-  const [monsterId, setMonsterId] = useState();
+  // const [monsterId, setMonsterId] = useState();
   
   return (
     <div className={styles['content']}>
       {
         monsters.map(monster => (
-          <div className={styles['monster']} onClick={() => {
-            setOpenEditMonsterModal(true);
-            setMonsterId(monster.id)
+          <div 
+            key={monster.id}
+            className={styles['monster']} 
+            onClick={() => {
+            setItem(monster);
+            // setOpenEditMonsterModal(true);
+            // setMonsterId(monster.id)
           }}>
             {monster.name}
           </div>
@@ -58,7 +62,7 @@ const MonsterGroup = ({ wanderGroupId, monsters }) => {
           />}
       />
 
-      <Modal 
+      {/* <Modal 
         isOpen={openEditMonsterModal}
         closeModal={() => {
           setOpenEditMonsterModal(false)
@@ -75,7 +79,7 @@ const MonsterGroup = ({ wanderGroupId, monsters }) => {
             }}
             monsterId={monsterId}
           />}
-      />
+      /> */}
 
     </div>
   )
@@ -84,6 +88,7 @@ const MonsterGroup = ({ wanderGroupId, monsters }) => {
 MonsterGroup.propTypes = {
   wanderGroupId: PropTypes.number,
   monsters: PropTypes.arrayOf(PropTypes.object,),
+  setItem: PropTypes.func,
 }
 
 export default MonsterGroup;

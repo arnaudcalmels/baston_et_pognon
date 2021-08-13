@@ -1,0 +1,24 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.monster {
+    margin: 0.5rem;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.add_group {
+    padding: 0.5rem;
+    opacity: 0.2;
+
+    &:hover {
+        opacity: 1;
+    }
+}

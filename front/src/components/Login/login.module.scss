@@ -1,0 +1,43 @@
+.form {
+    margin-top: 3rem;
+    padding-left: 2rem;
+}
+
+.form_field {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.8rem;
+    margin-bottom: 2rem;
+    width: 230px;
+    height: 30px;
+}
+
+.error_message {
+    color: red;
+    margin-top: -1.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+#close_button {
+    position: relative;
+    top: -3rem;
+    left: 2rem;  
+}
+
+#submit_button {
+    position: relative;
+    left: 6rem;  
+}
+
+@media screen and (min-width: 600px) {
+    .form {
+        padding-right: 2rem;
+    }
+
+    #submit_button {
+        left: 7rem;  
+    }
+    
+}

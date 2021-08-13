@@ -1,0 +1,466 @@
+@import '../../styles/vars';
+
+.main {
+    min-height: 80vh;
+    grid-row: 2 / 3;
+    grid-column: 1 / span 12;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.show_scenario {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#block_form, #block_scenario {
+    background-color: initial;
+}
+
+.hide_scenario {
+    display: none;
+}
+
+.hide_form {
+    display: none;
+}
+
+.show_form {
+    display: block;
+}
+
+.overlay-image {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    margin-top: 0;
+    position: relative;
+    width: 300px;
+    justify-self: center;
+
+    
+    & img {
+        width: 300px;
+        height: auto;
+    }
+
+    & .hover {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0.2;
+        transition: .5s ease;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    &:hover .hover {
+        opacity: 1;
+    }
+}
+
+.table {
+
+    border: 3px solid $color-secondary;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 1rem;
+    width: 300px;
+
+    
+    &_content {
+        width: 300px;
+        display: grid;
+        grid-gap: 1rem;
+        align-items: center;
+    }
+    
+    &_row {
+        display: grid;
+        grid-template-columns: 200px 80px;
+        grid-gap: 0.5rem;
+        align-items: center;
+        justify-items: center;
+    }
+
+    &_cell {
+        
+        &-name {
+            grid-column: 1 / 2;
+            height: 30px;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        &-value {
+            width: 150px;
+            height: 30px;
+            grid-column: 2 / 3;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
+
+.description {
+    width: 300px;
+    text-align: center;
+    border: 3px solid $color-secondary;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 1rem;
+}
+
+#sub_title {
+    font-size: 1.3rem;
+}
+
+.carousel {
+    width: 250px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.slider {
+    margin-bottom: 1rem;
+}
+
+.place {
+    display: none;
+}
+
+.wanderingMonsters  {
+    width: 300px;
+    text-align: center;
+    border: 3px solid $color-secondary;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.monsters {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.monster_group {
+    padding: 0.5rem;
+}
+
+.add_group, .add_place {
+    padding: 0.5rem;
+    opacity: 0.2;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#edit_button {
+    display: none;
+}
+
+@media screen and (min-width: 768px) {
+    #title {
+        grid-column: 1 / span 2;
+    }
+
+    .show_scenario {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
+        align-items: center;        
+    }
+
+    .overlay-image {
+        justify-self: center;
+        grid-row: 2 / 3;
+        grid-column: 1 / 2;
+    }
+
+    #caracteristics {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+    }
+
+    .description {
+        grid-column: 1 / span 2;
+        width: 600px;
+        justify-self: center;
+        grid-row: 3 / 4;
+    }
+
+    .carousel {
+        width: 520px;
+        grid-column: 1 / span 2;
+        justify-self: center;
+    }
+    
+    .place {
+        width: 250px;
+        height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .wanderingMonsters  {
+        grid-column: 1 / span 2;
+        justify-self: center;
+        grid-row: 4 / 5;
+    }
+    
+    .buttons {
+        flex-direction: row;
+        grid-column: 1 / span 2;
+        justify-content: center;
+    }
+
+    #edit_button {
+        display: block;
+    }
+
+    .form {
+        grid-row: 2 / 3;
+        grid-column: 1 / span 2;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 0.5rem;
+        justify-items: center;
+        align-items: center;
+        margin-top: 1rem;
+    } 
+    
+    .new-scenario_name {
+        grid-column: 1 / span 2;
+        grid-row: 1 / 2;
+        margin-bottom: 1rem;
+    
+        & .form_field {
+            width: 250px;
+            margin-left: 1rem;
+        }
+    }
+        
+    .new-description {
+        grid-row: 3 / 4;
+        grid-column: 1 / span 2;
+        width: 600px;
+        height: 300px;
+        justify-self: center;
+        text-align: center;
+        border: 3px solid $color-secondary;
+        border-radius: 5px;
+        padding: 0.5rem;
+        margin: 1rem;
+        display: flex;
+        flex-direction: column;
+    
+        & .form_field {
+            width: auto;
+            height: 280px;
+        }
+    }
+        
+    .caracteristics {
+        border: 3px solid $color-secondary;
+        border-radius: 5px;
+        padding: 0.5rem;
+        margin: 1rem;
+        width: 300px;
+        display: grid;
+        grid-template-columns: 200px 80px;
+        grid-gap: 1rem;
+        align-items: center;
+        justify-items: center;
+        
+            & .form_field {
+                width: 30px;
+            }
+    }
+        
+    .info {
+        font-size: 0.7rem;
+        font-style: italic;
+        grid-column: 1 / span 2;
+        justify-self: center;
+    }
+    
+    #cancel_button {
+        justify-self: center;
+        width: 100px;  
+        position: relative;
+        top: -3rem;
+        left: 5rem;
+    }
+    
+    #submit_button {
+        grid-column: 2 / 3;
+        justify-self: center;
+        width: 100px;  
+    }
+    
+}
+
+@media screen and (min-width: 1200px) {
+    #title {
+        grid-column: 1 / span 3;
+    }
+
+    .show_scenario {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 50px 400px 200px 1fr 50px;
+        justify-content: center;
+        align-items: center;  
+    }
+
+
+    .overlay-image {
+        grid-row: 2 / 3;
+        grid-column: 1 / 2 ;
+    }
+
+    #caracteristics {
+        grid-row: 3 / 4;
+        grid-column: 1 / 2 ;
+        justify-self: center;
+        align-self: flex-start;
+    }
+
+    .description {
+        grid-column: 2 / span 2;
+        grid-row: 2 / 4;
+        align-self: flex-start;
+        margin-top: 4rem;
+    }
+
+    .wanderingMonsters  {
+        grid-row: 3 / 4;
+        grid-column: 3 / 4 ;
+        justify-self: center;
+        align-self: flex-start;
+    }
+
+    .carousel {
+        grid-row: 5 / 6;
+        grid-column: 1 / span 3;
+        width: 800px;
+        justify-self: center;
+    }
+
+    .buttons {
+        grid-row: -1 / span 1;
+        grid-column: 1 / span 3;
+    }
+
+    .form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 50px 400px 200px 1fr 50px;
+        justify-content: center;
+        align-items: center;  
+    }
+    
+    .new-scenario_name {
+        grid-column: 1 / span 3;
+    }
+
+    .new-description {
+        grid-column: 2 / span 2;
+        grid-row: 2 / 3;
+        align-self: flex-start;
+    }
+
+    .caracteristics {
+        grid-row: 3 / 4;
+        grid-column: 1 / 2;
+    }
+
+    .info {
+        grid-column: 1 / span 3;
+    }
+
+    #cancel_button {
+        left: 23rem;
+    }
+    
+    #submit_button {
+        grid-column: 2 / 3;
+        justify-self: end;
+    }
+
+}
+
+
+@media screen and (min-width: 1500px) {
+    .show_scenario {
+        grid-template-rows: 50px 200px 200px 1fr 50px;
+    }
+
+    .overlay-image {
+        justify-self: center;
+        align-self: flex-start;
+        margin-top: 2rem;
+    }
+
+    #caracteristics {
+        grid-row: 2 / 3;
+        grid-column: 3 / 4 ;
+        justify-self: center;
+        align-self: flex-start;
+        margin-top: 2rem;
+    }
+
+    .description {
+        grid-column: 2 / 3;
+        grid-row: 2 / span 2;
+        align-self: flex-start;
+        margin-top: 2rem;
+    }
+
+    .carousel {
+        grid-row: 4 / 5;
+        width : 1100px;
+    }
+
+    .form {
+        grid-template-rows: 50px 250px 200px 1fr 50px;
+    }
+
+    .caracteristics {
+        grid-column: 3 / 4;
+        grid-row: 2 / 3;
+    }
+
+    .new-description {
+        grid-column: 2 / 3;
+        grid-row: 2 / span 2;
+        align-self: flex-start;
+        margin-top: 2rem;
+    }
+
+    #cancel_button {
+        top: -3rem;
+        left: 39rem;
+    }
+
+}

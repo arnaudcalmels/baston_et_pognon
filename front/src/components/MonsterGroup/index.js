@@ -10,7 +10,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './monsterGroup.module.scss';
 
-const MonsterGroup = ({ wanderGroupId, monsters, setItem }) => {
+const MonsterGroup = ({ wanderGroupId, monsters, getMonster }) => {
   
   const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
   
@@ -21,9 +21,8 @@ const MonsterGroup = ({ wanderGroupId, monsters, setItem }) => {
           <div 
             key={monster.id}
             className={styles['monster']} 
-            onClick={() => {
-            setItem(monster, 'monster');
-          }}>
+            onClick={() => getMonster(monster.id, 'currentWanderingMonster')}
+            >
             {monster.name}
           </div>
         ))
@@ -53,6 +52,7 @@ const MonsterGroup = ({ wanderGroupId, monsters, setItem }) => {
             closeModal={() => {
               setOpenAddMonsterModal(false)
             }}
+            context={'currentWanderingMonster'}
           />}
       />
 

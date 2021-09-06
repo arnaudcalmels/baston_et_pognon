@@ -1,5 +1,5 @@
 import { 
-  GET_SCENARIOS, GET_SCENARIOS_SUCCESS, NEW_SCENARIO, NEW_SCENARIO_SUCCESS, EDIT_SCENARIO, EDIT_SCENARIO_SUCCESS, DELETE_SCENARIO, SET_ITEM
+  GET_SCENARIOS, GET_SCENARIOS_SUCCESS, NEW_SCENARIO, NEW_SCENARIO_SUCCESS, EDIT_SCENARIO, EDIT_SCENARIO_SUCCESS, DELETE_SCENARIO
 } from './types';
 
 export const getScenarios = () => ({
@@ -39,10 +39,4 @@ export const deleteScenario = (id, redirect) => ({
   type: DELETE_SCENARIO,
   id,
   redirect
-});
-
-export const setItem = (data, itemType) => ({
-  type: SET_ITEM,
-  data,
-  itemType
 });

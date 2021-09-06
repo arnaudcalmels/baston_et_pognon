@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import {AgGridColumn, AgGridReact} from 'ag-grid-react';
 
-import Modal from '../../components/Modal';
-import DeleteConfirm from '../../components/DeleteConfirm';
+import Modal from '../Modal';
+import DeleteConfirm from '../DeleteConfirm';
 import EditMonster from '../../containers/components/EditMonster';
+import Loader from '../Loader';
 
 import PropTypes from 'prop-types';
 
@@ -12,14 +13,14 @@ import { faSkull, faStar, faHeart, faShieldAlt, faCheck, faTrashAlt, faPen } fro
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
-import styles from './detail.module.scss';
+import styles from './monsterDetail.module.scss';
 
-const Detail = ( { item, type, deleteMonster } ) => {
+const MonsterDetail = ( { item, deleteMonster, isLoading, context } ) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false); 
   const [openEditMonsterModal, setOpenEditMonsterModal] = useState(false);
 
   const handleDeleteMonster = (id) => {
-    deleteMonster(id, setOpenDeleteModal(false));
+    deleteMonster(id, setOpenDeleteModal(false), context);
   };
 
   const rowDataMonster = [];
@@ -44,32 +45,33 @@ const Detail = ( { item, type, deleteMonster } ) => {
 
   
   return (
-    
+    isLoading ?
+    <Loader/>
+    :
+
     <div className={styles['main']}>
 
     {
-      type === 'monster' && 
-      <FontAwesomeIcon 
-        className={styles['icon_pen']}
-        icon={faPen} 
-        size="2x" 
-        title="Modifier"
-        onClick={() => setOpenEditMonsterModal(true)}
-        style={{cursor: 'pointer'}}
-      />
+      Object.keys(item).length > 0 && 
+      <>
+        <FontAwesomeIcon 
+          className={styles['icon_pen']}
+          icon={faPen} 
+          size="2x" 
+          title="Modifier"
+          onClick={() => setOpenEditMonsterModal(true)}
+          style={{cursor: 'pointer'}}
+        />
 
-    } 
-
-    {
-      type && 
-      <FontAwesomeIcon 
-        className={styles['icon_trash']}
-        icon={faTrashAlt} 
-        size="2x" 
-        title="Supprimer"
-        onClick={() => setOpenDeleteModal(true)}
-        style={{cursor: 'pointer'}}
-      />
+        <FontAwesomeIcon 
+          className={styles['icon_trash']}
+          icon={faTrashAlt} 
+          size="2x" 
+          title="Supprimer"
+          onClick={() => setOpenDeleteModal(true)}
+          style={{cursor: 'pointer'}}
+        />
+      </>
     }
 
       { // Picture
@@ -110,23 +112,6 @@ const Detail = ( { item, type, deleteMonster } ) => {
           />
       }
 
-      { // Hidden Boosters in Place
-        item.hiddenBoosterCount > 0 &&
-          <span className="fa-layers fa-fw">
-            <FontAwesomeIcon 
-              className={styles['icon_booster']}
-              icon={faStar} 
-              size="2x" 
-              title="Booster(s)"
-            />
-            <span className="fa-layers-counter">
-            {
-              item.hiddenBoosterCount > 1 ? item.hiddenBoosterCount : ''
-            }
-            </span>
-          </span>
-      }
-
       { // Monster caracteristics
         item.caracteristics &&
           <div>
@@ -165,14 +150,12 @@ const Detail = ( { item, type, deleteMonster } ) => {
         closeModal={() => {
           setOpenDeleteModal(false);
         }}
-        title={type === 'monster' ? 'Supprimer le monstre ?' : 'Supprimer le lieu ?'}
+        title={'Supprimer le monstre ?'}
         children={
           <DeleteConfirm 
             cancelAction={() => setOpenDeleteModal(false)} 
             confirmAction={() => {
-              if (type === 'monster') {
                 handleDeleteMonster(item.id);
-              }
             }}
           />}
       />
@@ -188,7 +171,8 @@ const Detail = ( { item, type, deleteMonster } ) => {
             closeModal={() => {
               setOpenEditMonsterModal(false)
             }}
-            monsterId={item.id}
+            currentMonster={item}
+            context={context}
           />}
       />
 
@@ -197,9 +181,11 @@ const Detail = ( { item, type, deleteMonster } ) => {
   );
 };
 
-Detail.propTypes = {
+MonsterDetail.propTypes = {
   item: PropTypes.object,
   deleteMonster: PropTypes.func,
+  isLoading: PropTypes.bool, 
+  context: PropTypes.string,
 };
 
-export default Detail;
+export default MonsterDetail;

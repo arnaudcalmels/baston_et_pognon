@@ -7,9 +7,9 @@ import { findMonster, findNewMonster } from '../utils/findItem';
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getProfessionsSuccess, getRacesSuccess } from '../actions/character';
-import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, setItem} from '../actions/scenario';
+import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess} from '../actions/scenario';
 import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
-import { getMonsterSuccess } from '../actions/monster';
+import { getMonsterSuccess, deleteMonsterSuccess } from '../actions/monster';
 import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
 // types
@@ -552,7 +552,7 @@ import {
         store.dispatch(editScenarioSuccess(response.data));
         const monster = findNewMonster(JSON.parse(action.values).placeId, JSON.parse(action.values).wanderGroupId, response.data.id);
         if (Object.keys(monster).length > 0) {
-          store.dispatch(setItem(monster, 'monster'));
+          store.dispatch(getMonsterSuccess(monster, action.context));
           setSuccessToast('Monstre créé !');
           action.closeFunction();
         } else {
@@ -580,7 +580,7 @@ import {
 
       axios(config)
       .then ((response) => { 
-        store.dispatch(getMonsterSuccess(response.data));
+        store.dispatch(getMonsterSuccess(response.data, action.context));
         store.dispatch(setLoadingFalse());
       })
       .catch ((error) => {
@@ -607,7 +607,7 @@ import {
         store.dispatch(editScenarioSuccess(response.data));
         const monster = findMonster(action.id, response.data.id);
         if (Object.keys(monster).length > 0) {
-          store.dispatch(setItem(monster, 'monster'));
+          store.dispatch(getMonsterSuccess(monster, action.context));
           setSuccessToast('Modification effectuée');
           action.closeFunction();
         } else {
@@ -635,7 +635,7 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
-        store.dispatch(setItem({}, null));
+        store.dispatch(deleteMonsterSuccess(action.context));
         store.dispatch(editScenarioSuccess(response.data));
         action.closeFunction();
       })

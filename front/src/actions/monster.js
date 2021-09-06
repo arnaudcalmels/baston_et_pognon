@@ -1,31 +1,41 @@
-import { NEW_MONSTER, GET_MONSTER, GET_MONSTER_SUCCESS, EDIT_MONSTER, DELETE_MONSTER } from './types';
+import { NEW_MONSTER, GET_MONSTER, GET_MONSTER_SUCCESS, EDIT_MONSTER, DELETE_MONSTER, DELETE_MONSTER_SUCCESS } from './types';
 
-export const newMonster = (slug, values, closeFunction) => ({
+export const newMonster = (slug, values, closeFunction, context) => ({
   type: NEW_MONSTER,
   slug,
   values,
-  closeFunction
+  closeFunction,
+  context
 });
 
-export const getMonster = (id) => ({
+export const getMonster = (id, context) => ({
   type: GET_MONSTER,
   id,
+  context
 });
 
-export const getMonsterSuccess = (data) => ({
+export const getMonsterSuccess = (data, context) => ({
   type: GET_MONSTER_SUCCESS,
   data,
+  context
 });
 
-export const editMonster = (id, values, closeFunction) => ({
+export const editMonster = (id, values, closeFunction, context) => ({
   type: EDIT_MONSTER,
   id,
   values,
-  closeFunction
+  closeFunction, 
+  context
 });
 
-export const deleteMonster = (id, closeFunction) => ({
+export const deleteMonster = (id, closeFunction, context) => ({
   type: DELETE_MONSTER,
   id,
-  closeFunction
+  closeFunction,
+  context
+});
+
+export const deleteMonsterSuccess = (context) => ({
+  type: DELETE_MONSTER_SUCCESS,
+  context
 });

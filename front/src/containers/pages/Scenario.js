@@ -3,13 +3,15 @@ import { withRouter } from 'react-router-dom';
 
 import Scenario from '../../pages/Scenario';
 
-import { editScenario, deleteScenario, setItem } from '../../actions/scenario';
+import { editScenario, deleteScenario } from '../../actions/scenario';
 
 import getItem from '../../utils/getItem';
 
 const mapStateToProps= (state, ownProps) => ({
   scenarios: state.scenario.scenarios,
   scenario: getItem(ownProps.match.params.id, 'scenarios'),
+  currentWanderingMonster: state.monster.currentWanderingMonster,
+  currentPlace: state.place.currentPlace
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -19,9 +21,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   deleteScenario: (id) => {
     dispatch(deleteScenario(id, ownProps.history.push));
   },
-  setItem: (data, itemType) => {
-    dispatch(setItem(data, itemType));
-  }
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Scenario));

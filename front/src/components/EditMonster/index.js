@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FileBase64 from 'react-file-base64';
 
@@ -9,13 +9,7 @@ import PropTypes from 'prop-types';
 
 import styles from './editMonster.module.scss';
 
-const EditMonster = ({ closeModal, getMonster, monsterId, currentMonster, isLoading, editMonster, deleteMonster }) => {
-  useEffect(() => {
-    getMonster(monsterId);
-  },
-  // eslint-disable-next-line
-  []);
-
+const EditMonster = ({ closeModal, currentMonster, isLoading, editMonster, context }) => {
   let [newPicture, setNewPicture] = useState();
 
   const getFile = (props, file) => {
@@ -24,7 +18,7 @@ const EditMonster = ({ closeModal, getMonster, monsterId, currentMonster, isLoad
   };
 
   const handleSubmit = (values) => {
-    editMonster(monsterId, JSON.stringify(values, null, 2), closeModal);
+    editMonster(currentMonster.id, JSON.stringify(values, null, 2), closeModal, context);
   };
 
   return (
@@ -255,15 +249,10 @@ const EditMonster = ({ closeModal, getMonster, monsterId, currentMonster, isLoad
 
 EditMonster.propTypes = {
   closeModal: PropTypes.func,
-  scenarioId: PropTypes.number,  
-  placeId: PropTypes.number,
-  wanderGroupId: PropTypes.number,
-  slug: PropTypes.string,
-  getMonster: PropTypes.func,
-  monsterId: PropTypes.number,
-  monster: PropTypes.object,
+  currentMonster: PropTypes.object,
   isLoading: PropTypes.bool, 
   editMonster: PropTypes.func,
+  context: PropTypes.string,
 };
 
 export default EditMonster;

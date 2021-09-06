@@ -13,7 +13,9 @@ const Column = ( { children } ) => {
 };
 
 Column.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.object,), PropTypes.object
+  ]),
 };
 
 export default Column;

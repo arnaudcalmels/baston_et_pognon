@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import styles from './addMonster.module.scss';
 
-const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newMonster }) => {
+const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newMonster, context }) => {
   useEffect(() => {
     // getCategories();
   },
@@ -23,7 +23,7 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    newMonster(slug, JSON.stringify(values, null, 2), closeModal);
+    newMonster(slug, JSON.stringify(values, null, 2), closeModal, context);
   };
 
   return (
@@ -262,6 +262,7 @@ AddMonster.propTypes = {
   wanderGroupId: PropTypes.number,
   slug: PropTypes.string,
   newMonster: PropTypes.func,
+  context: PropTypes.string,
 };
 
 export default AddMonster;

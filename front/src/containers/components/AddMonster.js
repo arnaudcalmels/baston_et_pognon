@@ -8,8 +8,8 @@ const mapStateToProps= (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  newMonster: (slug, values, closeFunction) => {
-    dispatch(newMonster(slug, values, closeFunction));
+  newMonster: (slug, values, closeFunction, context) => {
+    dispatch(newMonster(slug, values, closeFunction, context));
   },
 });
 

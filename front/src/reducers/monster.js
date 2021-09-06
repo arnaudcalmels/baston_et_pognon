@@ -1,7 +1,7 @@
-import { GET_MONSTER_SUCCESS  } from "../actions/types";
+import { GET_MONSTER_SUCCESS, DELETE_MONSTER_SUCCESS  } from "../actions/types";
 
 const initialState = {
-  currentMonster : {}
+  currentWanderingMonster: {},
 };
 
 const reducer = (oldState = initialState, action) => {
@@ -9,9 +9,14 @@ const reducer = (oldState = initialState, action) => {
     case GET_MONSTER_SUCCESS:
       return {
         ...oldState,
-        currentMonster: action.data
+        [action.context]: action.data
       }
-
+    case DELETE_MONSTER_SUCCESS:
+      return {
+        ...oldState,
+        [action.context]: {}
+      }
+  
     default:
       return oldState;
   }

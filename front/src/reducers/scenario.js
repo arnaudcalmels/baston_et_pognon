@@ -4,7 +4,8 @@ import {
 
 const initialState = {
   scenarios: [],
-  currentItem: {}
+  currentItem: {},
+  itemType: null
 };
 
 const reducer = (oldState = initialState, action) => {
@@ -37,7 +38,8 @@ const reducer = (oldState = initialState, action) => {
     case SET_ITEM:
       return {
         ...oldState,
-        currentItem: action.data
+        currentItem: action.data,
+        itemType: action.itemType
       }
     default: 
       return oldState;

@@ -1,23 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {AgGridColumn, AgGridReact} from 'ag-grid-react';
+
+import Modal from '../../components/Modal';
+import DeleteConfirm from '../../components/DeleteConfirm';
+import EditMonster from '../../containers/components/EditMonster';
 
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSkull, faStar, faHeart, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSkull, faStar, faHeart, faShieldAlt, faCheck, faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
 import styles from './detail.module.scss';
 
-const Detail = ( { item } ) => {
-  const rowData = [];
+const Detail = ( { item, type, deleteMonster } ) => {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
+  const [openEditMonsterModal, setOpenEditMonsterModal] = useState(false);
+
+  const handleDeleteMonster = (id) => {
+    deleteMonster(id, setOpenDeleteModal(false));
+  };
+
+  const rowDataMonster = [];
   item.caracteristics?.actions.forEach(action => {
-    rowData.push({action: 'Attaque/Soin', dégats: action.damages, cac: !action.distance, distance: action.distance, fréquence: action.frequency}); 
+    rowDataMonster.push({action: 'Attaque/Soin', damages: action.damages, cac: !action.distance, distance: action.distance, frequency: action.frequency}); 
   });
 
+  const trueFalseRenderer = params => {
+    if (params.value) {
+      return (
+        <FontAwesomeIcon 
+          className={styles['icon_check']}
+          icon={faCheck} 
+          size="2x" 
+          title="Oui"
+        />
+      )
+    } else {
+      return '';
+    }
+  }
+
+  
   return (
+    
     <div className={styles['main']}>
+
+    {
+      type === 'monster' && 
+      <FontAwesomeIcon 
+        className={styles['icon_pen']}
+        icon={faPen} 
+        size="2x" 
+        title="Modifier"
+        onClick={() => setOpenEditMonsterModal(true)}
+        style={{cursor: 'pointer'}}
+      />
+
+    } 
+
+    {
+      type && 
+      <FontAwesomeIcon 
+        className={styles['icon_trash']}
+        icon={faTrashAlt} 
+        size="2x" 
+        title="Supprimer"
+        onClick={() => setOpenDeleteModal(true)}
+        style={{cursor: 'pointer'}}
+      />
+    }
 
       { // Picture
         item.picture ?
@@ -97,15 +150,48 @@ const Detail = ( { item } ) => {
       { // Monster Actions
         item.caracteristics?.actions &&
           <div className="ag-theme-material" style={{height: 200, width: 950}}>
-            <AgGridReact rowData={rowData}>
-              <AgGridColumn field="action"></AgGridColumn>
-              <AgGridColumn field="dégats"></AgGridColumn>
-              <AgGridColumn field="cac"></AgGridColumn>
-              <AgGridColumn field="distance"></AgGridColumn>
-              <AgGridColumn field="fréquence"></AgGridColumn>
+            <AgGridReact rowData={rowDataMonster} frameworkComponents={{trueFalseRenderer: trueFalseRenderer}}>
+              <AgGridColumn headerName="Action" field="action"></AgGridColumn>
+              <AgGridColumn headerName="Dégâts / Soin" field="damages"></AgGridColumn>
+              <AgGridColumn headerName="Corps à corps" field="cac" cellRenderer="trueFalseRenderer"></AgGridColumn>
+              <AgGridColumn headerName="Distance" field="distance" cellRenderer="trueFalseRenderer"></AgGridColumn>
+              <AgGridColumn headerName="Fréquence" field="frequency"></AgGridColumn>
             </AgGridReact>
           </div>
       }
+
+      <Modal 
+        isOpen={openDeleteModal} 
+        closeModal={() => {
+          setOpenDeleteModal(false);
+        }}
+        title={type === 'monster' ? 'Supprimer le monstre ?' : 'Supprimer le lieu ?'}
+        children={
+          <DeleteConfirm 
+            cancelAction={() => setOpenDeleteModal(false)} 
+            confirmAction={() => {
+              if (type === 'monster') {
+                handleDeleteMonster(item.id);
+              }
+            }}
+          />}
+      />
+
+      <Modal 
+        isOpen={openEditMonsterModal}
+        closeModal={() => {
+          setOpenEditMonsterModal(false)
+        }}
+        title='Modifier un monstre'
+        children={
+          <EditMonster 
+            closeModal={() => {
+              setOpenEditMonsterModal(false)
+            }}
+            monsterId={item.id}
+          />}
+      />
+
 
     </div>
   );
@@ -113,6 +199,7 @@ const Detail = ( { item } ) => {
 
 Detail.propTypes = {
   item: PropTypes.object,
+  deleteMonster: PropTypes.func,
 };
 
 export default Detail;

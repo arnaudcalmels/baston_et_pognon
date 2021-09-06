@@ -19,8 +19,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   deleteScenario: (id) => {
     dispatch(deleteScenario(id, ownProps.history.push));
   },
-  setItem: (data) => {
-    dispatch(setItem(data));
+  setItem: (data, itemType) => {
+    dispatch(setItem(data, itemType));
   }
 });
 

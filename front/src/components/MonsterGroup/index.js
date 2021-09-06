@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import Modal from '../Modal';
 import AddMonster from '../../containers/components/AddMonster';
-// import EditMonster from '../../containers/components/EditMonster';
 
 import PropTypes from 'prop-types';
 
@@ -14,9 +13,6 @@ import styles from './monsterGroup.module.scss';
 const MonsterGroup = ({ wanderGroupId, monsters, setItem }) => {
   
   const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
-  // const [openEditMonsterModal, setOpenEditMonsterModal] = useState(false);
-
-  // const [monsterId, setMonsterId] = useState();
   
   return (
     <div className={styles['content']}>
@@ -26,9 +22,7 @@ const MonsterGroup = ({ wanderGroupId, monsters, setItem }) => {
             key={monster.id}
             className={styles['monster']} 
             onClick={() => {
-            setItem(monster);
-            // setOpenEditMonsterModal(true);
-            // setMonsterId(monster.id)
+            setItem(monster, 'monster');
           }}>
             {monster.name}
           </div>
@@ -61,25 +55,6 @@ const MonsterGroup = ({ wanderGroupId, monsters, setItem }) => {
             }}
           />}
       />
-
-      {/* <Modal 
-        isOpen={openEditMonsterModal}
-        closeModal={() => {
-          setOpenEditMonsterModal(false)
-        }}
-        title='Modifier un monstre'
-        children={
-          <EditMonster 
-            scenarioId={null}
-            placeId={null}
-            wanderGroupId={wanderGroupId}
-            slug="wanderGroup"
-            closeModal={() => {
-              setOpenEditMonsterModal(false)
-            }}
-            monsterId={monsterId}
-          />}
-      /> */}
 
     </div>
   )

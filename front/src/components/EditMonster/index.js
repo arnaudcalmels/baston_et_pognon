@@ -4,14 +4,12 @@ import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
 import Loader from '../Loader';
-import Modal from '../../components/Modal';
-import DeleteConfirm from '../../components/DeleteConfirm';
 
 import PropTypes from 'prop-types';
 
 import styles from './editMonster.module.scss';
 
-const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, getMonster, monsterId, currentMonster, isLoading, editMonster, deleteMonster }) => {
+const EditMonster = ({ closeModal, getMonster, monsterId, currentMonster, isLoading, editMonster, deleteMonster }) => {
   useEffect(() => {
     getMonster(monsterId);
   },
@@ -19,7 +17,6 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
   []);
 
   let [newPicture, setNewPicture] = useState();
-  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
 
   const getFile = (props, file) => {
     props.setFieldValue("picture", file);
@@ -27,12 +24,7 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
   };
 
   const handleSubmit = (values) => {
-    console.log(JSON.stringify(values, null, 2));
     editMonster(monsterId, JSON.stringify(values, null, 2), closeModal);
-  };
-
-  const handleDeleteMonster = (id) => {
-    deleteMonster(id, closeModal);
   };
 
   return (
@@ -42,9 +34,6 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
       <div>
         <Formik
           initialValues={{
-            scenarioId,
-            placeId,
-            wanderGroupId,
             name: currentMonster.name,
             isBoss: currentMonster.isBoss,
             hasBooster: currentMonster.hasBooster,
@@ -259,30 +248,6 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
         children='Annuler' 
         onClick={closeModal}
       />
-
-      <Button 
-        id={styles['delete_button']} 
-        color='#eee' 
-        children='Supprimer le monstre' 
-        onClick={() => setOpenDeleteModal(true)}
-      />
-
-      <Modal 
-        isOpen={openDeleteModal} 
-        closeModal={() => {
-          setOpenDeleteModal(false);
-        }}
-        title='Supprimer le monstre ?' 
-        children={
-          <DeleteConfirm 
-            cancelAction={() => setOpenDeleteModal(false)} 
-            confirmAction={() => {
-              handleDeleteMonster(monsterId);
-              setOpenDeleteModal(false);
-            }}
-          />}
-      />
-
 
       </div>
   );

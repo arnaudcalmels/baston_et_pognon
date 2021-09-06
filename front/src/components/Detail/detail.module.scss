@@ -38,4 +38,14 @@
     &_armor {
         color: darkblue;
     }
+
+    &_pen {
+        align-self: flex-end;
+        padding: 0.5rem;
+    }
+
+    &_trash {
+        align-self: flex-end;
+        padding: 0.5rem;
+    }
 }

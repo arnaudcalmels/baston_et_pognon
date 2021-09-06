@@ -1,12 +1,13 @@
 import axios from 'axios';
 
 import { setErrorToasts, setSuccessToast } from '../utils/toasts';
+import { findMonster, findNewMonster } from '../utils/findItem';
 
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getProfessionsSuccess, getRacesSuccess } from '../actions/character';
-import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, } from '../actions/scenario';
+import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, setItem} from '../actions/scenario';
 import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
 import { getMonsterSuccess } from '../actions/monster';
 import { setLoadingTrue, setLoadingFalse } from '../actions/other';
@@ -546,12 +547,17 @@ import {
         },
         data: action.values     
       };
-
       axios(config)
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
-        setSuccessToast('Monstre créé !');
-        action.closeFunction();
+        const monster = findNewMonster(JSON.parse(action.values).placeId, JSON.parse(action.values).wanderGroupId, response.data.id);
+        if (Object.keys(monster).length > 0) {
+          store.dispatch(setItem(monster, 'monster'));
+          setSuccessToast('Monstre créé !');
+          action.closeFunction();
+        } else {
+        setErrorToasts(['Monstre non créé']);
+        }
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -599,8 +605,14 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
-        setSuccessToast('Modification effectuée');
-        action.closeFunction();
+        const monster = findMonster(action.id, response.data.id);
+        if (Object.keys(monster).length > 0) {
+          store.dispatch(setItem(monster, 'monster'));
+          setSuccessToast('Modification effectuée');
+          action.closeFunction();
+        } else {
+          setErrorToasts(['Modification non effectuée']);
+        }
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -623,6 +635,7 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
+        store.dispatch(setItem({}, null));
         store.dispatch(editScenarioSuccess(response.data));
         action.closeFunction();
       })

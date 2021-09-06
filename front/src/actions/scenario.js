@@ -41,7 +41,8 @@ export const deleteScenario = (id, redirect) => ({
   redirect
 });
 
-export const setItem = (data) => ({
+export const setItem = (data, itemType) => ({
   type: SET_ITEM,
   data,
+  itemType
 });

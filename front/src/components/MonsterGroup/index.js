@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Modal from '../Modal';
 import AddMonster from '../../containers/components/AddMonster';
 import EditMonster from '../../containers/components/EditMonster';
-import Button from '../Button';
 
 import PropTypes from 'prop-types';
 
@@ -12,7 +11,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './monsterGroup.module.scss';
 
-const MonsterGroup = ({ closeModal, wanderGroupId, monsters }) => {
+const MonsterGroup = ({ wanderGroupId, monsters }) => {
   
   const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
   const [openEditMonsterModal, setOpenEditMonsterModal] = useState(false);
@@ -39,14 +38,6 @@ const MonsterGroup = ({ closeModal, wanderGroupId, monsters }) => {
         size="2x" 
         style={{cursor: 'pointer'}}
         title="Ajouter un monstre"
-      />
-
-
-      <Button 
-        // id={styles['cancel_button']} 
-        color='#eee' 
-        children='Fermer' 
-        onClick={closeModal}
       />
 
       <Modal 
@@ -86,13 +77,11 @@ const MonsterGroup = ({ closeModal, wanderGroupId, monsters }) => {
           />}
       />
 
-
     </div>
   )
 };
 
 MonsterGroup.propTypes = {
-  closeModal: PropTypes.func,
   wanderGroupId: PropTypes.number,
   monsters: PropTypes.arrayOf(PropTypes.object,),
 }

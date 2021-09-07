@@ -17,11 +17,11 @@ const mapDispatchToProps = (dispatch) => ({
   getPlace: (id) => {
     dispatch(getPlace(id));
   },
-  editPlace: (id, values) => {
-    dispatch(editPlace(id, values));
+  editPlace: (id, values, closeFunction) => {
+    dispatch(editPlace(id, values, closeFunction));
   },
-  deletePlace: (id) => {
-    dispatch(deletePlace(id));
+  deletePlace: (id, closeFunction) => {
+    dispatch(deletePlace(id, closeFunction));
   },
 });
 

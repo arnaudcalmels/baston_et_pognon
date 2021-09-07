@@ -19,14 +19,13 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios }) => {
     history.push('/scenario/nouveau');
   };
 
-
   useEffect(() => {
-    if (isLoggedIn && scenarios.length === 0) {
+    if (isLoggedIn ) {
       getScenarios();
     }
   }, 
   // eslint-disable-next-line
-  [isLoggedIn]);
+  []);
 
   return (
     <div className={styles['main']}>

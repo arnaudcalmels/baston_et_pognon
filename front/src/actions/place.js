@@ -1,5 +1,5 @@
 import {
-  GET_CATEGORIES, GET_CATEGORIES_SUCCESS, NEW_PLACE, NEW_PLACE_SUCCESS, GET_PLACE, GET_PLACE_SUCCESS, EDIT_PLACE, DELETE_PLACE, 
+  GET_CATEGORIES, GET_CATEGORIES_SUCCESS, NEW_PLACE, GET_PLACE, GET_PLACE_SUCCESS, EDIT_PLACE, DELETE_PLACE, 
 } from './types';
 
 export const getCategories = () => ({
@@ -11,14 +11,10 @@ export const getCategoriesSuccess = (data) => ({
   data,
 });
 
-export const newPlace = (values) => ({
+export const newPlace = (values, closeFunction) => ({
   type: NEW_PLACE,
   values,
-});
-
-export const newPlaceSuccess = (data) => ({
-  type: NEW_PLACE_SUCCESS,
-  data,
+  closeFunction
 });
 
 export const getPlace = (id) => ({
@@ -31,13 +27,15 @@ export const getPlaceSuccess = (data) => ({
   data,
 });
 
-export const editPlace = (id, values) => ({
+export const editPlace = (id, values, closeFunction) => ({
   type: EDIT_PLACE,
   id,
-  values
+  values,
+  closeFunction
 });
 
-export const deletePlace = (id) => ({
+export const deletePlace = (id, closeFunction) => ({
   type: DELETE_PLACE,
   id,
+  closeFunction
 });

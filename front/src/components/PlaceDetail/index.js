@@ -16,7 +16,7 @@ import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
 import styles from './placeDetail.module.scss';
 
-const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId } ) => {
+const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } ) => {
 
   const [openEditPlaceModal, setOpenEditPlaceModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false); 
@@ -25,10 +25,20 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId } ) => {
     deletePlace(id, setOpenDeleteModal(false));
   }
 
+  const [gridApi, setGridApi] = useState(null);
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
+
   const rowDataPlace = [];
   item.monsters?.forEach(monster => {
-    rowDataPlace.push({name: monster.name});
+    rowDataPlace.push({name: monster.name, id: monster.id});
   });
+
+  const onMonsterSelected = () => {
+    let selectedRow = gridApi.getSelectedRows();
+    getMonster(selectedRow[0].id, 'currentMonsterInPlace');
+  };
 
   return (
     isLoading ?
@@ -104,10 +114,18 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId } ) => {
       }
 
       { // Monsters
-        item.monsters.length > 0 &&
+        item.monsters?.length > 0 &&
         <div className="ag-theme-material" style={{height: 200, width: 300}}>
-          <AgGridReact rowData={rowDataPlace}>
-            <AgGridColumn headerName="Monstre" field="name"></AgGridColumn>
+          <AgGridReact 
+            rowData={rowDataPlace}
+            rowSelection={'single'}
+            onGridReady={onGridReady}
+            onSelectionChanged={onMonsterSelected}
+            >
+            <AgGridColumn 
+              headerName="Monstre" 
+              field="name"
+            ></AgGridColumn>
           </AgGridReact>
         </div>
       }
@@ -154,6 +172,7 @@ PlaceDetail.propTypes = {
   isLoading: PropTypes.bool,
   deletePlace: PropTypes.func,
   scenarioId: PropTypes.number,
+  getMonster: PropTypes.func,
 };
 
 export default PlaceDetail;

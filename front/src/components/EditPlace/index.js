@@ -170,6 +170,7 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
           closeModal={() => {
             setOpenAddMonsterModal(false)
           }}
+          context={'currentMonsterInPlace'}
         />}
     />
 

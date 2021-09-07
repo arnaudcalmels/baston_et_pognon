@@ -24,7 +24,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './scenario.module.scss';
 
-const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMonster, currentPlace, getPlace  }) => {
+const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMonster, currentPlace, getPlace, currentMonsterInPlace  }) => {
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
     const block_scenario = document.getElementById(styles['block_scenario']);
@@ -262,6 +262,13 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
             scenarioId={scenario.id}
           ></PlaceDetail>
         </Column>
+        <Column>
+          <MonsterDetail
+            item={currentMonsterInPlace}
+            context={'currentMonsterInPlace'}
+          ></MonsterDetail>
+        </Column>
+
       </Section>
 
       {/*
@@ -328,6 +335,7 @@ Scenario.propTypes = {
   deleteScenario: PropTypes.func,
   currentWanderingMonster: PropTypes.object,
   currentPlace: PropTypes.object,
+  currentMonsterInPlace: PropTypes.object,
 };
 
 export default Scenario;

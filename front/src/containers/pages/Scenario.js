@@ -11,7 +11,8 @@ const mapStateToProps= (state, ownProps) => ({
   scenarios: state.scenario.scenarios,
   scenario: getItem(ownProps.match.params.id, 'scenarios'),
   currentWanderingMonster: state.monster.currentWanderingMonster,
-  currentPlace: state.place.currentPlace
+  currentPlace: state.place.currentPlace,
+  currentMonsterInPlace: state.monster.currentMonsterInPlace
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

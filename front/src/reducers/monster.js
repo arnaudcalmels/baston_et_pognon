@@ -2,6 +2,7 @@ import { GET_MONSTER_SUCCESS, DELETE_MONSTER_SUCCESS  } from "../actions/types";
 
 const initialState = {
   currentWanderingMonster: {},
+  currentMonsterInPlace: {}
 };
 
 const reducer = (oldState = initialState, action) => {

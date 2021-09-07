@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import {AgGridColumn, AgGridReact} from 'ag-grid-react';
+import {AgGridColumn, AgGridReact} from 'ag-grid-react';
 
 import Modal from '../Modal';
 import DeleteConfirm from '../DeleteConfirm';
@@ -18,12 +18,17 @@ import styles from './placeDetail.module.scss';
 
 const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId } ) => {
 
-const [openEditPlaceModal, setOpenEditPlaceModal] = useState(false);
-const [openDeleteModal, setOpenDeleteModal] = useState(false); 
+  const [openEditPlaceModal, setOpenEditPlaceModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
 
-const handleDeletePlace = (id) => {
-  deletePlace(id, setOpenDeleteModal(false));
-}
+  const handleDeletePlace = (id) => {
+    deletePlace(id, setOpenDeleteModal(false));
+  }
+
+  const rowDataPlace = [];
+  item.monsters?.forEach(monster => {
+    rowDataPlace.push({name: monster.name});
+  });
 
   return (
     isLoading ?
@@ -82,6 +87,29 @@ const handleDeletePlace = (id) => {
             }
             </span>
           </span>
+      }
+
+      { // Description
+        item.description &&
+        <div className={styles['description']}>
+          {item.description}
+        </div>
+      }
+
+      { // Category
+        item.category &&
+        <div className={styles['category']}>
+          {item.category.name}
+        </div>
+      }
+
+      { // Monsters
+        item.monsters.length > 0 &&
+        <div className="ag-theme-material" style={{height: 200, width: 300}}>
+          <AgGridReact rowData={rowDataPlace}>
+            <AgGridColumn headerName="Monstre" field="name"></AgGridColumn>
+          </AgGridReact>
+        </div>
       }
 
       <Modal 

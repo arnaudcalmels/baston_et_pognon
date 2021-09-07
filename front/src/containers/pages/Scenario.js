@@ -5,6 +5,7 @@ import Scenario from '../../pages/Scenario';
 
 import { editScenario, deleteScenario } from '../../actions/scenario';
 import { getPlace } from '../../actions/place';
+import { getMonsterSuccess } from '../../actions/monster';
 import getItem from '../../utils/getItem';
 
 const mapStateToProps= (state, ownProps) => ({
@@ -25,6 +26,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   getPlace: (id) => {
     dispatch(getPlace(id));
   },
+  getMonsterSuccess: (data, context) => {
+    dispatch(getMonsterSuccess(data, context));
+  }
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Scenario));

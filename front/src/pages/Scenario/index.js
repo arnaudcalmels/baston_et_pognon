@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 //import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import FileBase64 from 'react-file-base64';
+
 //import useMediaQuery from '../../utils/useMediaQuery';
 
 import Title from '../../components/Title';
@@ -49,24 +51,21 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
   const handleDeleteScenario = (id) => {
     deleteScenario(id);
   }
+
+  let [ newPicture, setNewPicture ] = useState();
+
+  const getFile = (props, file) => {
+    props.setFieldValue("picture", file);
+    setNewPicture(file);
+  };
+
   
   return (
     <div className={styles['main']}>
       <Title title={scenario.name} id={styles['title']}/>
 
       <div className={styles['show_scenario']} id={styles['block_scenario']}>
-        <div className={styles['overlay-image']}>
-          <img src={scenario.picture?.base64} alt="photo_scenario"/>  
-          <div className={styles['hover']}>
-            <FontAwesomeIcon 
-              onClick={() => console.log('ajouter photo')} 
-              icon={faPlusCircle} 
-              size="2x" 
-              style={{cursor: 'pointer'}}
-              title="Modifier l'image"
-            />
-          </div>
-        </div>
+          <img id={styles['image']}src={scenario.picture?.base64} alt="photo_scenario"/>  
         <table className={styles['table']} id={styles['caracteristics']}>
           <tbody className={styles['table_content']}>
             <tr className={styles['table_row']}>
@@ -86,6 +85,26 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
           <p>{scenario.description}</p>
         </div>
 
+        <div className={styles['buttons']}>
+          <Button 
+            id={styles['edit_button']}
+            color='#eee' 
+            children='Editer le scénario' 
+            onClick={() => {
+              console.log('editer scenario');
+              showForm();
+            }} 
+          />
+
+          <Button 
+            color='#eee' 
+            children='Supprimer le scénario' 
+            onClick={() => {
+              setOpenDeleteModal(true);
+            }} 
+          />
+        </div>
+
       </div>
 
       {/*
@@ -93,35 +112,39 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
       */}
       <div id={styles['block_form']} className={styles['hide_form']}>
         <Formik
-            initialValues={{
-              name: scenario.name,
-              description: scenario.description,
-              maxPlayers: scenario.maxPlayers,
-              characterLevel: scenario.characterLevel,
-              picture: null
-            }}
-            validate={values => {
-              const errors = {};
-              if (!values.name) {
-                errors.name = 'Veuillez remplir ce champ !';
-              }
-              return errors;
-            }}
-            onSubmit={(values) => handleSubmit(values)}
-          >
-
+          initialValues={{
+            name: scenario.name,
+            description: scenario.description,
+            maxPlayers: scenario.maxPlayers,
+            characterLevel: scenario.characterLevel,
+            picture: scenario.picture
+          }}
+          validate={values => {
+            const errors = {};
+            if (!values.name) {
+              errors.name = 'Veuillez remplir ce champ !';
+            }
+            return errors;
+          }}
+          onSubmit={(values) => handleSubmit(values)}
+        >
+          {
+            (props) => (
             <Form className={styles['form']}>
-              <div className={styles['overlay-image']}>
-                <img src={scenario.picture} alt="photo_scenario"/>  
-                <div className={styles['hover']}>
-                  <FontAwesomeIcon 
-                    onClick={() => console.log('ajouter photo')} 
-                    icon={faPlusCircle} 
-                    size="2x" 
-                    style={{cursor: 'pointer'}}
-                    title="Ajouter une image"
-                  />
-                </div>
+              {
+                newPicture ?
+                  <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                  : 
+                  // eslint-disable-next-line
+                  <img id={styles['image_preview']} src={scenario.picture?.base64} alt={scenario.picture?.name}/>
+              }
+
+              <div className={styles['scenario_picture']}>
+                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+                <FileBase64
+                  multiple={false}
+                  onDone={getFile.bind(this, props)}
+                />
               </div>
 
               <div className={styles['new-scenario_name']}>
@@ -169,6 +192,8 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
               />
 
             </Form>
+            )
+          }
           </Formik>
 
 
@@ -179,26 +204,6 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
             onClick={() => showForm()}
           />
 
-        </div>
-
-        <div className={styles['buttons']}>
-          <Button 
-            id={styles['edit_button']}
-            color='#eee' 
-            children='Editer le scénario' 
-            onClick={() => {
-              console.log('editer scenario');
-              showForm();
-            }} 
-          />
-
-          <Button 
-            color='#eee' 
-            children='Supprimer le scénario' 
-            onClick={() => {
-              setOpenDeleteModal(true);
-            }} 
-          />
         </div>
 
       <Section title='Monstres errants'>

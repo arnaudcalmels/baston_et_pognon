@@ -1,4 +1,4 @@
-import { GET_CATEGORIES_SUCCESS, GET_PLACE_SUCCESS } from "../actions/types";
+import { GET_CATEGORIES_SUCCESS, GET_PLACE_SUCCESS, DELETE_PLACE_SUCCESS } from "../actions/types";
 
 const initialState = {
   categories: [],
@@ -18,7 +18,13 @@ const reducer = (oldState = initialState, action) => {
         ...oldState,
         currentPlace: action.data
       }
-  
+      
+    case DELETE_PLACE_SUCCESS:
+      return {
+        ...oldState,
+        currentPlace: {}
+      }
+   
     default:
       return oldState;
   }

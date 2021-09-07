@@ -8,14 +8,13 @@ import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
 import AddPlace from '../../containers/components/AddPlace';
-// import EditPlace from '../../containers/components/EditPlace';
 import AddMonster from '../../containers/components/AddMonster'
 import MonsterGroup from '../../containers/components/MonsterGroup';
 import Section from '../../components/Section';
 import Column from '../../components/Column';
 import MonsterDetail from '../../containers/components/MonsterDetail';
 import Place from '../../components/Place';
-import PlaceDetail from '../../components/PlaceDetail';
+import PlaceDetail from '../../containers/components/PlaceDetail';
 
 import PropTypes from 'prop-types';
 
@@ -25,7 +24,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './scenario.module.scss';
 
-const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMonster, currentPlace  }) => {
+const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMonster, currentPlace, getPlace  }) => {
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
     const block_scenario = document.getElementById(styles['block_scenario']);
@@ -241,6 +240,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
               <Place 
                 key={place.id}
                 place={place}
+                onClick={() => getPlace(place.id)}
               />
             ))
             :
@@ -259,6 +259,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
         <Column>
         <PlaceDetail
             item={currentPlace}
+            scenarioId={scenario.id}
           ></PlaceDetail>
         </Column>
       </Section>
@@ -298,22 +299,6 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
           />}
       />
 
-      {/* <Modal 
-        isOpen={openEditPlaceModal}
-        closeModal={() => {
-          setOpenEditPlaceModal(false)
-        }}
-        title='Modifier un lieu'
-        children={
-          <EditPlace 
-            scenarioId={scenario.id}
-            placeId={placeId}
-            closeModal={() => {
-              setOpenEditPlaceModal(false)
-            }}
-          />}
-      />
- */}
       <Modal 
         isOpen={openAddMonsterModal}
         closeModal={() => {

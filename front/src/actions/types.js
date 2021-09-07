@@ -47,6 +47,7 @@ export const GET_PLACE = 'GET_PLACE';
 export const GET_PLACE_SUCCESS = 'GET_PLACE_SUCCESS';
 export const EDIT_PLACE = 'EDIT_PLACE';
 export const DELETE_PLACE = 'DELETE_PLACE';
+export const DELETE_PLACE_SUCCESS = 'DELETE_PLACE_SUCCESS';
 
 // Monster
 export const NEW_MONSTER = 'NEW_MONSTER';

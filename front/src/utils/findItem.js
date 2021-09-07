@@ -36,3 +36,19 @@ export const findNewMonster = (placeId, wanderGroupId, scenarioId) => {
   } 
   return currentMonster;
 };
+
+// Trouver un lieu dans un scenario
+export const findPlace = (placeId, scenarioId) => {
+  const { scenario: { scenarios } } = store.getState();
+  let currentPlace = scenarios.find(scenario => scenario.id === scenarioId).places?.find(place => place.id === placeId);
+  return currentPlace;
+};
+
+// Trouver le dernier lieu créé
+export const findNewPlace = (scenarioId) => {
+  const { scenario: { scenarios } } = store.getState();
+  let currentPlace = {};
+  let places = scenarios.find(scenario => scenario.id === scenarioId).places;
+  currentPlace = places[places.length-1];
+  return currentPlace; 
+};

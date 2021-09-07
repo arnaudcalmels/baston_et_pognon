@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Scenario from '../../pages/Scenario';
 
 import { editScenario, deleteScenario } from '../../actions/scenario';
-
+import { getPlace } from '../../actions/place';
 import getItem from '../../utils/getItem';
 
 const mapStateToProps= (state, ownProps) => ({
@@ -20,6 +20,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   deleteScenario: (id) => {
     dispatch(deleteScenario(id, ownProps.history.push));
+  },
+  getPlace: (id) => {
+    dispatch(getPlace(id));
   },
 });
 

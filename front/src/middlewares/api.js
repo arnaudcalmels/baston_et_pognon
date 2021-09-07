@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 import { setErrorToasts, setSuccessToast } from '../utils/toasts';
-import { findMonster, findNewMonster } from '../utils/findItem';
+import { findMonster, findNewMonster, findPlace, findNewPlace } from '../utils/findItem';
 
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getProfessionsSuccess, getRacesSuccess } from '../actions/character';
 import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess} from '../actions/scenario';
-import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
+import { deletePlaceSuccess, getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
 import { getMonsterSuccess, deleteMonsterSuccess } from '../actions/monster';
 import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
@@ -449,8 +449,14 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
-        setSuccessToast('Lieu créé !');
-        action.closeFunction();
+        const place = findNewPlace(response.data.id);
+        if (Object.keys(place).length > 0) {
+          store.dispatch(getPlaceSuccess(place));
+          setSuccessToast('Lieu créé !');
+          action.closeFunction();
+        } else {
+          setErrorToasts(['Lieu non créé']);
+        }
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -475,8 +481,6 @@ import {
       .then ((response) => { 
         store.dispatch(getPlaceSuccess(response.data));
         store.dispatch(setLoadingFalse());
-        console.log(response.data);
-
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -500,8 +504,14 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
-        setSuccessToast('Modification effectuée');
-        action.closeFunction();
+        const place = findPlace(action.id, response.data.id);
+        if (place) {
+          store.dispatch(getPlaceSuccess(place));
+          setSuccessToast('Modification effectuée');
+          action.closeFunction();
+        } else {
+          setErrorToasts(['Modification non effectuée']);
+        }
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -525,6 +535,7 @@ import {
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
         store.dispatch(editScenarioSuccess(response.data));
+        store.dispatch(deletePlaceSuccess());
         action.closeFunction();
       })
       .catch ((error) => {

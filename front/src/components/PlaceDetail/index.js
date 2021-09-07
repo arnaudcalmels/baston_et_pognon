@@ -4,13 +4,14 @@ import {AgGridColumn, AgGridReact} from 'ag-grid-react';
 import Modal from '../Modal';
 import DeleteConfirm from '../DeleteConfirm';
 import EditPlace from '../../containers/components/EditPlace';
+import AddMonster from '../../containers/components/AddMonster'
 
 import Loader from '../Loader';
 
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faTrashAlt, faPen, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
@@ -20,6 +21,7 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
 
   const [openEditPlaceModal, setOpenEditPlaceModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false); 
+  const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
 
   const handleDeletePlace = (id) => {
     deletePlace(id, setOpenDeleteModal(false));
@@ -130,6 +132,16 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
         </div>
       }
 
+      <FontAwesomeIcon 
+        className={styles['add_monster']}
+        onClick={() => setOpenAddMonsterModal(true)} 
+        icon={faPlusCircle} 
+        size="2x" 
+        style={{cursor: 'pointer'}}
+        title="Ajouter un monstre"
+      />
+
+
       <Modal 
         isOpen={openDeleteModal} 
         closeModal={() => {
@@ -159,6 +171,25 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
             closeModal={() => {
               setOpenEditPlaceModal(false)
             }}
+          />}
+      />
+
+      <Modal 
+        isOpen={openAddMonsterModal}
+        closeModal={() => {
+          setOpenAddMonsterModal(false)
+        }}
+        title='Ajouter un monstre'
+        children={
+          <AddMonster 
+            scenarioId={null}
+            placeId={item.id}
+            wanderGroupId={null}
+            slug="place"
+            closeModal={() => {
+              setOpenAddMonsterModal(false)
+            }}
+            context={'currentMonsterInPlace'}
           />}
       />
 

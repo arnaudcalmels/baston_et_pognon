@@ -9,8 +9,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  editMonster: (id, values, closeFunction, context) => {
-    dispatch(editMonster(id, values, closeFunction, context));
+  editMonster: (id, values, closeFunction, context, placeId) => {
+    dispatch(editMonster(id, values, closeFunction, context, placeId));
   },
 });
 

@@ -566,6 +566,11 @@ import {
           store.dispatch(getMonsterSuccess(monster, action.context));
           setSuccessToast('Monstre créé !');
           action.closeFunction();
+          // si le monstre a été créé dans un lieu, on met à jour le lieu également
+          if (JSON.parse(action.values).placeId) {
+            const place = findPlace(JSON.parse(action.values).placeId, response.data.id)
+            store.dispatch(getPlaceSuccess(place));
+          }
         } else {
         setErrorToasts(['Monstre non créé']);
         }
@@ -620,6 +625,11 @@ import {
         if (Object.keys(monster).length > 0) {
           store.dispatch(getMonsterSuccess(monster, action.context));
           setSuccessToast('Modification effectuée');
+          //si le monstre est rattaché à un lieu, on met à jour le lieu
+          if (action.placeId) {
+            const place = findPlace(action.placeId, response.data.id)
+            store.dispatch(getPlaceSuccess(place));
+          }
           action.closeFunction();
         } else {
           setErrorToasts(['Modification non effectuée']);
@@ -648,6 +658,11 @@ import {
         setSuccessToast('Suppression effectuée');
         store.dispatch(deleteMonsterSuccess(action.context));
         store.dispatch(editScenarioSuccess(response.data));
+        //si le monstre était rattaché à un lieu, on met à jour le lieu
+        if (action.placeId) {
+          const place = findPlace(action.placeId, response.data.id)
+          store.dispatch(getPlaceSuccess(place));
+        }
         action.closeFunction();
       })
       .catch ((error) => {

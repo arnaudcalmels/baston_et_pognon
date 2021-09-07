@@ -9,8 +9,8 @@ const mapStateToProps= (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteMonster: (id, closeFunction, context) => {
-    dispatch(deleteMonster(id, closeFunction, context));
+  deleteMonster: (id, closeFunction, context, placeId) => {
+    dispatch(deleteMonster(id, closeFunction, context, placeId));
   }
 });
 

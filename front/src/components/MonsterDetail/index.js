@@ -15,12 +15,12 @@ import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
 import styles from './monsterDetail.module.scss';
 
-const MonsterDetail = ( { item, deleteMonster, isLoading, context } ) => {
+const MonsterDetail = ( { item, deleteMonster, isLoading, context, placeId } ) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false); 
   const [openEditMonsterModal, setOpenEditMonsterModal] = useState(false);
 
   const handleDeleteMonster = (id) => {
-    deleteMonster(id, setOpenDeleteModal(false), context);
+    deleteMonster(id, setOpenDeleteModal(false), context, placeId);
   };
 
   const rowDataMonster = [];
@@ -173,6 +173,7 @@ const MonsterDetail = ( { item, deleteMonster, isLoading, context } ) => {
             }}
             currentMonster={item}
             context={context}
+            placeId={placeId}
           />}
       />
 
@@ -186,6 +187,7 @@ MonsterDetail.propTypes = {
   deleteMonster: PropTypes.func,
   isLoading: PropTypes.bool, 
   context: PropTypes.string,
+  placeId: PropTypes.number,
 };
 
 export default MonsterDetail;

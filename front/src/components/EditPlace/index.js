@@ -3,8 +3,8 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
-import Modal from '../../components/Modal';
-import AddMonster from '../../containers/components/AddMonster';
+// import Modal from '../../components/Modal';
+// import AddMonster from '../../containers/components/AddMonster';
 
 import PropTypes from 'prop-types';
 
@@ -19,7 +19,7 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
   []);
 
   let [newPicture, setNewPicture] = useState();
-  const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
+  // const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
 
   const getFile = (props, file) => {
     props.setFieldValue("picture", file);
@@ -148,14 +148,14 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
       onClick={closeModal}
     />
 
-    <Button 
+    {/* <Button 
       id={styles['addMonsters_button']} 
       color='#eee' 
       children='Ajouter des monstres' 
       onClick={() => setOpenAddMonsterModal(true)}
-    />
+    /> */}
 
-    <Modal 
+    {/* <Modal 
       isOpen={openAddMonsterModal}
       closeModal={() => {
         setOpenAddMonsterModal(false)
@@ -172,7 +172,7 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
           }}
           context={'currentMonsterInPlace'}
         />}
-    />
+    /> */}
 
 
     </div>

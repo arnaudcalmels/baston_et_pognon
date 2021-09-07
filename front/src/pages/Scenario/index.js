@@ -266,6 +266,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
           <MonsterDetail
             item={currentMonsterInPlace}
             context={'currentMonsterInPlace'}
+            placeId={currentPlace.id}
           ></MonsterDetail>
         </Column>
 

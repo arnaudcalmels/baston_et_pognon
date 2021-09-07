@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 import styles from './editMonster.module.scss';
 
-const EditMonster = ({ closeModal, currentMonster, isLoading, editMonster, context }) => {
+const EditMonster = ({ closeModal, currentMonster, isLoading, editMonster, context, placeId }) => {
   let [newPicture, setNewPicture] = useState();
 
   const getFile = (props, file) => {
@@ -18,7 +18,7 @@ const EditMonster = ({ closeModal, currentMonster, isLoading, editMonster, conte
   };
 
   const handleSubmit = (values) => {
-    editMonster(currentMonster.id, JSON.stringify(values, null, 2), closeModal, context);
+    editMonster(currentMonster.id, JSON.stringify(values, null, 2), closeModal, context, placeId);
   };
 
   return (
@@ -253,6 +253,7 @@ EditMonster.propTypes = {
   isLoading: PropTypes.bool, 
   editMonster: PropTypes.func,
   context: PropTypes.string,
+  placeId: PropTypes.number,
 };
 
 export default EditMonster;

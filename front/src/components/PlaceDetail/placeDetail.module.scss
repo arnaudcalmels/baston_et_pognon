@@ -45,3 +45,13 @@
 .category {
     margin: 0.5rem;
 }
+
+.add_monster {
+    padding: 0.5rem;
+    opacity: 0.2;
+    align-self: center;
+
+    &:hover {
+        opacity: 1;
+    }
+}

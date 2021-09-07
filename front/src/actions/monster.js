@@ -20,19 +20,21 @@ export const getMonsterSuccess = (data, context) => ({
   context
 });
 
-export const editMonster = (id, values, closeFunction, context) => ({
+export const editMonster = (id, values, closeFunction, context, placeId) => ({
   type: EDIT_MONSTER,
   id,
   values,
   closeFunction, 
-  context
+  context,
+  placeId
 });
 
-export const deleteMonster = (id, closeFunction, context) => ({
+export const deleteMonster = (id, closeFunction, context, placeId) => ({
   type: DELETE_MONSTER,
   id,
   closeFunction,
-  context
+  context, 
+  placeId
 });
 
 export const deleteMonsterSuccess = (context) => ({

@@ -47,6 +47,7 @@ export const GET_PLACE = 'GET_PLACE';
 export const GET_PLACE_SUCCESS = 'GET_PLACE_SUCCESS';
 export const EDIT_PLACE = 'EDIT_PLACE';
 export const DELETE_PLACE = 'DELETE_PLACE';
+export const DELETE_PLACE_SUCCESS = 'DELETE_PLACE_SUCCESS';
 
 // Monster
 export const NEW_MONSTER = 'NEW_MONSTER';
@@ -54,6 +55,7 @@ export const GET_MONSTER = 'GET_MONSTER';
 export const GET_MONSTER_SUCCESS = 'GET_MONSTER_SUCCESS';
 export const EDIT_MONSTER = 'EDIT_MONSTER';
 export const DELETE_MONSTER = 'DELETE_MONSTER';
+export const DELETE_MONSTER_SUCCESS = 'DELETE_MONSTER_SUCCESS';
 
 // Other
 export const SET_LOADING_TRUE = 'SET_LOADING_TRUE';

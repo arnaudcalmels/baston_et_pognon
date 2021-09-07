@@ -1,0 +1,57 @@
+@import '../../styles/vars';
+
+.main {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+}
+
+#image {
+    max-width: 150px;
+    max-height: 200px;
+}
+
+.image {
+    width: 150px;
+    height: 200px;
+    border: 1px solid black;
+}
+
+.name {
+
+}
+
+.icon {
+    &_booster {
+        color: gold;
+    }
+
+    &_pen {
+        align-self: flex-end;
+        padding: 0.5rem;
+    }
+
+    &_trash {
+        align-self: flex-end;
+        padding: 0.5rem;
+    }
+}
+
+.description {
+    margin: 0.5rem;
+}
+
+.category {
+    margin: 0.5rem;
+}
+
+.add_monster {
+    padding: 0.5rem;
+    opacity: 0.2;
+    align-self: center;
+
+    &:hover {
+        opacity: 1;
+    }
+}

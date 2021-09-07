@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
 import Loader from '../Loader';
-import Modal from '../../components/Modal';
-import DeleteConfirm from '../../components/DeleteConfirm';
 
 import PropTypes from 'prop-types';
 
 import styles from './editMonster.module.scss';
 
-const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, getMonster, monsterId, currentMonster, isLoading, editMonster, deleteMonster }) => {
-  useEffect(() => {
-    getMonster(monsterId);
-  },
-  // eslint-disable-next-line
-  []);
-
+const EditMonster = ({ closeModal, currentMonster, isLoading, editMonster, context, placeId }) => {
   let [newPicture, setNewPicture] = useState();
-  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
 
   const getFile = (props, file) => {
     props.setFieldValue("picture", file);
@@ -27,12 +18,7 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
   };
 
   const handleSubmit = (values) => {
-    console.log(JSON.stringify(values, null, 2));
-    editMonster(monsterId, JSON.stringify(values, null, 2), closeModal);
-  };
-
-  const handleDeleteMonster = (id) => {
-    deleteMonster(id, closeModal);
+    editMonster(currentMonster.id, JSON.stringify(values, null, 2), closeModal, context, placeId);
   };
 
   return (
@@ -42,9 +28,6 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
       <div>
         <Formik
           initialValues={{
-            scenarioId,
-            placeId,
-            wanderGroupId,
             name: currentMonster.name,
             isBoss: currentMonster.isBoss,
             hasBooster: currentMonster.hasBooster,
@@ -260,45 +243,17 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
         onClick={closeModal}
       />
 
-      <Button 
-        id={styles['delete_button']} 
-        color='#eee' 
-        children='Supprimer le monstre' 
-        onClick={() => setOpenDeleteModal(true)}
-      />
-
-      <Modal 
-        isOpen={openDeleteModal} 
-        closeModal={() => {
-          setOpenDeleteModal(false);
-        }}
-        title='Supprimer le monstre ?' 
-        children={
-          <DeleteConfirm 
-            cancelAction={() => setOpenDeleteModal(false)} 
-            confirmAction={() => {
-              handleDeleteMonster(monsterId);
-              setOpenDeleteModal(false);
-            }}
-          />}
-      />
-
-
       </div>
   );
 };
 
 EditMonster.propTypes = {
   closeModal: PropTypes.func,
-  scenarioId: PropTypes.number,  
-  placeId: PropTypes.number,
-  wanderGroupId: PropTypes.number,
-  slug: PropTypes.string,
-  getMonster: PropTypes.func,
-  monsterId: PropTypes.number,
-  monster: PropTypes.object,
+  currentMonster: PropTypes.object,
   isLoading: PropTypes.bool, 
   editMonster: PropTypes.func,
+  context: PropTypes.string,
+  placeId: PropTypes.number,
 };
 
 export default EditMonster;

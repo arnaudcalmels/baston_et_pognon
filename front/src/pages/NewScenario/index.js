@@ -71,12 +71,12 @@ const NewScenario = ({ newScenario }) => {
             </div>
 
             <div className={styles['scenario_picture']}>
-                <label htmlFor="picture" className={styles['form_label']}>Ajouter une image :</label>
-                <FileBase64
-                  multiple={false}
-                  onDone={getFile.bind(this, props)}
-                />
-              </div>
+              <label htmlFor="picture" className={styles['form_label']}>Ajouter une image :</label>
+              <FileBase64
+                multiple={false}
+                onDone={getFile.bind(this, props)}
+              />
+            </div>
 
             <div className={styles['scenario_name']}>
               <label htmlFor="name" className={styles['form_label']}>Nom * :</label>

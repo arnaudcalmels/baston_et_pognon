@@ -12,7 +12,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './scenarios.module.scss';
 
-const Scenarios = ({ isLoggedIn, scenarios, getScenarios }) => {
+const Scenarios = ({ isLoggedIn, scenarios, getScenarios, getPlaceSuccess, getMonsterSuccess }) => {
   let history = useHistory();
 
   const newScenario = () => {
@@ -55,6 +55,9 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios }) => {
                 key={scenario.id}
                 onClick={() => {
                   history.push(`/scenario/${scenario.id}`);
+                  getPlaceSuccess({});
+                  getMonsterSuccess({}, 'currentWanderingMonster');
+                  getMonsterSuccess({}, 'currentMonsterInPlace');
                 }}
               />
             ))
@@ -83,6 +86,8 @@ Scenarios.propTypes = {
     isLoggedIn: PropTypes.bool,
     scenarios: PropTypes.arrayOf(PropTypes.object,),
     getScenarios: PropTypes.func,
+    getPlaceSuccess: PropTypes.func,
+    getMonsterSuccess: PropTypes.func,
 };
 
 export default Scenarios;

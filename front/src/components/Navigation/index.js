@@ -172,7 +172,7 @@ Navigation.propTypes = {
   isLoggedIn: PropTypes.bool,
   logout: PropTypes.func,
   username: PropTypes.string,
-  avatar: PropTypes.string,
+  avatar: PropTypes.object,
 };
 
 export default Navigation;

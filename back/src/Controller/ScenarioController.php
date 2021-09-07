@@ -233,7 +233,13 @@ class ScenarioController extends AbstractController
                 'places' => [
                     'id',
                     'name',
+                    'description',
+                    'hiddenBoosterCount',
                     'picture',
+                    'category' => [
+                        'id',
+                        'name',
+                    ],
                     'monsters' => [
                         'id',
                         'name',

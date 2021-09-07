@@ -29,11 +29,18 @@ export const findNewMonster = (placeId, wanderGroupId, scenarioId) => {
   if (placeId) {
     const monsters = scenarios.find(scenario => scenario.id === scenarioId).places?.find(place => place.id === placeId).monsters;
     currentMonster = monsters[monsters.length-1];
-  }
-  if (wanderGroupId) {
+  } else if (wanderGroupId) {
     const monsters = scenarios.find(scenario => scenario.id === scenarioId).wanderingMonsters?.find(group => group.id === wanderGroupId).monsters;
     currentMonster = monsters[monsters.length-1];
-  } 
+  } else { //si le monstre appartient à un nouveau wanderingGroup
+    const wanderingMonsters = scenarios.find(scenario => scenario.id === scenarioId).wanderingMonsters;
+    console.log('wanderingMonsters');
+    console.log(wanderingMonsters);
+    const monsters = wanderingMonsters[wanderingMonsters.length-1].monsters;
+    currentMonster = monsters[0];
+    console.log('currentMonster');
+    console.log(currentMonster);
+  }
   return currentMonster;
 };
 

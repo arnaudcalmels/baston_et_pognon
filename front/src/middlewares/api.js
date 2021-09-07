@@ -562,6 +562,8 @@ import {
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
         const monster = findNewMonster(JSON.parse(action.values).placeId, JSON.parse(action.values).wanderGroupId, response.data.id);
+        console.log('new monster');
+        console.log(monster);
         if (Object.keys(monster).length > 0) {
           store.dispatch(getMonsterSuccess(monster, action.context));
           setSuccessToast('Monstre créé !');

@@ -26,7 +26,7 @@ Card.propTypes = {
   image: PropTypes.string,
   name: PropTypes.string,
   subtitle: PropTypes.string,
-  level: PropTypes.number,
+  level: PropTypes.oneOfType([PropTypes.number,PropTypes.string]),
   onClick: PropTypes.func,
   alt: PropTypes.string,
 };

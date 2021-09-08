@@ -72,7 +72,6 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
   return (
     <div className={styles['main']}>
 
-
     {
       isLoggedIn && scenario ?
       <>

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-
 import Title from '../../components/Title';
 import Card from '../../components/Card';
+import Loader from '../../components/Loader';
 
 import PropTypes from 'prop-types';
 
@@ -45,7 +45,7 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
 
       {
 
-        isLoggedIn && 
+        isLoggedIn && characters ?
         <div className={styles['card_container']}>
           {
             characters.map(character => (
@@ -63,7 +63,8 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
             ))
           }
         </div>
-
+        :
+        <Loader />
       }
 
       <div className={styles['text_container']}>

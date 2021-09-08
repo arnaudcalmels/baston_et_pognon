@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import Character from '../../pages/Character';
 
-import { editCharacter, deleteCharacter, getProfessions, getRaces } from '../../actions/character';
+import { editCharacter, deleteCharacter, getProfessions, getRaces, getCharacters } from '../../actions/character';
 
 import getItem from '../../utils/getItem';
 
@@ -12,6 +12,7 @@ const mapStateToProps= (state, ownProps) => ({
   character: getItem(ownProps.match.params.id, 'characters'),
   professions: state.character.professions,
   races: state.character.races,
+  isLoggedIn: !!state.auth.token,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -26,6 +27,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   getRaces: () => {
     dispatch(getRaces());
+  },
+  getCharacters: () => {
+    dispatch(getCharacters());
   },
 });
 

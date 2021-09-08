@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import Title from '../../components/Title';
 import Card from '../../components/Card';
+import Loader from '../../components/Loader';
 
 import PropTypes from 'prop-types';
 
@@ -42,7 +43,7 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios, getPlaceSuccess, getMo
       </div>
 
       {
-        isLoggedIn && 
+        isLoggedIn && scenarios ? 
         <div className={styles['card_container']}>
           {
             scenarios.map(scenario => (
@@ -63,6 +64,8 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios, getPlaceSuccess, getMo
             ))
           }
         </div>
+        :
+        <Loader />
       }
 
       <div className={styles['text_container']}>

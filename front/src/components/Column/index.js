@@ -14,7 +14,7 @@ const Column = ( { children } ) => {
 
 Column.propTypes = {
   children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.object,), PropTypes.object
+    PropTypes.array, PropTypes.object, PropTypes.element,
   ]),
 };
 

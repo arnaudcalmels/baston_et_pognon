@@ -1,4 +1,4 @@
-import store from '../store/store';
+import { store } from '../store/store';
 
 // Trouver un monstre parmi les places ou les wanderingMonsters
 export const findMonster = (monsterId, scenarioId) => {

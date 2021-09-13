@@ -42,7 +42,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
         className={styles['bars']} 
         icon={faBars} 
         size="2x" 
-        style={{cursor: 'pointer'}}
+        style={{color: 'white'}}
       />     
 
       <div className={styles['menu']}>   
@@ -108,7 +108,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
               className={styles['chevron']} 
               icon={faChevronDown} 
               size="1x" 
-              style={{cursor: 'pointer'}}
+              style={{cursor: 'pointer', color: 'white'}}
             />     
 
             <nav className={styles['user_navbar']}>

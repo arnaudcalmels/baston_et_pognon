@@ -1,45 +1,67 @@
 @import '../../styles/vars';
 
 .card {
-    width: 250px;
-    height: 350px;
-    border: 2px solid black;
+    width: 300px;
+    height: 490px;
     border-radius: 5px;
     display: grid;
-    grid-template-rows: 220px repeat(3, 40px);
+    grid-template-rows: 225px 235px;
     justify-items: center;
-    align-items: center;
-    background-color: $color-tertiary;
+    background-image: url(../../images/texture_secondary_640.jpg);
     box-sizing: border-box;
     cursor: pointer;
 }
 
 .image_container {
     grid-row: 1 / 2;
-    width: 150px;
-    height: 200px;
+    width: 265px;
+    height: 210px;
     overflow: hidden;
-    display: grid;
-    align-content: center;
+    margin-bottom: 0;
+    align-self: flex-end;
+    display: flex;
+    align-content: flex-end;
+    border-radius: 5px 5px 0 0;
 }
 
 #image {
-    max-width: 150px;
-    max-height: 200px;
+    max-width: 265px;
+    max-height: 210px;
+}
+
+.text_container {
+    background: rgba(0, 0, 0, 0.62);
+    grid-row: 2 / 3;
+    width: 265px;
+    height: 250px;
+    color: $color-secondary;
+    border-radius: 0 0 5px 5px;
+    box-sizing: border-box;
+    padding: 0.5rem;
 }
 
 .name {
-    grid-row: 2 / 3;
-    margin: 0.5rem auto;
+    margin-top: 0;
+    overflow: hidden;
 }
 
-.subtitle {
-    grid-row: 3 / 4;
+.description {
+    overflow: hidden;
+    height: 137px;
+    font-size: 0.9rem;
+}
+
+.players {
     margin-top: 0;
     margin: 0 auto;
+    font-style: italic;
+    display: flex;
+    justify-content: space-between;
 }
 
 .level {
-    grid-row: 4 / 5;
     margin: 0 auto;
+    font-style: italic;
+    display: flex;
+    justify-content: space-between;
 }

@@ -94,7 +94,7 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
                 icon={faStar} 
                 title="Booster(s)"
               />
-              <span className="fa-layers-counter">
+              <span className="fa-layers-counter" style={{color: 'black', backgroundColor: 'gold', fontSize: '2.5rem', top: '1px', left:'-32px'}} title={`${item.hiddenBoosterCount} booster(s)`}>
               {
                 item.hiddenBoosterCount > 1 ? item.hiddenBoosterCount : ''
               }
@@ -135,15 +135,18 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
         </div>
       }
 
-      <FontAwesomeIcon 
-        className={styles['add_monster']}
-        onClick={() => setOpenAddMonsterModal(true)} 
-        icon={faPlusCircle} 
-        size="2x" 
-        style={{cursor: 'pointer'}}
-        title="Ajouter un monstre"
-      />
+      {
+        Object.keys(item).length > 0 &&      
+        <FontAwesomeIcon 
+          className={styles['add_monster']}
+          onClick={() => setOpenAddMonsterModal(true)} 
+          icon={faPlusCircle} 
+          size="2x" 
+          style={{cursor: 'pointer'}}
+          title="Ajouter un monstre"
+        />
 
+      }
 
       <Modal 
         isOpen={openDeleteModal} 

@@ -5,7 +5,6 @@ import EditMonster from "../../components/EditMonster";
 import { editMonster } from '../../actions/monster';
 
 const mapStateToProps = (state) => ({
-  isLoading: state.other.isLoading
 });
 
 const mapDispatchToProps = (dispatch) => ({

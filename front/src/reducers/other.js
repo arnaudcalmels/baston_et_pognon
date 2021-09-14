@@ -1,7 +1,12 @@
 import { SET_LOADING_TRUE, SET_LOADING_FALSE } from '../actions/types';
 
 const initialState = {
-  isLoading: false,
+  isLoading: {
+    character: false,
+    scenario: false,
+    place: false,
+    monster: false,
+  },
 }
 
 const reducer = (oldState = initialState, action) => {
@@ -9,13 +14,13 @@ const reducer = (oldState = initialState, action) => {
     case SET_LOADING_TRUE:
       return {
         ...oldState,
-        isLoading: true,
+        isLoading: {...oldState.isLoading, [action.entity]: true},
       }
 
     case SET_LOADING_FALSE:
       return {
         ...oldState,
-        isLoading: false,
+        isLoading: {...oldState.isLoading, [action.entity]: false},
       }
   
     default:

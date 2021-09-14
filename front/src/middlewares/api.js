@@ -214,6 +214,7 @@ import {
     }
 
     case GET_CHARACTERS: {
+      store.dispatch(setLoadingTrue('character'));
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -227,6 +228,7 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(getCharactersSuccess(response.data));
+        store.dispatch(setLoadingFalse('character'));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -312,6 +314,7 @@ import {
     // ----- SCENARIO -----
 
     case GET_SCENARIOS: {
+      store.dispatch(setLoadingTrue('scenario'));
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -325,6 +328,7 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(getScenariosSuccess(response.data));
+        store.dispatch(setLoadingFalse('scenario'));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -466,7 +470,7 @@ import {
     }
 
     case GET_PLACE: {
-      store.dispatch(setLoadingTrue());
+      store.dispatch(setLoadingTrue('place'));
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -480,7 +484,7 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(getPlaceSuccess(response.data));
-        store.dispatch(setLoadingFalse());
+        store.dispatch(setLoadingFalse('place'));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -585,7 +589,7 @@ import {
     }
   
     case GET_MONSTER: {
-      store.dispatch(setLoadingTrue());
+      store.dispatch(setLoadingTrue('monster'));
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -599,7 +603,7 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(getMonsterSuccess(response.data, action.context));
-        store.dispatch(setLoadingFalse());
+        store.dispatch(setLoadingFalse('monster'));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);

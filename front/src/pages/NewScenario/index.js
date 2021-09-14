@@ -56,28 +56,6 @@ const NewScenario = ({ newScenario }) => {
         {
           (props) => (
           <Form className={styles['form']}>
-            <div className={styles['overlay-image']}>
-            {/* eslint-disable-next-line */}
-            <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
-              {/* <div className={styles['hover']}>
-                <FontAwesomeIcon 
-                  onClick={() => console.log('ajouter photo')} 
-                  icon={faPlusCircle} 
-                  size="2x" 
-                  style={{cursor: 'pointer'}}
-                  title="Ajouter une image"
-                />
-              </div> */}
-            </div>
-
-            <div className={styles['scenario_picture']}>
-              <label htmlFor="picture" className={styles['form_label']}>Ajouter une image :</label>
-              <FileBase64
-                multiple={false}
-                onDone={getFile.bind(this, props)}
-              />
-            </div>
-
             <div className={styles['scenario_name']}>
               <label htmlFor="name" className={styles['form_label']}>Nom * :</label>
               <Field
@@ -89,9 +67,15 @@ const NewScenario = ({ newScenario }) => {
               <ErrorMessage name='name' component='div' className={styles['error_message']}/>
             </div>
 
-            <div className={styles['description']}>
-              <h3>Description :</h3>
-              <Field as="textarea" name="description" className={styles['form_field']}/>
+            {/* eslint-disable-next-line */}
+            <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+
+            <div className={styles['scenario_picture']}>
+              <label htmlFor="picture" className={styles['form_label']}>Ajouter une image :</label>
+              <FileBase64
+                multiple={false}
+                onDone={getFile.bind(this, props)}
+              />
             </div>
 
             <div className={styles['caracteristics']}>
@@ -113,7 +97,13 @@ const NewScenario = ({ newScenario }) => {
                 min={1}
               />
             </div>
-          <span className={styles['info']}>Les champs marqués d'une * sont obligatoires.</span>
+
+            <div className={styles['description']}>
+              <h4>Description :</h4>
+              <Field as="textarea" name="description" className={styles['form_field']}/>
+            </div>
+
+            <span className={styles['info']}>Les champs marqués d'une * sont obligatoires.</span>
 
             <Button
               id={styles['submit_button']}

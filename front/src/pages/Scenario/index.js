@@ -75,11 +75,12 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
     {
       isLoggedIn && scenario ?
       <>
-        <Title title={scenario.name} id={styles['title']}/>
 
         <div className={styles['show_scenario']} id={styles['block_scenario']}>
-            <img id={styles['image']}src={scenario.picture?.base64} alt="photo_scenario"/>  
-          <table className={styles['table']} id={styles['caracteristics']}>
+        <Title title={scenario.name} id={styles['title']}/>
+          <img id={styles['image']}src={scenario.picture?.base64} alt="photo_scenario"/>  
+          
+          <table className={`${styles['table']} ${styles['caracteristics']}`}>
             <tbody className={styles['table_content']}>
               <tr className={styles['table_row']}>
                 <td className={styles['table_cell-name']}>Nombre de joueurs :</td>
@@ -92,9 +93,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
             </tbody>
           </table>
 
-
           <div className={styles['description']}>
-            <h3>Description</h3>
             <p>{scenario.description}</p>
           </div>
 
@@ -172,11 +171,11 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
                 </div>
 
                 <div className={styles['new-description']}>
-                  <h3>Description :</h3>
+                  <h4>Description :</h4>
                   <Field as="textarea" name="description" className={styles['form_field']}/>
                 </div>
 
-                <div className={styles['caracteristics']}>
+                <div className={styles['new-caracteristics']}>
                   <label htmlFor="maxPlayers">Nombre de joueurs :</label>
                   <Field
                     className={styles['form_field']}

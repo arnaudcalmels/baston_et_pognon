@@ -1,7 +1,8 @@
 @import '../../styles/vars';
 
 .main {
-    border: 3px solid $color-secondary;
+    background-image: url(../../images/texture_tertiary_890.jpg);
+    background-size: cover;
     border-radius: 5px;
     padding: 0.5rem;
     margin: 1rem;

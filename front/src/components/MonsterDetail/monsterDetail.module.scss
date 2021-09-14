@@ -4,48 +4,147 @@
     margin: 1rem;
     display: flex;
     flex-direction: column;
-    width: max-content;
+    width: 300px;
+    overflow-x: scroll;
+}
+
+.section {
+    display: grid;
+    grid-template-columns: 100px 180px 20px;
+    grid-template-rows: repeat(4, 40px) 50px;
 }
 
 #image {
-    max-width: 150px;
-    max-height: 200px;
+    max-width: 100px;
+    max-height: 160px;
+    border-radius: 5px;
+    grid-row: 1 / 5;
+    grid-column: 1 / 2;
 }
 
 .image {
-    width: 150px;
-    height: 200px;
-    border: 1px solid black;
+    width: 100px;
+    height: 160px;
+    grid-row: 1 / 5;
+    grid-column: 1 / 2;
 }
 
 .name {
-
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+    margin: 0;
+    padding-left: 0.5rem;
+    align-self: center;
 }
 
 .level {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    align-self: center;
+    margin: 0;
+    padding-left: 0.5rem;
+}
 
+.caracteristics {
+    grid-row: 3 / 4;
+    grid-column: 2 / 3;
 }
 
 .icon {
     &_booster {
         color: gold;
+        grid-row: 4 / 5;
+        grid-column: 2 / 3;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
     }
 
     &_lifepoints {
         color: red;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
     }
 
     &_armor {
         color: darkblue;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+    }
+
+    &_boss {
+        color: black;
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
+        padding-left: 0.5rem;
+        align-self: center;
+        justify-self: center;
+        font-size: 1.5rem;
     }
 
     &_pen {
-        align-self: flex-end;
-        padding: 0.5rem;
+        grid-row: 1 / 2;
+        grid-column: 3 / 4;
     }
 
     &_trash {
-        align-self: flex-end;
-        padding: 0.5rem;
+        grid-row: 2 / 3;
+        grid-column: 3 / 4;
     }
+
+    &_value {
+        font-size: 1.1rem;
+        padding-left: 0.3rem;
+        padding-right: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .main {
+        width: 235px;
+    }
+
+    .section {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 40px) 20px;
+    }
+    
+    #image, .image {
+        display: none;
+    }
+
+    .name {
+        grid-column: 1 / 3;
+    }
+    
+    .level {
+        grid-column: 1 / 2;
+    }
+    
+    .caracteristics {
+        grid-column: 1 / 3;
+        grid-row: 3 / 4;
+    }
+
+    .icon {
+        &_booster {
+            grid-column: 1 / 2;
+        }
+        
+        &_boss {
+            grid-column: 2 / 3;
+        }
+    
+        &_pen, &_trash {
+            display: none;
+        }
+
+        &_value {
+            display: contents;
+        }
+    
+    }
+    
 }

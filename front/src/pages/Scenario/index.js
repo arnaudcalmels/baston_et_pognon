@@ -21,10 +21,7 @@ import Loader from '../../components/Loader';
 
 import PropTypes from 'prop-types';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-
-import 'pure-react-carousel/dist/react-carousel.es.css';
+// import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './scenario.module.scss';
 
 const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMonster, currentPlace, getPlace, currentMonsterInPlace, getMonsterSuccess, isLoggedIn, getScenarios }) => {
@@ -218,7 +215,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
 
           </div>
 
-        <Section title='Monstres errants'>
+        <Section title='Monstres errants' addButton={() => setOpenAddMonsterModal(true)} buttonTitle="Ajouter un groupe">
           <Column dynamicClassName={'group'}>
             {
               scenario.wanderingMonsters.length > 0 ?
@@ -232,15 +229,9 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
               : 
               <p>Aucun monstre</p>
             }
-          <FontAwesomeIcon 
-            className={styles['add_group']}
-            onClick={() => setOpenAddMonsterModal(true)} 
-            icon={faPlusCircle} 
-            size="2x" 
-            style={{cursor: 'pointer'}}
-            title="Ajouter un monstre"
-          />
+
           </Column>
+
           <Column dynamicClassName={'monster'}>
             <MonsterDetail
               item={currentWanderingMonster}
@@ -249,7 +240,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
           </Column>
         </Section>
 
-        <Section title='Lieux'> 
+        <Section title='Lieux' addButton={() => setOpenAddPlaceModal(true)} buttonTitle="Ajouter un lieu"> 
           <Column dynamicClassName={'group'}>
             {
               scenario.places.length > 0 ?
@@ -266,14 +257,6 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
               :
               <p>Aucun lieu</p>        
             }
-            <FontAwesomeIcon 
-              className={styles['add_place']}
-              onClick={() => setOpenAddPlaceModal(true)} 
-              icon={faPlusCircle} 
-              size="2x" 
-              style={{cursor: 'pointer'}}
-              title="Ajouter un lieu"
-            />
 
           </Column>
 

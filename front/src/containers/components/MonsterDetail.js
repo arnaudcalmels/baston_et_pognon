@@ -5,7 +5,7 @@ import MonsterDetail from '../../components/MonsterDetail';
 import { deleteMonster } from '../../actions/monster';
 
 const mapStateToProps= (state) => ({
-  isLoading: state.other.isLoading
+  isLoading: state.other.isLoading.monster
 });
 
 const mapDispatchToProps = (dispatch) => ({

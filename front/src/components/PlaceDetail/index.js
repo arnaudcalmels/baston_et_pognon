@@ -15,6 +15,8 @@ import { faStar, faTrashAlt, faPen, faPlusCircle } from '@fortawesome/free-solid
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
+import { getIllustration } from '../../utils/getIllustration';
+
 import styles from './placeDetail.module.scss';
 
 const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } ) => {
@@ -48,72 +50,80 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
     :
     <div className={styles['main']}>
 
-    {
-      Object.keys(item).length > 0 &&      
-      <>
-        <FontAwesomeIcon 
-          className={styles['icon_pen']}
-          icon={faPen} 
-          size="2x" 
-          title="Modifier"
-          style={{cursor: 'pointer'}}
-          onClick={() => setOpenEditPlaceModal(true)}
-        />
+      <div className={styles['section']}>
 
-        <FontAwesomeIcon 
-          className={styles['icon_trash']}
-          icon={faTrashAlt} 
-          size="2x" 
-          title="Supprimer"
-          style={{cursor: 'pointer'}}
-          onClick={() => setOpenDeleteModal(true)}
-        />
-      </>
-    }
-
-      { // Picture
-        item.picture ?
-          <img 
-            id={styles['image']}
-            src={item.picture?.base64} 
-            alt={`illustration ${item.name}`}
-          />
-        :
-        <div className={styles['image']}></div>
-      }
-
-      <h3 className={styles['name']}>{item.name}</h3>
-
-      { // Hidden Boosters in Place
-        item.hiddenBoosterCount > 0 &&
-          <span className="fa-layers fa-fw">
+        {
+          Object.keys(item).length > 0 &&      
+          <>
             <FontAwesomeIcon 
-              className={styles['icon_booster']}
-              icon={faStar} 
-              size="2x" 
-              title="Booster(s)"
+              className={styles['icon_pen']}
+              icon={faPen} 
+              size="1x" 
+              title="Modifier"
+              style={{cursor: 'pointer'}}
+              onClick={() => setOpenEditPlaceModal(true)}
             />
-            <span className="fa-layers-counter">
-            {
-              item.hiddenBoosterCount > 1 ? item.hiddenBoosterCount : ''
-            }
+
+            <FontAwesomeIcon 
+              className={styles['icon_trash']}
+              icon={faTrashAlt} 
+              size="1x" 
+              title="Supprimer"
+              style={{cursor: 'pointer'}}
+              onClick={() => setOpenDeleteModal(true)}
+            />
+          </>
+        }
+
+        { // Picture
+          item.picture ?
+            <img 
+              className={styles['image']}
+              src={item.picture?.base64} 
+              alt={`illustration ${item.name}`}
+            />
+          :
+          item.category &&
+            <img 
+              src={getIllustration(item.category?.name)} 
+              alt={item.category?.name}
+              className={styles['image']}
+            />
+        }
+
+        <h3 className={styles['name']}>{item.name}</h3>
+
+        { // Hidden Boosters in Place
+          item.hiddenBoosterCount > 0 &&
+            <span className="fa-layers fa-fw">
+              <FontAwesomeIcon 
+                className={styles['icon_booster']}
+                icon={faStar} 
+                title="Booster(s)"
+              />
+              <span className="fa-layers-counter" style={{color: 'black', backgroundColor: 'gold', fontSize: '2.5rem', top: '1px', left:'-32px'}} title={`${item.hiddenBoosterCount} booster(s)`}>
+              {
+                item.hiddenBoosterCount > 1 ? item.hiddenBoosterCount : ''
+              }
+              </span>
             </span>
-          </span>
-      }
+        }
 
-      { // Description
-        item.description &&
-        <div className={styles['description']}>
-          {item.description}
-        </div>
-      }
+        { // Description
+          item.description &&
+          <div className={styles['description']}>
+            {item.description}
+          </div>
+        }
 
-      { // Category
-        item.category &&
-        <div className={styles['category']}>
-          {item.category.name}
-        </div>
-      }
+        { // Category
+          item.category &&
+          <div className={styles['category']}>
+            {item.category.name}
+          </div>
+        }
+
+      </div>
 
       { // Monsters
         item.monsters?.length > 0 &&
@@ -132,15 +142,18 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
         </div>
       }
 
-      <FontAwesomeIcon 
-        className={styles['add_monster']}
-        onClick={() => setOpenAddMonsterModal(true)} 
-        icon={faPlusCircle} 
-        size="2x" 
-        style={{cursor: 'pointer'}}
-        title="Ajouter un monstre"
-      />
+      {
+        Object.keys(item).length > 0 &&      
+        <FontAwesomeIcon 
+          className={styles['add_monster']}
+          onClick={() => setOpenAddMonsterModal(true)} 
+          icon={faPlusCircle} 
+          size="2x" 
+          style={{cursor: 'pointer'}}
+          title="Ajouter un monstre"
+        />
 
+      }
 
       <Modal 
         isOpen={openDeleteModal} 

@@ -1,11 +1,34 @@
 @import '../../styles/vars';
 
-.main {
-    border: 3px solid $color-secondary;
+.group, .monster, .place {
+    background-image: url(../../assets/images/texture_tertiary_890.jpg);
+    background-size: cover;
     border-radius: 5px;
     padding: 0.5rem;
     margin: 1rem;
     padding-bottom: 1rem;
     display: flex;
     flex-direction: column;
+    height: 600px;
+    overflow-y: scroll;
+}
+
+.group, .monster, .place {
+    width: 262px;
+}
+
+@media screen and (min-width: 768px) {
+    .group {
+        min-width: max-content;
+    }
+
+    .monster, .place {
+        width: 340px;
+    }      
+}
+
+@media screen and (min-width: 1200px) {
+    .place {
+        width: 440px;
+    }
 }

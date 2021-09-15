@@ -6,7 +6,7 @@ import { deletePlace } from '../../actions/place';
 import { getMonster } from '../../actions/monster';
 
 const mapStateToProps= (state) => ({
-  isLoading: state.other.isLoading
+  isLoading: state.other.isLoading.place
 });
 
 const mapDispatchToProps = (dispatch) => ({

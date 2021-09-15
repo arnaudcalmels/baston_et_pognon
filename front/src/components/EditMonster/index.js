@@ -3,13 +3,12 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
-import Loader from '../Loader';
 
 import PropTypes from 'prop-types';
 
 import styles from './editMonster.module.scss';
 
-const EditMonster = ({ closeModal, currentMonster, isLoading, editMonster, context, placeId }) => {
+const EditMonster = ({ closeModal, currentMonster, editMonster, context, placeId }) => {
   let [newPicture, setNewPicture] = useState();
 
   const getFile = (props, file) => {
@@ -22,9 +21,6 @@ const EditMonster = ({ closeModal, currentMonster, isLoading, editMonster, conte
   };
 
   return (
-    isLoading ?
-      <Loader/>
-    :
       <div>
         <Formik
           initialValues={{
@@ -250,7 +246,6 @@ const EditMonster = ({ closeModal, currentMonster, isLoading, editMonster, conte
 EditMonster.propTypes = {
   closeModal: PropTypes.func,
   currentMonster: PropTypes.object,
-  isLoading: PropTypes.bool, 
   editMonster: PropTypes.func,
   context: PropTypes.string,
   placeId: PropTypes.number,

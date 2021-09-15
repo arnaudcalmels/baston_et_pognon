@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import FileBase64 from 'react-file-base64';
 
@@ -21,10 +20,6 @@ import Loader from '../../components/Loader';
 
 import PropTypes from 'prop-types';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './scenario.module.scss';
 
 const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMonster, currentPlace, getPlace, currentMonsterInPlace, getMonsterSuccess, isLoggedIn, getScenarios }) => {
@@ -75,11 +70,12 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
     {
       isLoggedIn && scenario ?
       <>
-        <Title title={scenario.name} id={styles['title']}/>
 
         <div className={styles['show_scenario']} id={styles['block_scenario']}>
-            <img id={styles['image']}src={scenario.picture?.base64} alt="photo_scenario"/>  
-          <table className={styles['table']} id={styles['caracteristics']}>
+        <Title title={scenario.name} id={styles['title']}/>
+          <img id={styles['image']}src={scenario.picture?.base64} alt="photo_scenario"/>  
+          
+          <table className={`${styles['table']} ${styles['caracteristics']}`}>
             <tbody className={styles['table_content']}>
               <tr className={styles['table_row']}>
                 <td className={styles['table_cell-name']}>Nombre de joueurs :</td>
@@ -92,9 +88,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
             </tbody>
           </table>
 
-
           <div className={styles['description']}>
-            <h3>Description</h3>
             <p>{scenario.description}</p>
           </div>
 
@@ -172,11 +166,11 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
                 </div>
 
                 <div className={styles['new-description']}>
-                  <h3>Description :</h3>
+                  <h4>Description :</h4>
                   <Field as="textarea" name="description" className={styles['form_field']}/>
                 </div>
 
-                <div className={styles['caracteristics']}>
+                <div className={styles['new-caracteristics']}>
                   <label htmlFor="maxPlayers">Nombre de joueurs :</label>
                   <Field
                     className={styles['form_field']}
@@ -219,8 +213,8 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
 
           </div>
 
-        <Section title='Monstres errants'>
-          <Column>
+        <Section title='Monstres errants' addButton={() => setOpenAddMonsterModal(true)} buttonTitle="Ajouter un groupe">
+          <Column dynamicClassName={'group'}>
             {
               scenario.wanderingMonsters.length > 0 ?
               scenario.wanderingMonsters.map(group => (
@@ -233,16 +227,10 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
               : 
               <p>Aucun monstre</p>
             }
-          <FontAwesomeIcon 
-            className={styles['add_group']}
-            onClick={() => setOpenAddMonsterModal(true)} 
-            icon={faPlusCircle} 
-            size="2x" 
-            style={{cursor: 'pointer'}}
-            title="Ajouter un monstre"
-          />
+
           </Column>
-          <Column>
+
+          <Column dynamicClassName={'monster'}>
             <MonsterDetail
               item={currentWanderingMonster}
               context={'currentWanderingMonster'}
@@ -250,8 +238,8 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
           </Column>
         </Section>
 
-        <Section title='Lieux'> 
-          <Column>
+        <Section title='Lieux' addButton={() => setOpenAddPlaceModal(true)} buttonTitle="Ajouter un lieu"> 
+          <Column dynamicClassName={'group'}>
             {
               scenario.places.length > 0 ?
               scenario.places.map(place => (
@@ -267,23 +255,17 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
               :
               <p>Aucun lieu</p>        
             }
-            <FontAwesomeIcon 
-              className={styles['add_place']}
-              onClick={() => setOpenAddPlaceModal(true)} 
-              icon={faPlusCircle} 
-              size="2x" 
-              style={{cursor: 'pointer'}}
-              title="Ajouter un lieu"
-            />
 
           </Column>
-          <Column>
-          <PlaceDetail
+
+          <Column dynamicClassName={'place'}>
+            <PlaceDetail
               item={currentPlace}
               scenarioId={scenario.id}
             ></PlaceDetail>
           </Column>
-          <Column>
+
+          <Column dynamicClassName={'monster'}>
             <MonsterDetail
               item={currentMonsterInPlace}
               context={'currentMonsterInPlace'}
@@ -292,6 +274,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
           </Column>
 
         </Section>
+
         {/*
           Modales
         */}

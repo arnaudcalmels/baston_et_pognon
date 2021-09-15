@@ -9,6 +9,7 @@ import { getMonsterSuccess } from '../../actions/monster';
 const mapStateToProps= (state) => ({
   isLoggedIn: !!state.auth.token,
   scenarios: state.scenario.scenarios,
+  isLoading: state.other.isLoading.scenario
 });
 
 const mapDispatchToProps = (dispatch) => ({

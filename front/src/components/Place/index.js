@@ -1,44 +1,45 @@
 import React from 'react';
 
-//import Modal from '../Modal';
-
 import PropTypes from 'prop-types';
 
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { getIllustration } from '../../utils/getIllustration';
 
 import styles from './place.module.scss';
 
 const Place = ({ place, onClick}) => {
-    
+
   return (
     <div 
-      className={styles['content']}
+      className={styles['overlay']}
       onClick={onClick} 
     >
-      <div 
-        key={place.id}
-        className={styles['place']} 
-      >
-        {place.name}
-      </div>
       {
         place.picture ?
         <img 
           src={place.picture.base64} 
           alt={place.picture.name}
-          id={styles['image']}
-          />
+          className={styles['image']}
+        />
         :
-        <div className={styles['image']}></div>
+        <img 
+          src={getIllustration(place.category.name)} 
+          alt={place.category.name}
+          className={styles['image']}
+        />
+
       }
-      <div className={styles['monsters']}>
-        {
-          place.monsters?.length > 1 ?
-          `${place.monsters?.length} monstres`
-          :
-          `${place.monsters?.length} monstre`
-        } 
+
+      <div className={styles['infos']}>
+        <div className={styles['name']}>{place.name}</div>
+
+        <div className={styles['monsters']}>
+          {
+            place.monsters?.length > 1 ?
+            `${place.monsters?.length} monstres`
+            :
+            `${place.monsters?.length} monstre`
+          } 
+        </div>
       </div>
     </div>
   )
@@ -46,7 +47,7 @@ const Place = ({ place, onClick}) => {
 
 Place.propTypes = {
   place: PropTypes.object,
-  setItem: PropTypes.func,
+  onClick: PropTypes.func,
 }
 
 export default Place;

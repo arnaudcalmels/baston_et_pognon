@@ -1,11 +1,18 @@
 .App {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 55px 1fr 100px;
+  grid-template-rows: 70px 1fr 100px;
   min-height: 100vh;
+  background-image: url(../src/assets/images/texture_primary_1920.jpg);
 }
 
 li {
   list-style-type: none;
   cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  .App {
+    grid-template-rows: 55px 1fr 100px;
+  }
 }

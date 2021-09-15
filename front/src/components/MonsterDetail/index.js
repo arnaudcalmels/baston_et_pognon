@@ -51,86 +51,90 @@ const MonsterDetail = ( { item, deleteMonster, isLoading, context, placeId } ) =
 
     <div className={styles['main']}>
 
-    {
-      Object.keys(item).length > 0 && 
-      <>
-        <FontAwesomeIcon 
-          className={styles['icon_pen']}
-          icon={faPen} 
-          size="2x" 
-          title="Modifier"
-          onClick={() => setOpenEditMonsterModal(true)}
-          style={{cursor: 'pointer'}}
-        />
-
-        <FontAwesomeIcon 
-          className={styles['icon_trash']}
-          icon={faTrashAlt} 
-          size="2x" 
-          title="Supprimer"
-          onClick={() => setOpenDeleteModal(true)}
-          style={{cursor: 'pointer'}}
-        />
-      </>
-    }
-
-      { // Picture
-        item.picture ?
-          <img 
-            id={styles['image']}
-            src={item.picture?.base64} 
-            alt={`illustration ${item.name}`}
-          />
-        :
-        <div className={styles['image']}></div>
-      }
-
-      <h3 className={styles['name']}>{item.name}</h3>
-
-      { // Monster Level 
-        item.level &&
-          <h4 className={styles['level']}>Niveau {item.level}</h4>
-      }
-
-      { // Monster is Boss
-        item.isBoss &&
+    <div className={styles['section']}>
+      {
+        Object.keys(item).length > 0 && 
+        <>
           <FontAwesomeIcon 
-            className={styles['icon_boss']}
-            icon={faSkull} 
-            size="2x" 
-            title="Boss"
+            className={styles['icon_pen']}
+            icon={faPen} 
+            size="1x"
+            title="Modifier"
+            onClick={() => setOpenEditMonsterModal(true)}
+            style={{cursor: 'pointer'}}
           />
-      }
 
-      { // Monster Booster
-        item.hasBooster &&
           <FontAwesomeIcon 
-            className={styles['icon_booster']}
-            icon={faStar} 
-            size="2x" 
-            title="Booster"
+            className={styles['icon_trash']}
+            icon={faTrashAlt} 
+            size="1x"
+            title="Supprimer"
+            onClick={() => setOpenDeleteModal(true)}
+            style={{cursor: 'pointer'}}
           />
+        </>
       }
 
-      { // Monster caracteristics
-        item.caracteristics &&
-          <div>
-            <FontAwesomeIcon 
-              className={styles['icon_lifepoints']}
-              icon={faHeart} 
-              size="2x" 
-              title="Points de vie"
+        { // Picture
+          item.picture ?
+            <img 
+              id={styles['image']}
+              src={item.picture?.base64} 
+              alt={`illustration ${item.name}`}
             />
-            <span>{item.caracteristics.lifePoints}</span>
+          :
+          <div className={styles['image']}></div>
+        }
+
+        <h4 className={styles['name']}>{item.name}</h4>
+
+        { // Monster Level 
+          item.level &&
+            <h5 className={styles['level']}>Niveau {item.level}</h5>
+        }
+
+        { // Monster is Boss
+          item.isBoss &&
             <FontAwesomeIcon 
-              className={styles['icon_armor']}
-              icon={faShieldAlt} 
-              size="2x" 
-              title="Armure"
+              className={styles['icon_boss']}
+              icon={faSkull} 
+              title="Boss"
             />
-            <span>{item.caracteristics.armor}</span>
-          </div>
-      }
+        }
+
+        { // Monster Booster
+          item.hasBooster &&
+            <FontAwesomeIcon 
+              className={styles['icon_booster']}
+              icon={faStar} 
+              title="Booster"
+            />
+        }
+
+        { // Monster caracteristics
+          item.caracteristics &&
+            <div className={styles['caracteristics']}>
+              <FontAwesomeIcon 
+                className={styles['icon_lifepoints']}
+                icon={faHeart} 
+                title="Points de vie"
+              />
+              <span className={styles['icon_value']}>
+                {item.caracteristics.lifePoints}
+              </span>
+
+              <FontAwesomeIcon 
+                className={styles['icon_armor']}
+                icon={faShieldAlt} 
+                title="Armure"
+              />
+              <span className={styles['icon_value']}>
+                {item.caracteristics.armor}
+              </span>
+            </div>
+        }
+      </div>
+
 
       { // Monster Actions
         item.caracteristics?.actions &&

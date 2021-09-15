@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import FileBase64 from 'react-file-base64';
 
@@ -21,7 +20,6 @@ import Loader from '../../components/Loader';
 
 import PropTypes from 'prop-types';
 
-// import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './scenario.module.scss';
 
 const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMonster, currentPlace, getPlace, currentMonsterInPlace, getMonsterSuccess, isLoggedIn, getScenarios }) => {

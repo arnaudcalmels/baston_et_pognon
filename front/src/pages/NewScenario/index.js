@@ -8,10 +8,6 @@ import Button from '../../components/Button';
 
 import PropTypes from 'prop-types';
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './newScenario.module.scss';
 
 const NewScenario = ({ newScenario }) => {

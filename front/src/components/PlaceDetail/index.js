@@ -15,6 +15,8 @@ import { faStar, faTrashAlt, faPen, faPlusCircle } from '@fortawesome/free-solid
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
+import { getIllustration } from '../../utils/getIllustration';
+
 import styles from './placeDetail.module.scss';
 
 const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } ) => {
@@ -76,12 +78,17 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
         { // Picture
           item.picture ?
             <img 
-              id={styles['image']}
+              className={styles['image']}
               src={item.picture?.base64} 
               alt={`illustration ${item.name}`}
             />
           :
-          <div className={styles['image']}></div>
+          item.category &&
+            <img 
+              src={getIllustration(item.category?.name)} 
+              alt={item.category?.name}
+              className={styles['image']}
+            />
         }
 
         <h3 className={styles['name']}>{item.name}</h3>

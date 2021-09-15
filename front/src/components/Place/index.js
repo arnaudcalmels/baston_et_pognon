@@ -2,9 +2,12 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
+import { getIllustration } from '../../utils/getIllustration';
+
 import styles from './place.module.scss';
 
 const Place = ({ place, onClick}) => {
+
   return (
     <div 
       className={styles['overlay']}
@@ -15,10 +18,15 @@ const Place = ({ place, onClick}) => {
         <img 
           src={place.picture.base64} 
           alt={place.picture.name}
-          id={styles['image']}
-          />
+          className={styles['image']}
+        />
         :
-        <div className={styles['image']}></div>
+        <img 
+          src={getIllustration(place.category.name)} 
+          alt={place.category.name}
+          className={styles['image']}
+        />
+
       }
 
       <div className={styles['infos']}>

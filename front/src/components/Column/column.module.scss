@@ -1,7 +1,7 @@
 @import '../../styles/vars';
 
 .group, .monster, .place {
-    background-image: url(../../images/texture_tertiary_890.jpg);
+    background-image: url(../../assets/images/texture_tertiary_890.jpg);
     background-size: cover;
     border-radius: 5px;
     padding: 0.5rem;
@@ -9,7 +9,7 @@
     padding-bottom: 1rem;
     display: flex;
     flex-direction: column;
-    height: 565px;
+    height: 600px;
     overflow-y: scroll;
 }
 
@@ -23,12 +23,12 @@
     }
 
     .monster, .place {
-        width: 332px;
+        width: 345px;
     }      
 }
 
 @media screen and (min-width: 1200px) {
     .place {
-        width: 432px;
+        width: 445px;
     }
 }

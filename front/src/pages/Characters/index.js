@@ -14,7 +14,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './characters.module.scss';
 
-const Characters = ({ getCharacters, isLoggedIn, characters }) => {
+const Characters = ({ getCharacters, isLoggedIn, characters, isLoading }) => {
   let history = useHistory();
 
   const newCharacter = () => {
@@ -44,16 +44,17 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
       </div>
 
       {
-
-        isLoggedIn && characters ?
+        isLoggedIn && characters &&
         <div className={styles['card_container']}>
           {
             characters.map(character => (
               <Card 
+                entity="character"
                 image={character.picture?.base64}
+                alt={character.picture?.name}
                 name={character.name}
-                subtitle={character.profession.name}
-                level={`Niveau ${character.level}`}
+                profession={character.profession.name}
+                level={character.level}
                 id={character.id}
                 key={character.id}
                 onClick={() => {
@@ -63,7 +64,10 @@ const Characters = ({ getCharacters, isLoggedIn, characters }) => {
             ))
           }
         </div>
-        :
+      }
+
+      {
+        isLoading &&
         <Loader />
       }
 
@@ -88,6 +92,7 @@ Characters.propTypes = {
   getCharacters: PropTypes.func,
   isLoggedIn: PropTypes.bool,
   characters: PropTypes.arrayOf(PropTypes.object,),
+  isLoading: PropTypes.bool,
 };
 
 export default Characters;

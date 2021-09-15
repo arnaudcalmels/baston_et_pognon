@@ -1,18 +1,35 @@
 @import '../../styles/vars';
 
 .card {
-    width: 300px;
-    height: 490px;
-    border-radius: 5px;
-    display: grid;
-    grid-template-rows: 225px 235px;
-    justify-items: center;
-    background-image: url(../../assets/images/texture_secondary_640.jpg);
-    box-sizing: border-box;
-    cursor: pointer;
+
+    &_scenario {
+        width: 300px;
+        height: 490px;
+        border-radius: 5px;
+        display: grid;
+        grid-template-rows: 225px 235px;
+        justify-items: center;
+        background-image: url(../../assets/images/texture_secondary_640.jpg);
+        box-sizing: border-box;
+        cursor: pointer;    
+    }
+
+    &_character {
+        width: 300px;
+        height: 490px;
+        border-radius: 5px;
+        display: grid;
+        grid-template-rows: 365px 125px;
+        justify-items: center;
+        background-image: url(../../assets/images/texture_secondary_640.jpg);
+        box-sizing: border-box;
+        cursor: pointer;    
+    }
 }
 
 .image_container {
+
+    &_scenario {
     grid-row: 1 / 2;
     width: 265px;
     height: 210px;
@@ -22,22 +39,58 @@
     display: flex;
     align-content: flex-end;
     border-radius: 5px 5px 0 0;
+    }
+
+    &_character {
+        grid-row: 1 / 2;
+        width: 265px;
+        height: 350px;
+        overflow: hidden;
+        margin-bottom: 0;
+        align-self: flex-end;
+        display: flex;
+        align-content: flex-end;
+        border-radius: 5px 5px 0 0;
+    
+    }
 }
 
 #image {
-    max-width: 265px;
-    max-height: 210px;
+
+    &_scenario {
+        max-width: 265px;
+        max-height: 210px;
+    }
+
+    &_character {
+        max-width: 265px;
+        max-height: 350px;
+    }
 }
 
 .text_container {
-    background: rgba(0, 0, 0, 0.62);
-    grid-row: 2 / 3;
-    width: 265px;
-    height: 250px;
-    color: $color-secondary;
-    border-radius: 0 0 5px 5px;
-    box-sizing: border-box;
-    padding: 0.5rem;
+
+    &_scenario {
+        background: rgba(0, 0, 0, 0.62);
+        grid-row: 2 / 3;
+        width: 265px;
+        height: 250px;
+        color: $color-secondary;
+        border-radius: 0 0 5px 5px;
+        box-sizing: border-box;
+        padding: 0.5rem;    
+    }
+
+    &_character {
+        background: rgba(0, 0, 0, 0.62);
+        grid-row: 2 / 3;
+        width: 265px;
+        height: 110px;
+        color: $color-secondary;
+        border-radius: 0 0 5px 5px;
+        box-sizing: border-box;
+        padding: 0.5rem;    
+    }
 }
 
 .name {

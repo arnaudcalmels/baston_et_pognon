@@ -49,7 +49,9 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios, getPlaceSuccess, getMo
           {
             scenarios.map(scenario => (
               <Card 
+                entity="scenario"
                 image={scenario.picture?.base64}
+                alt={scenario.picture?.name}
                 name={scenario.name}
                 description={scenario.description}
                 players={scenario.maxPlayers}

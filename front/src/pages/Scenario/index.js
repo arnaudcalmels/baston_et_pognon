@@ -219,7 +219,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
           </div>
 
         <Section title='Monstres errants'>
-          <Column>
+          <Column dynamicClassName={'group'}>
             {
               scenario.wanderingMonsters.length > 0 ?
               scenario.wanderingMonsters.map(group => (
@@ -241,7 +241,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
             title="Ajouter un monstre"
           />
           </Column>
-          <Column>
+          <Column dynamicClassName={'monster'}>
             <MonsterDetail
               item={currentWanderingMonster}
               context={'currentWanderingMonster'}
@@ -250,7 +250,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
         </Section>
 
         <Section title='Lieux'> 
-          <Column>
+          <Column dynamicClassName={'group'}>
             {
               scenario.places.length > 0 ?
               scenario.places.map(place => (
@@ -276,13 +276,15 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
             />
 
           </Column>
-          <Column>
-          <PlaceDetail
+
+          <Column dynamicClassName={'place'}>
+            <PlaceDetail
               item={currentPlace}
               scenarioId={scenario.id}
             ></PlaceDetail>
           </Column>
-          <Column>
+
+          <Column dynamicClassName={'monster'}>
             <MonsterDetail
               item={currentMonsterInPlace}
               context={'currentMonsterInPlace'}
@@ -291,6 +293,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
           </Column>
 
         </Section>
+
         {/*
           Modales
         */}

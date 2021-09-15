@@ -1,6 +1,6 @@
 @import '../../styles/vars';
 
-.main {
+.group, .monster, .place {
     background-image: url(../../images/texture_tertiary_890.jpg);
     background-size: cover;
     border-radius: 5px;
@@ -9,11 +9,26 @@
     padding-bottom: 1rem;
     display: flex;
     flex-direction: column;
-    min-width: 262px;
+    height: 565px;
+    overflow-y: scroll;
+}
+
+.group, .monster, .place {
+    width: 262px;
 }
 
 @media screen and (min-width: 768px) {
-    .main {
+    .group {
         min-width: max-content;
+    }
+
+    .monster, .place {
+        width: 332px;
+    }      
+}
+
+@media screen and (min-width: 1200px) {
+    .place {
+        width: 432px;
     }
 }

@@ -3,7 +3,6 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
-import Loader from '../Loader';
 
 import PropTypes from 'prop-types';
 

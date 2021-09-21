@@ -6,11 +6,13 @@ import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
 import Loader from '../../components/Loader';
+import Title from '../../components/Title';
+import { LifePointsField, ArmorField } from '../../components/MyFields';
 
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faRing, faCoins } from '@fortawesome/free-solid-svg-icons';
+import { faMars, faVenus, faHeart, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './character.module.scss';
 
@@ -27,15 +29,17 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
   
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
-    const identity = document.getElementById(styles['identity']);
+    const block_character = document.getElementById(styles['block_character']);
     
     block_form.classList.toggle(styles['show_form']);
-    identity.classList.toggle(styles['hide_identity']);
-    
+    block_character.classList.toggle(styles['hide_character']);
+    block_character.classList.toggle(styles['show_character']);
+
     window.scrollTo(0, 0);
   };
   
   let [newPicture, setNewPicture] = useState();
+  // let [newProfession, setNewProfession] = useState();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
 
   const getFile = (props, file) => {
@@ -48,6 +52,8 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
   };
 
   const handleSubmit = (values) => {
+    delete values.lifePoints;
+    delete values.armor;
     console.log(JSON.stringify(values, null, 2));
     editCharacter(character.id, JSON.stringify(values, null, 2), showForm);
   };
@@ -58,38 +64,84 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
     {
       isLoggedIn && character ?
       <>
+        <div className={styles['show_character']} id={styles['block_character']}>
 
-        <div className={styles['overlay-image']}>
-          <img src={character.picture?.base64} alt="photo_perso"/>  
-          <div className={styles['hover']}>
-            <FontAwesomeIcon 
-              onClick={() => console.log('modifier photo')} 
-              icon={faPlusCircle} 
-              size="2x" 
-              style={{cursor: 'pointer'}}
-              title="Modifier l'image"
+          <Title title={character.name} id={styles['title']}/>
+
+          <span className={styles['character_level']}>Niveau {character.level}</span>
+
+
+          {/* eslint-disable-next-line */}
+          <img id={styles['image']} src={character.picture?.base64} alt={character.picture?.name}/>  
+
+
+          <div className={styles['identity']}>
+            <div className={styles['character_profession']}>
+              {character.profession.name}
+            </div>
+
+            <div className={styles['character_race']}>
+              {character.race.name}
+            </div>
+
+            {
+              character.sex === "M" ?
+              <FontAwesomeIcon 
+                icon={faMars} 
+                size="2x" 
+              />
+              :
+              <FontAwesomeIcon 
+                icon={faVenus} 
+                size="2x" 
+              />
+            }
+          </div>
+
+          {
+            character.profession?.caracteristics &&
+            <div className={styles['caracteristics']}>
+              <FontAwesomeIcon 
+                className={styles['icon_lifepoints']}
+                icon={faHeart} 
+                title="Points de vie"
+              />
+              <span className={styles['icon_value']}>
+                {character.profession?.caracteristics?.lifePoints}
+              </span>
+
+              <FontAwesomeIcon 
+                className={styles['icon_armor']}
+                icon={faShieldAlt} 
+                title="Armure"
+              />
+              <span className={styles['icon_value']}>
+                {character.profession?.caracteristics?.armor}
+              </span>
+            </div>
+          }
+
+          <div className={styles['buttons']}>
+          
+          {/* La modification du personnage ne sera plus possible dès lors qu'il a été joué */}
+            <Button 
+              color='#eee' 
+              children='Editer le personnage' 
+              onClick={() => {
+                showForm();
+              }} 
+            />
+
+            <Button 
+              color='#eee' 
+              children='Supprimer le personnage' 
+              onClick={() => {
+                setOpenDeleteModal(true);
+              }} 
             />
           </div>
+
         </div>
-
-        <h2 className={styles['name']}>{character.name}</h2>
-
-        <table className={styles['table']} id={styles['identity']}>
-          <tbody className={styles['table_content']}>
-            <tr className={styles['table_row']}>
-              <td className={styles['table_cell-name']}>Sexe :</td>
-              <td className={styles['table_cell-value']}>{character.sex}</td>
-            </tr>
-            <tr className={styles['table_row']}>
-              <td className={styles['table_cell-name']}>Classe :</td>
-              <td className={styles['table_cell-value']}>{character.profession.name}</td>
-            </tr>
-            <tr className={styles['table_row']}>
-              <td className={styles['table_cell-name']}>Race :</td>
-              <td className={styles['table_cell-value']}>{character.race.name}</td>
-            </tr>
-          </tbody>
-        </table>
 
         <div id={styles['block_form']} className={styles['hide_form']}>
           <Formik
@@ -114,76 +166,105 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
               <Form className={styles['form']}>
                 {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
 
-                <label htmlFor="name" className={styles['form_label']}>Nom :</label>
-                <Field
-                  className={styles['form_field']}
-                  id="name"
-                  name="name"
-                  type="text"
-                />
-
-                <div className={styles['form_label']}>Sexe :</div>
-                <div role="group" className={styles['form_group']}>
-                  <label className={styles['form_radio']}>
-                    <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
-                    M
-                  </label>
-                  <label className={styles['form_radio']}>
-                    <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
-                    F
-                  </label>
+                <div className={styles['new-character_name']}>
+                  <label htmlFor="name" className={styles['form_label']}>Nom :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="name"
+                    name="name"
+                    type="text"
+                  />
                 </div>
 
-                <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
-                <Field
-                  className={styles['form_field']}
-                  id="professionId"
-                  name="professionId"
-                  as="select"
-                  onChange={props.handleChange}
-                >
-                  <option defaultValue>Sélectionnez une classe</option>
-                    {
-                      professions.map(profession => (
-                        <option value={profession.id}>{profession.name}</option>
-                      ))
-                    }
-                  </Field>
+                <span className={styles['character_level']}>Niveau 1</span>
 
-
-                <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
-                <Field
-                  className={styles['form_field']}
-                  id="raceId"
-                  name="raceId"
-                  as="select"
-                  onChange={props.handleChange}
-                >
-                  <option defaultValue>Sélectionnez une race</option>
-                    {
-                      races.map(race => (
-                        <option value={race.id}>{race.name}</option>
-                      ))
-                    }
-                </Field>
-
-              <span className={styles['info']}>Tous les champs sont obligatoires.</span>
-
-              <div className={`${styles['newCharacter_picture']} ${styles['form_item']}`}>
-                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
-                <FileBase64
-                  multiple={false}
-                  onDone={getFile.bind(this, props)}
-                />
-              </div>
+                <div className={styles['character_picture']}>
+                  <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+                  <FileBase64
+                    multiple={false}
+                    onDone={getFile.bind(this, props)}
+                  />
+                </div>
 
                 {
                   newPicture ?
-                    <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                    <img id={styles['new-image_preview']} src={newPicture.base64} alt={newPicture.name}/>
                     : 
                     // eslint-disable-next-line
                     <img id={styles['image_preview']} src={character.picture?.base64} alt={character.picture?.name}/>
                 }
+
+                <div className={styles['new-identity']}>
+                  <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="professionId"
+                    name="professionId"
+                    as="select"
+                    onChange={props.handleChange}
+                  >
+                    <option defaultValue>Sélectionnez une classe</option>
+                      {
+                        professions.map(profession => (
+                          <option value={profession.id}>{profession.name}</option>
+                        ))
+                      }
+                  </Field>
+
+                  <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="raceId"
+                    name="raceId"
+                    as="select"
+                    onChange={props.handleChange}
+                  >
+                    <option defaultValue>Sélectionnez une race</option>
+                      {
+                        races.map(race => (
+                          <option value={race.id}>{race.name}</option>
+                        ))
+                      }
+                  </Field>
+
+                  <div className={styles['form_label']}>Sexe :</div>
+                  <div role="group" className={styles['form_group']}>
+                    <label className={styles['form_radio']}>
+                      <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
+                      M
+                    </label>
+                    <label className={styles['form_radio']}>
+                      <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
+                      F
+                    </label>
+                  </div>
+
+                </div>  
+
+                <div className={styles['new-caracteristics']}>
+                  <FontAwesomeIcon 
+                    className={styles['icon_lifepoints']}
+                    icon={faHeart} 
+                    title="Points de vie"
+                  />
+                  <LifePointsField 
+                    name="lifePoints" 
+                    professions={professions}                     className={styles['icon_lifepoints_input']}
+                  />
+
+                  <FontAwesomeIcon 
+                    className={styles['icon_armor']}
+                    icon={faShieldAlt} 
+                    title="Armure"
+                  />
+                  <ArmorField 
+                    name="armor" 
+                    professions={professions} 
+                    className={styles['icon_armor_input']}
+                  />
+                </div>
+                
+                <span className={styles['info']}>Tous les champs sont obligatoires.</span>
 
                 <Button
                   id={styles['submit_button']}
@@ -205,11 +286,8 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
           />
         </div>
 
-        <table className={styles['table']} id={styles['caracteristics']}>
+        <table className={styles['table']} id={styles['actions']}>
           <tbody className={styles['table_content']}>
-            <tr className={styles['table_title']}>
-              <td>Niveau {character.level}</td>
-            </tr>
             {
               character.profession?.caracteristics?.actions.map(action => (
                 action.isSpecial && !action.heal ?
@@ -235,14 +313,14 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
               ))
             }
             
-            <tr className={styles['table_row']}>
+            {/* <tr className={styles['table_row']}>
               <td className={styles['table_cell-name']}>PV :</td>
               <td className={styles['table_cell-value']}>{character.profession?.caracteristics?.lifePoints}</td>
             </tr>
             <tr className={styles['table_row']}>
               <td className={styles['table_cell-name']}>Armure :</td>
               <td className={styles['table_cell-value']}>{character.profession?.caracteristics?.armor}</td>
-            </tr>
+            </tr> */}
           </tbody>
         </table>
 
@@ -255,10 +333,10 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
               character.inventory.specialObjects.map(object => (
                 <tr className={styles['table_row_inventory']} key={object.id}>
                   <td className={styles['table_cell_inventory-picture']}>
-                    <FontAwesomeIcon 
+                    {/* <FontAwesomeIcon 
                       icon={faRing} 
                       size="2x" 
-                    />
+                    /> */}
                   </td>
                   <td className={styles['table_cell_inventory-name']}>{object.name}</td>
                   <td className={styles['table_cell_inventory-value']}>+ 1 PV </td>
@@ -267,10 +345,10 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
             }
             <tr className={styles['table_row_inventory']}>
               <td className={styles['table_cell_inventory-picture']}>
-                <FontAwesomeIcon 
+                {/* <FontAwesomeIcon 
                   icon={faCoins} 
                   size="2x" 
-                />
+                /> */}
               </td>
               <td className={styles['table_cell_inventory-name']}>Booster</td>
               <td className={styles['table_cell_inventory-value']}>{character.inventory.boostersCount} </td>
@@ -295,24 +373,6 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
         </tbody>
         </table>
 
-        <div className={styles['buttons']}>
-          <Button 
-              color='#eee' 
-              children='Editer le personnage' 
-              onClick={() => {
-                console.log('editer perso');
-                showForm();
-              }} 
-            />
-
-          <Button 
-            color='#eee' 
-            children='Supprimer le personnage' 
-            onClick={() => {
-              setOpenDeleteModal(true);
-            }} 
-          />
-        </div>
 
         <Modal 
           isOpen={openDeleteModal} 

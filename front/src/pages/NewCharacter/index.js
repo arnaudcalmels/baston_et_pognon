@@ -5,8 +5,12 @@ import FileBase64 from 'react-file-base64';
 
 import Button from '../../components/Button';
 import Title from '../../components/Title';
+import { LifePointsField, ArmorField } from '../../components/MyFields';
 
 import PropTypes from 'prop-types';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './newCharacter.module.scss';
 
@@ -86,7 +90,7 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
             {/* eslint-disable-next-line */}
             <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
 
-            <div className={styles['caracteristics']}>
+            <div className={styles['new-identity']}>
               <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
               <Field
                 className={styles['form_field']}
@@ -131,6 +135,30 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
                 </label>
               </div>
             </div>  
+
+            <div className={styles['caracteristics']}>
+              <FontAwesomeIcon 
+                className={styles['icon_lifepoints']}
+                icon={faHeart} 
+                title="Points de vie"
+              />
+              <LifePointsField 
+                name="lifePoints" 
+                professions={professions}                     className={styles['icon_lifepoints_input']}
+              />
+
+              <FontAwesomeIcon 
+                className={styles['icon_armor']}
+                icon={faShieldAlt} 
+                title="Armure"
+              />
+              <ArmorField 
+                name="armor" 
+                professions={professions} 
+                className={styles['icon_armor_input']}
+              />
+            </div>
+
 
             <span className={styles['info']}>Tous les champs sont obligatoires.</span>
 

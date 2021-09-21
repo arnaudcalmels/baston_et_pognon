@@ -12,6 +12,7 @@
 .form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 50px 200px 50px ;
     grid-gap: 0.5rem;
     justify-items: center;
     align-items: center;
@@ -47,18 +48,19 @@
 
 #image_preview {
     grid-column: 1 / 2;
-    grid-row: 2 / 3;
-    margin-top: 0;
-    position: relative;
+    grid-row: 1 / span 3;
+    // margin-top: 0;
+    // position: relative;
     height: 300px;
     justify-self: center;
     border-radius: 5px;
 }
 
 .character_name {
-    grid-column: 1 / span 3;
+    grid-column: 2 / 3;
     grid-row: 1 / 2;
     margin-bottom: 1rem;
+    justify-self: flex-start;
 
     & .form_field {
         width: 250px;
@@ -67,26 +69,81 @@
 }
 
 .character_picture {
-    grid-row: 3 / 4;
+    grid-row: 4 / 5;
     grid-column: 1 / 2;
     text-align: center;
+}
+
+.new-identity {
+    align-self: flex-start;
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    width: 300px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    align-items: center;
+    justify-items: center;
+    justify-self: flex-start;
+
+        & .form_field {
+            width: 175px;
+        }
 }
 
 .caracteristics {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
-    margin: 1rem;
-    width: 300px;
-    display: grid;
-    grid-template-columns: 200px 80px;
-    grid-gap: 1rem;
-    align-items: center;
-    justify-items: center;
-    
-        & .form_field {
-            width: 175px;
-        }
+    align-self: end;
+    justify-self: baseline;
 }
+
+.icon {
+    &_lifepoints {
+        color: red;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+
+        &_input {
+            width: 30px;
+            border: none;
+            background-color: inherit;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding-left: 0.3rem;
+            padding-right: 0.8rem;
+            font-family: $font-body;
+            color: $color-primary
+        }
+    }
+
+    &_armor {
+        color: darkblue;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+
+        &_input {
+            width: 30px;
+            border: none;
+            background-color: inherit;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding-left: 0.3rem;
+            padding-right: 0.8rem;
+            font-family: $font-body;
+            color: $color-primary
+        }
+    }
+
+    &_value {
+        font-size: 1.1rem;
+        padding-left: 0.3rem;
+        padding-right: 0.8rem;
+    }
+}
+
 
 .error_message {
     color: red;
@@ -122,8 +179,10 @@
 }
 
 @media screen and (min-width: 1200px) {
+
     .form {
-        width: 75vw;
+        grid-template-rows: 50px 400px 50px;
+        width: 1100px;
     }
 
     #image_preview {
@@ -131,6 +190,10 @@
         height: 500px;
     }
         
+    .caracteristics {
+        align-self: initial;
+    }
+
     #cancel_button {
         left: -6rem;
     }
@@ -145,4 +208,12 @@
         grid-column: 1 / span 3;
     }
     
+}
+
+@media screen and (min-width: 1500px) {
+
+    .form {
+        width: 1400px;
+    }
+
 }

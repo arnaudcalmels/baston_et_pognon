@@ -36,6 +36,8 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
   };
 
   const handleSubmit = (values) => {
+    delete values.lifePoints;
+    delete values.armor;
     console.log(JSON.stringify(values, null, 2));
     newCharacter(JSON.stringify(values, null, 2));
   };

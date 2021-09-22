@@ -8,11 +8,15 @@ import DeleteConfirm from '../../components/DeleteConfirm';
 import Loader from '../../components/Loader';
 import Title from '../../components/Title';
 import { LifePointsField, ArmorField } from '../../components/MyFields';
+import Section from '../../components/Section';
+import Column from '../../components/Column';
 
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMars, faVenus, faHeart, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import { faMars, faVenus, faHeart, faShieldAlt, faStar } from '@fortawesome/free-solid-svg-icons';
+
+import { getIcon, getTitle } from '../../utils/getIcons';
 
 import styles from './character.module.scss';
 
@@ -286,93 +290,39 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
           />
         </div>
 
-        <table className={styles['table']} id={styles['actions']}>
-          <tbody className={styles['table_content']}>
-            {
-              character.profession?.caracteristics?.actions.map(action => (
-                action.isSpecial && !action.heal ?
-                  <tr className={styles['table_row']}>
-                    <td className={styles['table_cell-name']}>Attaque spéciale :</td>
-                    <td className={styles['table_cell-value']}>{action.damages}</td>
-                  </tr>
-                : action.isSpecial && action.heal ?
-                  <tr className={styles['table_row']}>
-                    <td className={styles['table_cell-name']}>Soin spécial :</td>
-                    <td className={styles['table_cell-value']}>{action.damages}</td>
-                  </tr>
-                : action.heal ?
-                  <tr className={styles['table_row']}>
-                    <td className={styles['table_cell-name']}>Soin :</td>
-                    <td className={styles['table_cell-value']}>{action.damages}</td>
-                  </tr>
-                :
-                <tr className={styles['table_row']}>
-                  <td className={styles['table_cell-name']}>Attaque normale :</td>
-                  <td className={styles['table_cell-value']}>{action.damages}</td>
-                </tr>
-              ))
-            }
-            
-            {/* <tr className={styles['table_row']}>
-              <td className={styles['table_cell-name']}>PV :</td>
-              <td className={styles['table_cell-value']}>{character.profession?.caracteristics?.lifePoints}</td>
-            </tr>
-            <tr className={styles['table_row']}>
-              <td className={styles['table_cell-name']}>Armure :</td>
-              <td className={styles['table_cell-value']}>{character.profession?.caracteristics?.armor}</td>
-            </tr> */}
-          </tbody>
-        </table>
+        <div className={styles['block_skills_inventory']}>
+          <Section title="Compétences" >
+            <Column dynamicClassName='skills'>
+              {
+                character.profession?.caracteristics?.actions.map(action => (
+                  <div className={styles['action']}>
+                    <div className={`${styles['icon_action']} ${styles[getIcon(action, character.profession.name)]}`} title={getTitle(action, character.profession.name)}></div>
+                    <span className={styles['icon_value']} title="Dégats / Soins">
+                      {action.damages}
+                    </span>
+                    <p title="Fréquence d'utilisation">Tous les {action.frequency > 1 ? action.frequency : ''} tours</p>
+                  </div>
+                  )
+                  
+                )
+              }
+            </Column>
+          </Section>
 
-        <table className={styles['table']} id={styles['inventory']}>
-        <tbody className={styles['table_content']}>
-            <tr className={styles['table_title']}>
-              <td>Inventaire</td>
-            </tr>
-            {
-              character.inventory.specialObjects.map(object => (
-                <tr className={styles['table_row_inventory']} key={object.id}>
-                  <td className={styles['table_cell_inventory-picture']}>
-                    {/* <FontAwesomeIcon 
-                      icon={faRing} 
-                      size="2x" 
-                    /> */}
-                  </td>
-                  <td className={styles['table_cell_inventory-name']}>{object.name}</td>
-                  <td className={styles['table_cell_inventory-value']}>+ 1 PV </td>
-                </tr>
-              ))
-            }
-            <tr className={styles['table_row_inventory']}>
-              <td className={styles['table_cell_inventory-picture']}>
-                {/* <FontAwesomeIcon 
-                  icon={faCoins} 
-                  size="2x" 
-                /> */}
-              </td>
-              <td className={styles['table_cell_inventory-name']}>Booster</td>
-              <td className={styles['table_cell_inventory-value']}>{character.inventory.boostersCount} </td>
-            </tr>
-
-          </tbody>
-        </table>
-
-        <table className={styles['table']} id={styles['statistics']}>
-          <tbody className={styles['table_content']}>
-            <tr className={styles['table_title']}>
-              <td>Statistiques</td>
-            </tr>
-            <tr className={styles['table_row']}>
-              <td className={styles['table_cell-name']}>Nb de parties jouées :</td>
-              <td className={styles['table_cell-value']}>10</td>
-            </tr>
-            <tr className={styles['table_row']}>
-              <td className={styles['table_cell-name']}>Autre stat :</td>
-              <td className={styles['table_cell-value']}>20</td>
-            </tr>
-        </tbody>
-        </table>
-
+          <Section title="Inventaire">
+            <Column dynamicClassName='inventory'>
+              <div className={styles['inventory']}>
+                <FontAwesomeIcon 
+                  className={styles['icon_booster']}
+                  icon={faStar} 
+                  title="Booster"
+                />
+                <p className={styles['item_name']}>Booster(s)</p>
+                <span className={styles['item_number']}>{character.inventory.boostersCount} </span>
+              </div>
+            </Column>
+          </Section>
+        </div>
 
         <Modal 
           isOpen={openDeleteModal} 

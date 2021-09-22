@@ -33,96 +33,6 @@
     display: block;
 }
 
-.table {
-    padding: 0.5rem;
-    margin: 1rem;
-    width: 300px;
-
-    &_content {
-        width: 300px;
-        display: grid;
-        grid-gap: 1rem;
-        align-items: center;
-    }
-    
-    &_title {
-        height: 40px;
-        width: 100%;
-        background-color: $color-secondary;
-        font-weight: normal;
-        font-size: 1.2rem;  
-        text-align: center; 
-        display: flex; 
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-    }
-
-    &_row {
-        display: grid;
-        grid-template-columns: 140px 140px;
-        grid-gap: 0.5rem;
-        align-items: center;
-        justify-items: center;
-
-        &_inventory {
-            display: grid;
-            grid-template-columns: 70px 140px 70px;
-            grid-gap: 0.5rem;
-            align-items: center;
-            justify-items: center;
-        }
-    }
-
-    &_cell {
-        
-        &-name {
-            grid-column: 1 / 2;
-            height: 30px;
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        &-value {
-            width: 150px;
-            height: 30px;
-            grid-column: 2 / 3;
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-        }
-
-        &_inventory {
-            &-picture {
-                grid-column: 1 / 2;
-                height: 30px;
-
-            }
-
-            &-name {
-                grid-column: 2 / 3;
-                height: 30px;
-                align-self: center;
-                display: flex; 
-                justify-content: center;
-                align-items: center;
-            }
-    
-            &-value {
-                height: 30px;
-                grid-column: 3 / 4;
-                text-align: center;
-                display: flex; 
-                justify-content: center;
-                align-items: center;        
-            }
-    
-        }
-    }
-}
-
 #image, #image_preview, #new-image_preview {
     height: 200px;
     justify-self: center;
@@ -186,25 +96,84 @@
         }
     }
 
-    // &_pen {
-    //     grid-row: 1 / 2;
-    //     grid-column: 3 / 4;
-    // }
-
-    // &_trash {
-    //     grid-row: 2 / 3;
-    //     grid-column: 3 / 4;
-    // }
-
     &_value {
         font-size: 1.1rem;
         padding-left: 0.3rem;
         padding-right: 0.8rem;
     }
+
+    &_booster {
+        color: gold;
+        grid-row: 4 / 5;
+        grid-column: 2 / 3;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+    }
+
 }
 
 .buttons {
     display: none;
+}
+
+.action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon_action {
+    width: 50px;
+    height: 50px;
+    background-image: url('../../assets/images/actions.png');
+    background-repeat: no-repeat;
+}
+
+.heal {
+    background-position-x: $position-normal;
+    background-position-y: $position-heal;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-heal;
+    }
+}
+
+.spell {
+    background-position-x: $position-normal;
+    background-position-y: $position-spell;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-spell;
+    }
+}
+
+.sword {
+    background-position-x: $position-normal;
+    background-position-y: $position-sword;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-sword;
+    }
+}
+
+.bow {
+    background-position-x: $position-normal;
+    background-position-y: $position-bow;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-bow;
+    }
+}
+
+.inventory {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 @media screen and (min-width: 768px) {
@@ -336,11 +305,6 @@
         text-align: center;
     }    
     
-    // .actions {
-    //     grid-column: 2 / 3;
-    //     grid-row: 2 / 3;
-    // }    
-
     .info {
         font-size: 0.7rem;
         font-style: italic;
@@ -348,7 +312,7 @@
         grid-row: 5 / 6;
         justify-self: center;
     }
-
+    
     #cancel_button {
         position: relative;
         top: -3rem;
@@ -367,14 +331,15 @@
         justify-content: center;
         align-items: center;
     }
-        
-    // #inventory {
-    //     justify-self: end;
-    // }
+    
+    .skills {
+        width: 300px;
+    }
 
-    // #statistics {
-    //     align-self: start;
-    // }
+    .action {
+        justify-content: space-between;
+    }
+    
 }
 
 @media screen and (min-width: 1200px) {
@@ -401,55 +366,20 @@
     }
     
     #submit_button {
-        // grid-column: 2 / 3;
         justify-self: start;
     }
-    
-    // #actions {
-    //     grid-row: 2 / 3;
-    //     grid-column: 3 / 4;
-    //     justify-self: center;
-    //     align-self: start;
-    // }
-
-    // #inventory {
-    //     grid-row: 2 / 3;
-    //     grid-column: 1 / 2;
-    //     justify-self: center;
-    //     align-self: start;
-    // }
-
-    // #statistics {
-    //     grid-row: 2 / 3;
-    //     grid-column: 2 / 3;
-    //     justify-self: center;
-    //     align-self: start;
-    // }
-
 }
 
 @media screen and (min-width: 1500px) {
-    // .table {
-    //     width: 400px;
-
-    //     &_content {
-    //         width: 400px;
-    //     }
-
-    //     &_row {
-    //         grid-template-columns: 190px 190px;
-
-    //         &_inventory {
-    //             grid-template-columns: 70px 240px 70px;
-    //         }
-    //     }
-    // }
-
     #block_character, #block_form {
         width: 1400px;
     }
 
     #cancel_button {
         left: 36rem;  
-    }    
+    }   
+    
+    .block_skills_inventory {
+        display: flex;
+    }
 }

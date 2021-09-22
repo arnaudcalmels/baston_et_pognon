@@ -12,14 +12,17 @@ const Section = ( { title, children, addButton, buttonTitle } ) => {
     <div className={styles['main']}>
       <div className={styles['header']}>
         <h3 className={styles['title']}>{title}</h3>
-        <FontAwesomeIcon 
-          className={styles['add_group']}
-          onClick={addButton} 
-          icon={faPlusCircle} 
-          size="2x" 
-          style={{cursor: 'pointer'}}
-          title={buttonTitle}
-        />
+        {
+          addButton &&
+          <FontAwesomeIcon 
+            className={styles['add_group']}
+            onClick={addButton} 
+            icon={faPlusCircle} 
+            size="2x" 
+            style={{cursor: 'pointer'}}
+            title={buttonTitle}
+          />
+        }
       </div>
 
       <div className={styles['content']}>

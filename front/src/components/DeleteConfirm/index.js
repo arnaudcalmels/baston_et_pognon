@@ -29,7 +29,7 @@ const DeleteConfirm = ({ cancelAction, confirmAction, context }) => {
 
   return (
       <div className={styles['content']}>
-        <p>
+        <p className={styles['text']}>
           {message}
         </p>
         <Button 

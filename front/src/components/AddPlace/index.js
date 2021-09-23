@@ -52,8 +52,6 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
       {
         (props) => (
           <Form className={styles['form']}>
-            <h3 className={styles['form_title']}>Je crée un nouveau lieu</h3>
-
             <div className={styles['form_content']}>
 
               <div className={`${styles['newPlace_name']} ${styles['form_item']}`}>
@@ -132,6 +130,7 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
               color='#eee' 
               children='Valider'
             />
+
           </Form>
         )
       }

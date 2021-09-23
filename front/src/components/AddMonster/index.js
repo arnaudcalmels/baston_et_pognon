@@ -64,8 +64,6 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
       {
         (props) => (
           <Form className={styles['form']}>
-            <h3 className={styles['form_title']}>Je crée un nouveau monstre</h3>
-
             <div className={styles['form_content']}>
 
               <div className={`${styles['newMonster_name']} ${styles['form_item']}`}>

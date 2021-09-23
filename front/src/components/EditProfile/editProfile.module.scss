@@ -1,6 +1,5 @@
 .form {
-    margin-top: 3rem;
-    padding-left: 2rem;
+    margin: 1rem;
 
     &_field {
         display: flex;
@@ -36,11 +35,4 @@
 
 .buttons {
     display: flex;
-}
-
-@media screen and (min-width: 600px) {
-    .form {
-        padding-right: 2rem;
-    }
-
 }

@@ -5,12 +5,15 @@ import FileBase64 from 'react-file-base64';
 
 import Button from '../../components/Button';
 import Title from '../../components/Title';
-import { LifePointsField, ArmorField } from '../../components/MyFields';
+import Section from '../../components/Section';
+import Column from '../../components/Column';
 
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faShieldAlt, faStar } from '@fortawesome/free-solid-svg-icons';
+
+import { getIcon, getTitle } from '../../utils/getIcons';
 
 import styles from './newCharacter.module.scss';
 
@@ -36,8 +39,6 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
   };
 
   const handleSubmit = (values) => {
-    delete values.lifePoints;
-    delete values.armor;
     console.log(JSON.stringify(values, null, 2));
     newCharacter(JSON.stringify(values, null, 2));
   };
@@ -144,25 +145,26 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
                 icon={faHeart} 
                 title="Points de vie"
               />
-              <LifePointsField 
-                name="lifePoints" 
-                professions={professions}                     className={styles['icon_lifepoints_input']}
-              />
+                <span className={styles['icon_value']}>{professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.lifePoints}</span>
 
               <FontAwesomeIcon 
                 className={styles['icon_armor']}
                 icon={faShieldAlt} 
                 title="Armure"
               />
-              <ArmorField 
-                name="armor" 
-                professions={professions} 
-                className={styles['icon_armor_input']}
-              />
+              <span className={styles['icon_value']}>{professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.armor}</span>
             </div>
 
 
             <span className={styles['info']}>Tous les champs sont obligatoires.</span>
+
+            <Button
+              id={styles['cancel_button']}
+              type='button'
+              color='#eee'
+              children='Annuler'
+              onClick={() => backToList()}
+            />
 
             <Button
               id={styles['submit_button']}
@@ -171,18 +173,44 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
               children='Valider'
             />
         
+            <div className={styles['block_skills_inventory']}>
+              <Section title="Compétences" >
+                <Column dynamicClassName='skills'>
+                  {
+                    professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.actions.map(action => (
+                      <div className={styles['action']}>
+                        <div className={`${styles['icon_action']} ${styles[getIcon(action, professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.name)]}`} title={getTitle(action, professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.name)}></div>
+                        <span className={styles['icon_value']} title="Dégats / Soins">
+                          {action.damages}
+                        </span>
+                        <p title="Fréquence d'utilisation">Tous les {action.frequency > 1 ? action.frequency : ''} tours</p>
+                      </div>
+
+                    ))
+                  }
+                </Column>
+              </Section>
+
+              <Section title="Inventaire">
+                <Column dynamicClassName='inventory'>
+                  <div className={styles['inventory']}>
+                    <FontAwesomeIcon 
+                      className={styles['icon_booster']}
+                      icon={faStar} 
+                      title="Booster"
+                    />
+                    <p className={styles['item_name']}>Booster(s)</p>
+                    <span className={styles['item_number']}>0</span>
+                  </div>
+                </Column>
+              </Section>
+            </div>
+
           </Form>
 
         )
       }
       </Formik>
-
-      <Button
-        id={styles['cancel_button']}
-        color='#eee'
-        children='Annuler'
-        onClick={() => backToList()}
-      />
 
       <div className={styles['profession_infos']}>
         Caractéristiques détaillées des classes

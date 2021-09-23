@@ -7,7 +7,6 @@ import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
 import Loader from '../../components/Loader';
 import Title from '../../components/Title';
-import { LifePointsField, ArmorField } from '../../components/MyFields';
 import Section from '../../components/Section';
 import Column from '../../components/Column';
 
@@ -56,8 +55,6 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
   };
 
   const handleSubmit = (values) => {
-    delete values.lifePoints;
-    delete values.armor;
     console.log(JSON.stringify(values, null, 2));
     editCharacter(character.id, JSON.stringify(values, null, 2), showForm);
   };
@@ -145,6 +142,41 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
             />
           </div>
 
+          <div className={styles['block_skills_inventory']}>
+            <Section title="Compétences" >
+              <Column dynamicClassName='skills'>
+                {
+                  character.profession?.caracteristics?.actions.map(action => (
+                    <div className={styles['action']} key={action.id}>
+                      <div className={`${styles['icon_action']} ${styles[getIcon(action, character.profession.name)]}`} title={getTitle(action, character.profession.name)}></div>
+                      <span className={styles['icon_value']} title="Dégats / Soins">
+                        {action.damages}
+                      </span>
+                      <p title="Fréquence d'utilisation">Tous les {action.frequency > 1 ? action.frequency : ''} tours</p>
+                    </div>
+                    )
+                    
+                  )
+                }
+              </Column>
+            </Section>
+
+            <Section title="Inventaire">
+              <Column dynamicClassName='inventory'>
+                <div className={styles['inventory']}>
+                  <FontAwesomeIcon 
+                    className={styles['icon_booster']}
+                    icon={faStar} 
+                    title="Booster"
+                  />
+                  <p className={styles['item_name']}>Booster(s)</p>
+                  <span className={styles['item_number']}>{character.inventory.boostersCount} </span>
+                </div>
+              </Column>
+            </Section>
+          </div>
+
+
         </div>
 
         <div id={styles['block_form']} className={styles['hide_form']}>
@@ -210,7 +242,7 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                     <option defaultValue>Sélectionnez une classe</option>
                       {
                         professions.map(profession => (
-                          <option value={profession.id}>{profession.name}</option>
+                          <option value={profession.id} key={profession.id}>{profession.name}</option>
                         ))
                       }
                   </Field>
@@ -226,7 +258,7 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                     <option defaultValue>Sélectionnez une race</option>
                       {
                         races.map(race => (
-                          <option value={race.id}>{race.name}</option>
+                          <option value={race.id} key={race.id}>{race.name}</option>
                         ))
                       }
                   </Field>
@@ -251,24 +283,26 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                     icon={faHeart} 
                     title="Points de vie"
                   />
-                  <LifePointsField 
-                    name="lifePoints" 
-                    professions={professions}                     className={styles['icon_lifepoints_input']}
-                  />
+                  <span className={styles['icon_value']}>{professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.lifePoints}</span>
 
                   <FontAwesomeIcon 
                     className={styles['icon_armor']}
                     icon={faShieldAlt} 
                     title="Armure"
                   />
-                  <ArmorField 
-                    name="armor" 
-                    professions={professions} 
-                    className={styles['icon_armor_input']}
-                  />
+                  <span className={styles['icon_value']}>{professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.armor}</span>
+
                 </div>
                 
                 <span className={styles['info']}>Tous les champs sont obligatoires.</span>
+
+                <Button
+                  id={styles['cancel_button']}
+                  type='button'
+                  color='#eee'
+                  children='Annuler'
+                  onClick={() => showForm()}
+                />
 
                 <Button
                   id={styles['submit_button']}
@@ -277,51 +311,46 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                   children='Valider'
                 />
             
+                <div className={styles['block_skills_inventory']}>
+                  <Section title="Compétences" >
+                    <Column dynamicClassName='skills'>
+                      {
+                        professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.actions.map(action => (
+                          <div className={styles['action']} key={action.id}>
+                            <div className={`${styles['icon_action']} ${styles[getIcon(action, professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.name)]}`} title={getTitle(action, professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.name)}></div>
+                            <span className={styles['icon_value']} title="Dégats / Soins">
+                              {action.damages}
+                            </span>
+                            <p title="Fréquence d'utilisation">Tous les {action.frequency > 1 ? action.frequency : ''} tours</p>
+                          </div>
+
+                        ))
+                      }
+                    </Column>
+                  </Section>
+
+                  <Section title="Inventaire">
+                    <Column dynamicClassName='inventory'>
+                      <div className={styles['inventory']}>
+                        <FontAwesomeIcon 
+                          className={styles['icon_booster']}
+                          icon={faStar} 
+                          title="Booster"
+                        />
+                        <p className={styles['item_name']}>Booster(s)</p>
+                        <span className={styles['item_number']}>{character.inventory.boostersCount} </span>
+                      </div>
+                    </Column>
+                  </Section>
+                </div>
+
               </Form>
+
+              
 
             )
           }
           </Formik>
-          <Button
-            id={styles['cancel_button']}
-            color='#eee'
-            children='Annuler'
-            onClick={() => showForm()}
-          />
-        </div>
-
-        <div className={styles['block_skills_inventory']}>
-          <Section title="Compétences" >
-            <Column dynamicClassName='skills'>
-              {
-                character.profession?.caracteristics?.actions.map(action => (
-                  <div className={styles['action']}>
-                    <div className={`${styles['icon_action']} ${styles[getIcon(action, character.profession.name)]}`} title={getTitle(action, character.profession.name)}></div>
-                    <span className={styles['icon_value']} title="Dégats / Soins">
-                      {action.damages}
-                    </span>
-                    <p title="Fréquence d'utilisation">Tous les {action.frequency > 1 ? action.frequency : ''} tours</p>
-                  </div>
-                  )
-                  
-                )
-              }
-            </Column>
-          </Section>
-
-          <Section title="Inventaire">
-            <Column dynamicClassName='inventory'>
-              <div className={styles['inventory']}>
-                <FontAwesomeIcon 
-                  className={styles['icon_booster']}
-                  icon={faStar} 
-                  title="Booster"
-                />
-                <p className={styles['item_name']}>Booster(s)</p>
-                <span className={styles['item_number']}>{character.inventory.boostersCount} </span>
-              </div>
-            </Column>
-          </Section>
         </div>
 
         <Modal 

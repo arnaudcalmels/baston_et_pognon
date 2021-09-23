@@ -34,7 +34,9 @@ const Section = ( { title, children, addButton, buttonTitle } ) => {
 
 Section.propTypes = {
   title: PropTypes.string,
-  children:PropTypes.array,
+  children: PropTypes.oneOfType([
+    PropTypes.array, PropTypes.object, PropTypes.element,
+  ]),
   addButton: PropTypes.func,
   buttonTitle: PropTypes.string,
 };

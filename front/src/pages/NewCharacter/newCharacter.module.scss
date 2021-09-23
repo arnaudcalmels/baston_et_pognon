@@ -1,7 +1,6 @@
 @import '../../styles/vars';
 
 .main {
-    min-height: 80vh;
     grid-row: 2 / 3;
     grid-column: 1 / span 12;
     display: flex;
@@ -10,35 +9,17 @@
     align-items: center;
 }
 
-.newCharacter_picture {
-    margin-top: 0;
-    position: relative;
-    width: 200px;
-}
-
-#block_form {
-    background-color: initial;
-}
-
-.show_form {
-    display: block;
-}
-
 .form {
-    border: 3px solid $color-secondary;
-    border-radius: 5px;
-    padding: 0.5rem;
-    margin: 1rem;
-    width: 300px;
     display: grid;
-    grid-template-columns: 140px 140px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 50px 200px 50px ;
     grid-gap: 0.5rem;
     justify-items: center;
     align-items: center;
 
     &_field {
-        width: 150px;
-        height: 30px;
+        font-family: $font-body;
+        border: none;
     }
 
     &_group {
@@ -65,12 +46,121 @@
 
 }
 
+#image_preview {
+    grid-column: 1 / 2;
+    grid-row: 1 / span 3;
+    // margin-top: 0;
+    // position: relative;
+    height: 300px;
+    justify-self: center;
+    border-radius: 5px;
+}
+
+.character_name {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    margin-bottom: 1rem;
+    justify-self: flex-start;
+
+    & .form_field {
+        width: 250px;
+        margin-left: 1rem;
+    }
+}
+
+.character_picture {
+    grid-row: 4 / 5;
+    grid-column: 1 / 2;
+    text-align: center;
+}
+
+.new-identity {
+    align-self: flex-start;
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    width: 300px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    align-items: center;
+    justify-items: center;
+    justify-self: flex-start;
+
+        & .form_field {
+            width: 175px;
+        }
+}
+
+.caracteristics {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    align-self: end;
+    justify-self: baseline;
+}
+
+.icon {
+    &_lifepoints {
+        color: red;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+
+        &_input {
+            width: 30px;
+            border: none;
+            background-color: inherit;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding-left: 0.3rem;
+            padding-right: 0.8rem;
+            font-family: $font-body;
+            color: $color-primary
+        }
+    }
+
+    &_armor {
+        color: darkblue;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+
+        &_input {
+            width: 30px;
+            border: none;
+            background-color: inherit;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding-left: 0.3rem;
+            padding-right: 0.8rem;
+            font-family: $font-body;
+            color: $color-primary
+        }
+    }
+
+    &_value {
+        font-size: 1.1rem;
+        padding-left: 0.3rem;
+        padding-right: 0.8rem;
+    }
+
+    &_booster {
+        color: gold;
+        grid-row: 4 / 5;
+        grid-column: 2 / 3;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+    }
+
+}
+
+
 .error_message {
     color: red;
-    margin-top: -1.5rem;
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
     font-size: 0.8rem;
     font-style: italic;
+    text-align: center;
 }
 
 .info {
@@ -81,62 +171,108 @@
 }
 
 #cancel_button {
-    position: relative;
-    top: -4.7rem;
-    left: 3rem;  
+    grid-column: 1 / 2;
+    justify-self: end;
 }
 
 #submit_button {
-    position: relative;
-    left: 9rem;  
+    grid-column: 2 / 3;
+    justify-self: start;
 }
 
 .profession_infos {
     text-align: center;
 }
 
-#image_preview {
-    max-width: 150px;
-    max-height: 200px;
-    align-self: center;
+.action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-@media screen and (min-width: 768px) {
-    .main {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        justify-content: center;
-        align-items: center;        
-    }
+.icon_action {
+    width: 50px;
+    height: 50px;
+    background-image: url('../../assets/images/actions.png');
+    background-repeat: no-repeat;
+}
 
-    .overlay-image {
-        justify-self: end;
-    }
+.heal {
+    background-position-x: $position-normal;
+    background-position-y: $position-heal;
 
-    #block_form {
-        justify-self: end;
-        position: relative;
-        top: 1.5rem;
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-heal;
     }
 }
 
+.spell {
+    background-position-x: $position-normal;
+    background-position-y: $position-spell;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-spell;
+    }
+}
+
+.sword {
+    background-position-x: $position-normal;
+    background-position-y: $position-sword;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-sword;
+    }
+}
+
+.bow {
+    background-position-x: $position-normal;
+    background-position-y: $position-bow;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-bow;
+    }
+}
+
+.inventory {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.block_skills_inventory {
+    grid-column: 1 / span 2;
+    justify-self: center;
+}
+
+.skills {
+    width: 300px;
+}
+
+.action {
+    justify-content: space-between;
+}
 
 
 @media screen and (min-width: 1200px) {
-    .main {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 300px 1fr;
-        justify-content: center;
-        align-items: center;  
-    }
-    
-    #block_form {
-        grid-row: 1 / 2;
-        grid-column: 3 / 4;
-        justify-self: center;
+
+    .form {
+        grid-template-rows: 50px 400px 50px;
+        width: 1100px;
     }
 
+    #image_preview {
+        align-self: flex-start;
+        height: 500px;
+    }
+        
+    .caracteristics {
+        align-self: initial;
+    }
+    
     .profession_infos {
         grid-row: 2 / 3;
         grid-column: 1 / span 3;
@@ -146,26 +282,13 @@
 }
 
 @media screen and (min-width: 1500px) {
-    #block_form {
-        width: 400px;
-        left: -1.7rem;
-    }
 
     .form {
-        width: 400px;
-
-        &_field {
-            width: 200px;
-        }
-        
+        width: 1400px;
     }
 
-    #cancel_button {
-        left: 5rem;  
+    .block_skills_inventory {
+        display: flex;
     }
-    
-    #submit_button {
-        left: 13rem;  
-    }
-    
+
 }

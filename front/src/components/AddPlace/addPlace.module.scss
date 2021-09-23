@@ -48,21 +48,13 @@
 }
 
 #submit_button {
-    position: relative;
-    top: 1rem;
-    left: 16rem;
+    grid-row: 8 / 9;
+    grid-column: 11 / 12;
 }
 
 #cancel_button {
-    position: relative;
-    top: -1rem;
-    left: 8rem;
-}
-
-#addMonsters_button {
-    position: relative;
-    top: -1rem;
-    left: 18rem;
+    grid-row: 8 / 9;
+    grid-column: 10 / 11;
 }
 
 #image_preview {
@@ -114,22 +106,5 @@
         grid-column: 10 / span 3;
         grid-row: 1 / 4;
     }
-    
-    #submit_button {
-        position: relative;
-        top: 1.1rem;
-        left: 40rem;
-    }
-    
-    #cancel_button {
-        position: relative;
-        top: -1rem;
-        left: 33rem;
-    }
-    
-    #addMonsters_button {
-        position: relative;
-        top: -1rem;
-        left: 41rem;
-    }
+        
 }

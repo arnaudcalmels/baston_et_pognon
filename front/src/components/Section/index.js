@@ -12,14 +12,17 @@ const Section = ( { title, children, addButton, buttonTitle } ) => {
     <div className={styles['main']}>
       <div className={styles['header']}>
         <h3 className={styles['title']}>{title}</h3>
-        <FontAwesomeIcon 
-          className={styles['add_group']}
-          onClick={addButton} 
-          icon={faPlusCircle} 
-          size="2x" 
-          style={{cursor: 'pointer'}}
-          title={buttonTitle}
-        />
+        {
+          addButton &&
+          <FontAwesomeIcon 
+            className={styles['add_group']}
+            onClick={addButton} 
+            icon={faPlusCircle} 
+            size="2x" 
+            style={{cursor: 'pointer'}}
+            title={buttonTitle}
+          />
+        }
       </div>
 
       <div className={styles['content']}>
@@ -31,7 +34,9 @@ const Section = ( { title, children, addButton, buttonTitle } ) => {
 
 Section.propTypes = {
   title: PropTypes.string,
-  children:PropTypes.array,
+  children: PropTypes.oneOfType([
+    PropTypes.array, PropTypes.object, PropTypes.element,
+  ]),
   addButton: PropTypes.func,
   buttonTitle: PropTypes.string,
 };

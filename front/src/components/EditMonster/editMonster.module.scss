@@ -8,15 +8,8 @@
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 0.5rem;
 
-    // &_title {
-    //     text-align: center;
-    //     grid-column: 1 / span 12;
-    //     grid-row: 1 / 2;
-    // }
-
     &_content {
         grid-column: 1 / span 12;
-        // grid-row: 2 / 3;
         display: flex;
         flex-direction: column;
     }
@@ -59,15 +52,13 @@
 }
 
 #submit_button {
-    position: relative;
-    top: 1rem;
-    left: 16rem;
+    grid-column: 11 / 12;
+    justify-self: start;
 }
 
 #cancel_button {
-    position: relative;
-    top: -1rem;
-    left: 8rem;
+    grid-column: 10 / 11;
+    justify-self: end;
 }
 
 #image_preview, #new_image_preview {
@@ -82,7 +73,6 @@
         
         &_content {
             grid-column: 1 / span 12;
-            // grid-row: 2 / 3;
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             grid-gap: 0.5rem;
@@ -129,17 +119,5 @@
         grid-column: 9 / span 4;
         grid-row: 1 / span 8;
     }
-           
-    #submit_button {
-        position: relative;
-        top: 1.1rem;
-        left: 40rem;
-    }
-    
-    #cancel_button {
-        position: relative;
-        top: -1rem;
-        left: 33rem;
-    }
-    
+               
 }

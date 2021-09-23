@@ -131,6 +131,14 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
             </div>
 
             <Button 
+              id={styles['cancel_button']} 
+              type='button'
+              color='#eee' 
+              children='Annuler' 
+              onClick={closeModal}
+            />
+
+            <Button 
               id={styles['submit_button']} 
               type="submit" 
               color='#eee' 
@@ -140,40 +148,6 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
         )
       }
     </Formik>
-
-    <Button 
-      id={styles['cancel_button']} 
-      color='#eee' 
-      children='Annuler' 
-      onClick={closeModal}
-    />
-
-    {/* <Button 
-      id={styles['addMonsters_button']} 
-      color='#eee' 
-      children='Ajouter des monstres' 
-      onClick={() => setOpenAddMonsterModal(true)}
-    /> */}
-
-    {/* <Modal 
-      isOpen={openAddMonsterModal}
-      closeModal={() => {
-        setOpenAddMonsterModal(false)
-      }}
-      title='Ajouter un monstre'
-      children={
-        <AddMonster 
-          scenarioId={null}
-          placeId={place.id}
-          wanderGroupId={null}
-          slug="place"
-          closeModal={() => {
-            setOpenAddMonsterModal(false)
-          }}
-          context={'currentMonsterInPlace'}
-        />}
-    /> */}
-
 
     </div>
   );

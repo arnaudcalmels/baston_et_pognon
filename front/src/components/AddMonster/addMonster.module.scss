@@ -59,15 +59,13 @@
 }
 
 #submit_button {
-    position: relative;
-    top: 1rem;
-    left: 16rem;
+    grid-row: 8 / 9;
+    grid-column: 11 / 12;
 }
 
 #cancel_button {
-    position: relative;
-    top: -1rem;
-    left: 8rem;
+    grid-row: 8 / 9;
+    grid-column: 10 / 11;
 }
 
 #image_preview {
@@ -130,16 +128,16 @@
         grid-row: 1 / span 8;
     }
            
-    #submit_button {
-        position: relative;
-        top: 1.1rem;
-        left: 40rem;
-    }
+    // #submit_button {
+    //     position: relative;
+    //     top: 1.1rem;
+    //     left: 40rem;
+    // }
     
-    #cancel_button {
-        position: relative;
-        top: -1rem;
-        left: 33rem;
-    }
+    // #cancel_button {
+    //     position: relative;
+    //     top: -1rem;
+    //     left: 33rem;
+    // }
     
 }

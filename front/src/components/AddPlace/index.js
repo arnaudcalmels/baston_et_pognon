@@ -120,6 +120,13 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
             </div>
 
             <Button 
+              id={styles['cancel_button']} 
+              type='button'
+              color='#eee' 
+              children='Annuler' 
+              onClick={closeModal}
+            />
+            <Button 
               id={styles['submit_button']} 
               type="submit" 
               color='#eee' 
@@ -129,13 +136,6 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
         )
       }
     </Formik>
-
-    <Button 
-      id={styles['cancel_button']} 
-      color='#eee' 
-      children='Annuler' 
-      onClick={closeModal}
-    />
 
     </div>
   );

@@ -192,6 +192,14 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
                 <span className={styles['info']}>Les champs marqués d'une * sont obligatoires.</span>
 
                 <Button
+                  id={styles['cancel_button']}
+                  type='button'
+                  color='#eee'
+                  children='Annuler'
+                  onClick={() => showForm()}
+                />
+
+                <Button
                   id={styles['submit_button']}
                   type="submit"
                   color='#eee'
@@ -202,14 +210,6 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
               )
             }
             </Formik>
-
-
-            <Button
-              id={styles['cancel_button']}
-              color='#eee'
-              children='Annuler'
-              onClick={() => showForm()}
-            />
 
           </div>
 

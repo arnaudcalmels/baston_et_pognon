@@ -234,6 +234,14 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
             </div>
 
             <Button 
+              id={styles['cancel_button']} 
+              type='button'
+              color='#eee' 
+              children='Annuler' 
+              onClick={closeModal}
+            />
+
+            <Button 
               id={styles['submit_button']} 
               type="submit" 
               color='#eee' 
@@ -243,13 +251,6 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
         )
       }
     </Formik>
-
-    <Button 
-      id={styles['cancel_button']} 
-      color='#eee' 
-      children='Annuler' 
-      onClick={closeModal}
-    />
 
     </div>
   );

@@ -102,6 +102,14 @@ const NewScenario = ({ newScenario }) => {
             <span className={styles['info']}>Les champs marqués d'une * sont obligatoires.</span>
 
             <Button
+              id={styles['cancel_button']}
+              type='button'
+              color='#eee'
+              children='Annuler'
+              onClick={() => backToList()}
+            />
+
+            <Button
               id={styles['submit_button']}
               type="submit"
               color='#eee'
@@ -113,13 +121,6 @@ const NewScenario = ({ newScenario }) => {
           )
         }
         </Formik>
-
-        <Button
-          id={styles['cancel_button']}
-          color='#eee'
-          children='Annuler'
-          onClick={() => backToList()}
-        />
 
     </div>
   );

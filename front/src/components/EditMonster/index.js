@@ -222,6 +222,14 @@ const EditMonster = ({ closeModal, currentMonster, editMonster, context, placeId
               </div>
 
               <Button 
+                id={styles['cancel_button']} 
+                type='button'
+                color='#eee' 
+                children='Annuler' 
+                onClick={closeModal}
+              />
+
+              <Button 
                 id={styles['submit_button']} 
                 type="submit" 
                 color='#eee' 
@@ -232,12 +240,6 @@ const EditMonster = ({ closeModal, currentMonster, editMonster, context, placeId
         }
       </Formik>
 
-      <Button 
-        id={styles['cancel_button']} 
-        color='#eee' 
-        children='Annuler' 
-        onClick={closeModal}
-      />
 
       </div>
   );

@@ -110,17 +110,13 @@
 }
 
 #cancel_button {
-    justify-self: center;
-    width: 100px;  
-    position: relative;
-    top: -3rem;
-    left: -5rem;
+    grid-column: 1 / 2;
+    justify-self: end;
 }
 
 #submit_button {
     grid-column: 2 / 3;
     justify-self: start;
-    width: 100px;  
 }
 
 @media screen and (min-width: 1200px) {
@@ -143,16 +139,7 @@
     .info {
         grid-column: 1 / span 3;
     }
-    
-    #cancel_button {
-        left: -6rem;
-    }
-    
-    #submit_button {
-        grid-column: 2 / 3;
-        justify-self: start;
-    }
-    
+        
 }
 
 @media screen and (min-width: 1500px) {

@@ -41,14 +41,6 @@ const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) =
       {
         (props) => (
           <Form className={styles['form']}>
-            <div className={`${styles['profile_picture']} ${styles['form_item']}`}>
-              <label htmlFor="picture" className={styles['form_label']}>Image :</label>
-              <FileBase64
-                multiple={false}
-                onDone={getFile.bind(this, props)}
-              />
-            </div>
-
             {
               newPicture ?
                 <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
@@ -56,6 +48,14 @@ const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) =
                 // eslint-disable-next-line
                 <img id={styles['image_preview']} src={avatar.base64} alt='photo_avatar'/>
             }
+
+            <div className={`${styles['profile_picture']} ${styles['form_item']}`}>
+              <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+              <FileBase64
+                multiple={false}
+                onDone={getFile.bind(this, props)}
+              />
+            </div>
 
             <label htmlFor="pseudo" className={styles['form_label']}>Pseudo :</label>
             <Field 

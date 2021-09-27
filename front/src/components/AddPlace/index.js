@@ -52,9 +52,18 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
       {
         (props) => (
           <Form className={styles['form']}>
-            <h3 className={styles['form_title']}>Je crée un nouveau lieu</h3>
-
             <div className={styles['form_content']}>
+
+              {/* eslint-disable-next-line */}
+              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+
+              <div className={`${styles['newPlace_picture']} ${styles['form_item']}`}>
+                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+                <FileBase64
+                  multiple={false}
+                  onDone={getFile.bind(this, props)}
+                />
+              </div>
 
               <div className={`${styles['newPlace_name']} ${styles['form_item']}`}>
                 <label htmlFor="name" className={styles['form_label']}>Nom * :</label>
@@ -65,37 +74,6 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
                   type="text"
                 />
                 <ErrorMessage name='name' component='div' className={styles['error_message']}/>
-              </div>
-
-              <div className={`${styles['newPlace_booster']} ${styles['form_item']}`}>
-                <label htmlFor="hiddenBoosterCount" className={styles['form_label']}>Boosters cachés :</label>
-                  <Field
-                    className={styles['form_field']}
-                    id="hiddenBoosterCount"
-                    name="hiddenBoosterCount"
-                    type="number"
-                    min={0}
-                  />
-              </div>
-
-              <div className={`${styles['newPlace_picture']} ${styles['form_item']}`}>
-                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
-                <FileBase64
-                  multiple={false}
-                  onDone={getFile.bind(this, props)}
-                />
-              </div>
-
-              {/* eslint-disable-next-line */}
-              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
-
-              <div className={`${styles['newPlace_description']} ${styles['form_item']}`}>
-                <label htmlFor="description" className={styles['form_label']}>Description :</label>
-                <Field 
-                  as="textarea" 
-                  name="description" 
-                  className={styles['form_field']}    
-                />
               </div>
 
               <div className={`${styles['newPlace_category']} ${styles['form_item']}`}>
@@ -114,8 +92,29 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
                   }
                 </Field>
                 <ErrorMessage name='categoryId' component='div' className={styles['error_message']}/>
-
               </div>
+
+              <div className={`${styles['newPlace_booster']} ${styles['form_item']}`}>
+                <label htmlFor="hiddenBoosterCount" className={styles['form_label']}>Boosters cachés :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="hiddenBoosterCount"
+                    name="hiddenBoosterCount"
+                    type="number"
+                    min={0}
+                  />
+              </div>
+
+              <div className={`${styles['newPlace_description']} ${styles['form_item']}`}>
+                <label htmlFor="description" className={styles['form_label']}>Description :</label>
+                <Field 
+                  as="textarea" 
+                  name="description" 
+                  className={styles['form_field']}    
+                />
+              </div>
+
+              <span className={styles['info']}>Les champs avec * sont obligatoires.</span>
 
             </div>
 
@@ -132,6 +131,7 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
               color='#eee' 
               children='Valider'
             />
+
           </Form>
         )
       }

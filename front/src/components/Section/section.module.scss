@@ -33,13 +33,7 @@
 }
 
 .add_group, .add_place {
-    padding: 0.5rem;
-    opacity: 0.7;
-    color: $color-secondary;
-
-    &:hover {
-        opacity: 1;
-    }
+    display: none;
 }
 
 @media screen and (min-width: 768px) {
@@ -52,6 +46,18 @@
         flex-wrap: wrap;
         justify-content: center;
     }
+
+    .add_group, .add_place {
+        display: block;
+        padding: 0.5rem;
+        opacity: 0.7;
+        color: $color-secondary;
+    
+        &:hover {
+            opacity: 1;
+        }
+    }
+    
 }
 
 @media screen and (min-width: 1200px) {

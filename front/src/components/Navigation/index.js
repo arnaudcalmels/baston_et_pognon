@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import logo from '../../assets/images/logo.png';
 
 import styles from './navigation.module.scss';
 
@@ -29,6 +30,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
   return (
     <div className={styles['header']}>
       <h1 className={styles['logo']}>
+        <img src={logo} className={styles['logo_png']} alt="logo Baston & Pognon" />
         <NavLink 
           className={styles['navlink']} 
           to="/"

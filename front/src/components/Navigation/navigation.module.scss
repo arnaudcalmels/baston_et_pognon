@@ -12,8 +12,15 @@
 .logo {
     cursor: pointer;
     grid-column: 1 / 4;
-    text-align: center;
-    margin: 0 0.5rem 0.5rem 0;
+    margin: 0 1rem;
+    display: flex;
+    align-items: center;
+
+    &_png {
+        width: 50px;
+        margin-right: 0.5rem;
+    }
+
 }
 
 .bars {
@@ -120,6 +127,10 @@
         grid-column: 1 / 3;  
         justify-self: start;
         margin-left: 1rem;  
+
+        &_png {
+            width: 30px;
+        }
     }
 
     .bars {

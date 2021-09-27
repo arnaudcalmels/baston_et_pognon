@@ -4,7 +4,7 @@ export const getIcon = (action, profession) => {
     iconCategory = 'heal'
   } else if (!action.distance) {
     iconCategory = 'sword';
-  } else if (profession === 'Mage') {
+  } else if (profession && profession === 'Mage') {
     iconCategory = 'spell';
   } else {
     iconCategory = 'bow';
@@ -22,7 +22,7 @@ export const getTitle = (action, profession) => {
     text = 'Soin'
   } else if (!action.distance) {
     text = 'Attaque au corps à corps';
-  } else if (profession === 'Mage') {
+  } else if (profession && profession === 'Mage') {
     text = 'Sort';
   } else {
     text = 'Attaque à distance';

@@ -40,6 +40,11 @@
         display: none;
     }
 
+    &_boss {
+        color: black;
+        grid-column: 2 / 3;
+    }
+
 }
 
 .description {
@@ -62,6 +67,65 @@
     display: none;
 }
 
+.monsters {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.monster {
+    display: grid;
+    grid-template-columns: 200px 25px;
+    border-bottom: 1px solid rgba($color: #000000, $alpha: 0.3);
+    align-items: center;
+
+    &_name {
+        grid-column: 1 / 2;
+    }
+
+}
+
+.actions {
+    display: none;
+}
+
+.icon_action {
+    width: 50px;
+    height: 50px;
+    background-image: url('../../assets/images/actions.png');
+    background-repeat: no-repeat;
+    transform: scale(0.5);
+}
+
+.heal {
+    background-position-x: $position-normal;
+    background-position-y: $position-heal;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-heal;
+    }
+}
+
+.sword {
+    background-position-x: $position-normal;
+    background-position-y: $position-sword;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-sword;
+    }
+}
+
+.bow {
+    background-position-x: $position-normal;
+    background-position-y: $position-bow;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-bow;
+    }
+}
+
 @media screen and (min-width: 768px) {
     .main {
         width: 300px;
@@ -81,6 +145,9 @@
             grid-column: 3 / 4;
         }
         
+        &_boss {
+            grid-column: 3 / 4;
+        }
     }
 
     .add_monster {
@@ -92,6 +159,17 @@
         &:hover {
             opacity: 1;
         }
+    }
+    
+    .monster {
+        grid-template-columns: 150px 125px 25px;
+    }
+    
+    .actions {
+        grid-column: 2 / 3;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
     }
     
 
@@ -127,6 +205,10 @@
             grid-column: 2 / 3;
         }  
               
+    }
+
+    .monster {
+        grid-template-columns: 150px 225px 25px;
     }
 
 }

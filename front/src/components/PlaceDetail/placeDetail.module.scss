@@ -72,6 +72,23 @@
     .main {
         width: 300px;
     }
+
+    .icon {
+    
+        &_pen {
+            display: block;
+            grid-row: 1 / 2;
+            grid-column: 3 / 4;
+        }
+    
+        &_trash {
+            display: block;
+            grid-row: 2 / 3;
+            grid-column: 3 / 4;
+        }
+        
+    }
+
 }
 
 @media screen and (min-width: 1200px) {
@@ -98,23 +115,12 @@
     }
     
     .icon {
+
         &_booster {
             grid-row: 3 / 4;
             grid-column: 2 / 3;
-            }
-    
-        &_pen {
-            display: block;
-            grid-row: 1 / 2;
-            grid-column: 3 / 4;
-        }
-    
-        &_trash {
-            display: block;
-            grid-row: 2 / 3;
-            grid-column: 3 / 4;
-        }
-        
+        }  
+              
     }
 
 }

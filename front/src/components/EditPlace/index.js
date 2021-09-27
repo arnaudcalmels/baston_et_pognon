@@ -61,6 +61,21 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
           <Form className={styles['form']}>
 
             <div className={styles['form_content']}>
+              {
+                newPicture ?
+                  <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                  : 
+                  // eslint-disable-next-line
+                  <img id={styles['image_preview']} src={place.picture?.base64} alt={place.picture?.name}/>
+              }
+
+              <div className={`${styles['newPlace_picture']} ${styles['form_item']}`}>
+                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+                <FileBase64
+                  multiple={false}
+                  onDone={getFile.bind(this, props)}
+                />
+              </div>
 
               <div className={`${styles['newPlace_name']} ${styles['form_item']}`}>
                 <label htmlFor="name" className={styles['form_label']}>Nom * :</label>
@@ -71,42 +86,6 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
                   type="text"
                 />
                 <ErrorMessage name='name' component='div' className={styles['error_message']}/>
-              </div>
-
-              <div className={`${styles['newPlace_booster']} ${styles['form_item']}`}>
-                <label htmlFor="hiddenBoosterCount" className={styles['form_label']}>Boosters cachés :</label>
-                  <Field
-                    className={styles['form_field']}
-                    id="hiddenBoosterCount"
-                    name="hiddenBoosterCount"
-                    type="number"
-                    min={0}
-                  />
-              </div>
-
-              <div className={`${styles['newPlace_picture']} ${styles['form_item']}`}>
-                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
-                <FileBase64
-                  multiple={false}
-                  onDone={getFile.bind(this, props)}
-                />
-              </div>
-
-              {
-                newPicture ?
-                  <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
-                  : 
-                  // eslint-disable-next-line
-                  <img id={styles['image_preview']} src={place.picture?.base64} alt={place.picture?.name}/>
-              }
-
-              <div className={`${styles['newPlace_description']} ${styles['form_item']}`}>
-                <label htmlFor="description" className={styles['form_label']}>Description :</label>
-                <Field 
-                  as="textarea" 
-                  name="description" 
-                  className={styles['form_field']}    
-                />
               </div>
 
               <div className={`${styles['newPlace_category']} ${styles['form_item']}`}>
@@ -127,6 +106,28 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
                 <ErrorMessage name='categoryId' component='div' className={styles['error_message']}/>
 
               </div>
+
+              <div className={`${styles['newPlace_booster']} ${styles['form_item']}`}>
+                <label htmlFor="hiddenBoosterCount" className={styles['form_label']}>Boosters cachés :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="hiddenBoosterCount"
+                    name="hiddenBoosterCount"
+                    type="number"
+                    min={0}
+                  />
+              </div>
+
+              <div className={`${styles['newPlace_description']} ${styles['form_item']}`}>
+                <label htmlFor="description" className={styles['form_label']}>Description :</label>
+                <Field 
+                  as="textarea" 
+                  name="description" 
+                  className={styles['form_field']}    
+                />
+              </div>
+
+              <span className={styles['info']}>Les champs avec * sont obligatoires.</span>
 
             </div>
 

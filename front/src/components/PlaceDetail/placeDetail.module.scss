@@ -59,13 +59,7 @@
 }
 
 .add_monster {
-    padding: 0.5rem;
-    opacity: 0.5;
-    align-self: center;
-
-    &:hover {
-        opacity: 1;
-    }
+    display: none;
 }
 
 @media screen and (min-width: 768px) {
@@ -88,6 +82,18 @@
         }
         
     }
+
+    .add_monster {
+        display: block;
+        padding: 0.5rem;
+        opacity: 0.5;
+        align-self: center;
+    
+        &:hover {
+            opacity: 1;
+        }
+    }
+    
 
 }
 

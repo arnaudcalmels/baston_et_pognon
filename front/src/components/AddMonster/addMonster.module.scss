@@ -4,7 +4,7 @@
     min-width: 400px;
     max-width: 600px;
     height: max-content;
-    margin: 1rem;
+    margin: 2rem;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 0.5rem;
@@ -16,23 +16,21 @@
         flex-direction: column;
     }
 
-    &_item  {
-        display: flex;
-        flex-direction: column;
+    &_label {
         margin: 0.5rem;
     }
 
-    &_label {
-        margin-bottom: 0.3rem;
+    &_field {
+        margin: 0.5rem;
     }
     
     &_group {
         display: flex;
         width: 150px;
         height: 30px;
-
     }
-     &_checkbox {
+
+    &_checkbox {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -41,7 +39,8 @@
         &-input {
             margin-right: 1rem;
         }
-     }
+
+    }
 
 }
 
@@ -64,71 +63,25 @@
 }
 
 #image_preview {
-    max-width: 150px;
+    max-width: 300px;
     max-height: 200px;
+    border-radius: 5px;
     align-self: center;
 }
 
-@media screen and (min-width: 1200px) {
-    .form {
-        max-width: 1000px;
-        
-        &_content {
-            grid-column: 1 / span 12;
-            grid-row: 2 / 3;
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-gap: 0.5rem;
-        }
-    }
-    
-    .newMonster_name {
-        grid-column: 1 / span 4;
-        grid-row: 1 / 2;
-    }
-        
-    .newMonster_picture {
-        grid-column: 1 / span 4;
-        grid-row: 3 / 4;
+.newMonster_picture {
+    text-align: center;
+}
+
+.action {
+    margin-left: 1rem;
+
+    &_title {
+        font-style: italic;
     }
 
-    #image_preview {
-        grid-column: 1 / span 4;
-        grid-row: 4 / 5;
-        justify-self: center;
-    }
-
-    .newMonster_isBoss {
-        grid-column: 1 / span 4;
-        grid-row: 5 / 6;
-    }
-
-    .newMonster_hasBooster {
-        grid-column: 1 / span 4;
-        grid-row: 6 / 7;
-    }
-
-    .newMonster_level {
-        grid-column: 1 / span 4;
-        grid-row: 7 / 8;
-    }
-
-    .newMonster_caracteristics {
-        grid-column: 5 / span 4;
-        grid-row: 1 / span 8;
-    }
-
-    .newMonster_actions {
-        grid-column: 9 / span 4;
-        grid-row: 1 / span 8;
-    }
-        
-    #submit_button {
-        grid-row: 8 / 9;
-    }
-    
-    #cancel_button {
-        grid-row: 8 / 9;
+    &_button {
+        margin: 1rem;
     }
 
 }

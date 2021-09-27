@@ -39,6 +39,7 @@ const Characters = ({ getCharacters, isLoggedIn, characters, isLoading }) => {
           size="2x" 
           style={{cursor: 'pointer'}}
           onClick={() => newCharacter()}
+          title="Créer un nouveau personnage"
         />
         <p className={styles['new']} onClick={() => newCharacter()}>Nouveau personnage</p>
       </div>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import {AgGridColumn, AgGridReact} from 'ag-grid-react';
 
 import Modal from '../Modal';
 import DeleteConfirm from '../DeleteConfirm';
@@ -9,9 +8,9 @@ import Loader from '../Loader';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSkull, faStar, faHeart, faShieldAlt, faCheck, faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-material.css';
+import { faSkull, faStar, faHeart, faShieldAlt, faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons';
+
+import { getIcon, getTitle } from '../../utils/getIcons';
 
 import styles from './monsterDetail.module.scss';
 
@@ -23,25 +22,25 @@ const MonsterDetail = ( { item, deleteMonster, isLoading, context, placeId } ) =
     deleteMonster(id, setOpenDeleteModal(false), context, placeId);
   };
 
-  const rowDataMonster = [];
-  item.caracteristics?.actions.forEach(action => {
-    rowDataMonster.push({action: 'Attaque/Soin', damages: action.damages, cac: !action.distance, distance: action.distance, frequency: action.frequency}); 
-  });
+  // const rowDataMonster = [];
+  // item.caracteristics?.actions.forEach(action => {
+  //   rowDataMonster.push({action: 'Attaque/Soin', damages: action.damages, cac: !action.distance, distance: action.distance, frequency: action.frequency}); 
+  // });
 
-  const trueFalseRenderer = params => {
-    if (params.value) {
-      return (
-        <FontAwesomeIcon 
-          className={styles['icon_check']}
-          icon={faCheck} 
-          size="2x" 
-          title="Oui"
-        />
-      )
-    } else {
-      return '';
-    }
-  }
+  // const trueFalseRenderer = params => {
+  //   if (params.value) {
+  //     return (
+  //       <FontAwesomeIcon 
+  //         className={styles['icon_check']}
+  //         icon={faCheck} 
+  //         size="2x" 
+  //         title="Oui"
+  //       />
+  //     )
+  //   } else {
+  //     return '';
+  //   }
+  // }
 
   
   return (
@@ -138,7 +137,24 @@ const MonsterDetail = ( { item, deleteMonster, isLoading, context, placeId } ) =
 
       { // Monster Actions
         item.caracteristics?.actions &&
-          <div className="ag-theme-material" style={{height: 200, width: 950}}>
+        <>
+          <div className={styles['actions']}>
+            {
+              item.caracteristics.actions.map(action => (
+                <div className={styles['action']} key={action.id}>
+                  <div className={`${styles['icon_action']} ${styles[getIcon(action)]}`} title={getTitle(action)}></div>
+                  <span className={styles['icon_value']} title="Dégats / Soins">
+                    {action.damages}
+                  </span>
+                  <p title="Fréquence d'utilisation">Tous les {action.frequency > 1 ? action.frequency : ''} tours</p>
+                </div>
+              ))
+            }
+          </div>
+        </>
+      }
+
+          {/* <div className="ag-theme-material" style={{height: 200, width: 950}}>
             <AgGridReact rowData={rowDataMonster} frameworkComponents={{trueFalseRenderer: trueFalseRenderer}}>
               <AgGridColumn headerName="Action" field="action"></AgGridColumn>
               <AgGridColumn headerName="Dégâts / Soin" field="damages"></AgGridColumn>
@@ -146,9 +162,7 @@ const MonsterDetail = ( { item, deleteMonster, isLoading, context, placeId } ) =
               <AgGridColumn headerName="Distance" field="distance" cellRenderer="trueFalseRenderer"></AgGridColumn>
               <AgGridColumn headerName="Fréquence" field="frequency"></AgGridColumn>
             </AgGridReact>
-          </div>
-      }
-
+          </div> */}
       <Modal 
         isOpen={openDeleteModal} 
         closeModal={() => {

@@ -33,12 +33,12 @@ const DeleteConfirm = ({ cancelAction, confirmAction, context }) => {
           {message}
         </p>
         <Button 
-          color='#eee' 
+          color='#ddd' 
           children='Annuler' 
           onClick={cancelAction}
         />
         <Button 
-          color='#eee' 
+          color='#ddd' 
           children='Supprimer' 
           onClick={confirmAction} 
         />

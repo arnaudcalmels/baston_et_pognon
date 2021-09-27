@@ -20,6 +20,9 @@ import Loader from '../../components/Loader';
 
 import PropTypes from 'prop-types';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons';
+
 import styles from './scenario.module.scss';
 
 const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMonster, currentPlace, getPlace, currentMonsterInPlace, getMonsterSuccess, isLoggedIn, getScenarios }) => {
@@ -92,25 +95,27 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
             <p>{scenario.description}</p>
           </div>
 
-          <div className={styles['buttons']}>
-            <Button 
-              id={styles['edit_button']}
-              color='#eee' 
-              children='Editer le scénario' 
-              onClick={() => {
-                console.log('editer scenario');
-                showForm();
-              }} 
-            />
+          <FontAwesomeIcon 
+            className={styles['icon_pen']}
+            icon={faPen} 
+            size="1x" 
+            title="Editer le scénario"
+            style={{cursor: 'pointer'}}
+            onClick={() => {
+              showForm();
+            }} 
+          />
 
-            <Button 
-              color='#eee' 
-              children='Supprimer le scénario' 
-              onClick={() => {
-                setOpenDeleteModal(true);
-              }} 
-            />
-          </div>
+          <FontAwesomeIcon 
+            className={styles['icon_trash']}
+            icon={faTrashAlt} 
+            size="1x" 
+            title="Supprimer le scénario"
+            style={{cursor: 'pointer'}}
+            onClick={() => {
+              setOpenDeleteModal(true);
+            }} 
+          />
 
         </div>
 
@@ -197,6 +202,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
                   color='#eee'
                   children='Annuler'
                   onClick={() => showForm()}
+                  shadow='#333 2px 2px 6px'
                 />
 
                 <Button
@@ -204,6 +210,7 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
                   type="submit"
                   color='#eee'
                   children='Valider'
+                  shadow='#333 2px 2px 6px'
                 />
 
               </Form>

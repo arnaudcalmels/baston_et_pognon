@@ -111,10 +111,10 @@
         font-size: 1.5rem;
     }
 
-}
+    &_pen, &_trash {
+        display: none;
+    }
 
-.buttons {
-    display: none;
 }
 
 .action {
@@ -330,12 +330,23 @@
         justify-self: start;
     }
     
-    .buttons {
-        display: flex;
-        flex-direction: row;
-        grid-column: 1 / span 2;
-        justify-content: center;
-        align-items: center;
+    .icon {
+        &_pen {
+            display: block;
+            grid-row: 1 / 2;
+            grid-column: 1 / span 2;
+            justify-self: flex-end;
+            margin-bottom: 1.5rem;
+        } 
+        
+        &_trash {
+            display: block;
+            grid-row: 1 / 2;
+            grid-column: 1 / span 2;
+            justify-self: flex-end;
+            align-self: flex-end;
+        }
+
     }
     
     .skills {

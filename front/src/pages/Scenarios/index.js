@@ -38,6 +38,7 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios, getPlaceSuccess, getMo
           size="2x" 
           style={{cursor: 'pointer'}}
           onClick={() => newScenario()}
+          title="Créer un nouveau scénario"
         />
         <p className={styles['new']} onClick={() => newScenario()}>Nouveau scénario</p>
       </div>

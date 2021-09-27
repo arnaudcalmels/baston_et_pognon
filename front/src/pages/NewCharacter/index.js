@@ -164,6 +164,7 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
               color='#eee'
               children='Annuler'
               onClick={() => backToList()}
+              shadow='#333 2px 2px 6px'
             />
 
             <Button
@@ -171,6 +172,7 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
               type="submit"
               color='#eee'
               children='Valider'
+              shadow='#333 2px 2px 6px'
             />
         
             <div className={styles['block_skills_inventory']}>

@@ -107,6 +107,7 @@ const NewScenario = ({ newScenario }) => {
               color='#eee'
               children='Annuler'
               onClick={() => backToList()}
+              shadow='#333 2px 2px 6px'
             />
 
             <Button
@@ -114,6 +115,7 @@ const NewScenario = ({ newScenario }) => {
               type="submit"
               color='#eee'
               children='Valider'
+              shadow='#333 2px 2px 6px'
             />
         
           </Form>

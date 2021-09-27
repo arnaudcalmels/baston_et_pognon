@@ -236,7 +236,7 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
             <Button 
               id={styles['cancel_button']} 
               type='button'
-              color='#eee' 
+              color='#ddd' 
               children='Annuler' 
               onClick={closeModal}
             />
@@ -244,7 +244,7 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
             <Button 
               id={styles['submit_button']} 
               type="submit" 
-              color='#eee' 
+              color='#ddd' 
               children='Valider'
             />
           </Form>

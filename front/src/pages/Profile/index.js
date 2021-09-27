@@ -35,6 +35,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
           onClick={() => {
             setOpenEditProfileModal(true);
           }} 
+          shadow='#333 2px 2px 6px'
         />
 
         <Button 
@@ -43,6 +44,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
           onClick={() => {
             setOpenChangePasswordModal(true);
           }} 
+          shadow='#333 2px 2px 6px'
         />
 
         <Button 
@@ -51,6 +53,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
           onClick={() => {
             setOpenDeleteModal(true);
           }} 
+          shadow='#333 2px 2px 6px'
         />
       </div>
 

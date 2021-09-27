@@ -76,8 +76,8 @@ const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) =
             <ErrorMessage name='email' component='div' className={styles['error_message']}/>
 
             <div className={styles['buttons']}>
-              <Button id={styles['close_button']} type='button' color='#eee' children='Annuler' onClick={cancelAction}/>
-              <Button id={styles['submit_button']} type="submit" color='#eee' children='Valider'/>
+              <Button id={styles['close_button']} type='button' color='#ddd' children='Annuler' onClick={cancelAction}/>
+              <Button id={styles['submit_button']} type="submit" color='#ddd' children='Valider'/>
             </div>
           </Form>
         )

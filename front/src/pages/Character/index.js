@@ -13,7 +13,7 @@ import Column from '../../components/Column';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMars, faVenus, faHeart, faShieldAlt, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faMars, faVenus, faHeart, faShieldAlt, faStar, faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons';
 
 import { getIcon, getTitle } from '../../utils/getIcons';
 
@@ -121,26 +121,29 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
               </span>
             </div>
           }
-
-          <div className={styles['buttons']}>
           
           {/* La modification du personnage ne sera plus possible dès lors qu'il a été joué */}
-            <Button 
-              color='#eee' 
-              children='Editer le personnage' 
+            <FontAwesomeIcon 
+              className={styles['icon_pen']}
+              icon={faPen} 
+              size="1x" 
+              title="Editer le personnage"
+              style={{cursor: 'pointer'}}
               onClick={() => {
                 showForm();
               }} 
             />
 
-            <Button 
-              color='#eee' 
-              children='Supprimer le personnage' 
+            <FontAwesomeIcon 
+              className={styles['icon_trash']}
+              icon={faTrashAlt} 
+              size="1x" 
+              title="Supprimer le personnage"
+              style={{cursor: 'pointer'}}
               onClick={() => {
                 setOpenDeleteModal(true);
               }} 
             />
-          </div>
 
           <div className={styles['block_skills_inventory']}>
             <Section title="Compétences" >
@@ -302,6 +305,7 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                   color='#eee'
                   children='Annuler'
                   onClick={() => showForm()}
+                  shadow='#333 2px 2px 6px'
                 />
 
                 <Button
@@ -309,6 +313,7 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                   type="submit"
                   color='#eee'
                   children='Valider'
+                  shadow='#333 2px 2px 6px'
                 />
             
                 <div className={styles['block_skills_inventory']}>

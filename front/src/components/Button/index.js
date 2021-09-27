@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Button = ({ color, children, onClick, type, id }) => {
+const Button = ({ color, children, onClick, type, id, shadow }) => {
 	return (
     <button 
       type={type}
@@ -15,7 +15,8 @@ const Button = ({ color, children, onClick, type, id }) => {
         // eslint-disable-next-line
         padding: '0.5rem 1rem',
         margin: '0.5rem 1rem',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        boxShadow: shadow,
         }}>
       {children}
     </button>
@@ -28,6 +29,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   type: PropTypes.string,
   id: PropTypes.string,
+  shadow: PropTypes.string,
 };
 
 export default Button;

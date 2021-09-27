@@ -74,8 +74,8 @@ const Register = ({ closeModal, registerSubmit }) => {
           <ErrorMessage name='confirmPassword' component='div' className={styles['error_message']}/>
 
           <div className={styles['buttons']}>
-            <Button id={styles['close_button']} type='button' color='#eee' children='Annuler' onClick={closeModal}/>
-            <Button id={styles['submit_button']} type="submit" color='#eee' children='Valider'/>
+            <Button id={styles['close_button']} type='button' color='#ddd' children='Annuler' onClick={closeModal}/>
+            <Button id={styles['submit_button']} type="submit" color='#ddd' children='Valider'/>
           </div>
           
         </Form>

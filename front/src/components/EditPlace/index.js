@@ -134,7 +134,7 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
             <Button 
               id={styles['cancel_button']} 
               type='button'
-              color='#eee' 
+              color='#ddd' 
               children='Annuler' 
               onClick={closeModal}
             />
@@ -142,7 +142,7 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
             <Button 
               id={styles['submit_button']} 
               type="submit" 
-              color='#eee' 
+              color='#ddd' 
               children='Valider'
             />
           </Form>

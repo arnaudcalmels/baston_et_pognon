@@ -121,14 +121,14 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
             <Button 
               id={styles['cancel_button']} 
               type='button'
-              color='#eee' 
+              color='#ddd' 
               children='Annuler' 
               onClick={closeModal}
             />
             <Button 
               id={styles['submit_button']} 
               type="submit" 
-              color='#eee' 
+              color='#ddd' 
               children='Valider'
             />
 

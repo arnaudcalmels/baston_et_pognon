@@ -134,6 +134,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
                       handleLogout(); 
                       displayMenu();
                     }} 
+                    shadow='#333 2px 2px 6px'
                   />
                 </li>
               </ul>
@@ -148,6 +149,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
                 isRegisterModalOpen(); 
                 displayMenu();
               }} 
+              shadow='#333 2px 2px 6px'
             />
             <Button 
               color='#eee' 
@@ -156,6 +158,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
                 isLoginModalOpen(); 
                 displayMenu();
               }} 
+              shadow='#333 2px 2px 6px'
             />
           </>
         }

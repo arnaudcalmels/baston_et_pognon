@@ -21,27 +21,6 @@ const MonsterDetail = ( { item, deleteMonster, isLoading, context, placeId } ) =
   const handleDeleteMonster = (id) => {
     deleteMonster(id, setOpenDeleteModal(false), context, placeId);
   };
-
-  // const rowDataMonster = [];
-  // item.caracteristics?.actions.forEach(action => {
-  //   rowDataMonster.push({action: 'Attaque/Soin', damages: action.damages, cac: !action.distance, distance: action.distance, frequency: action.frequency}); 
-  // });
-
-  // const trueFalseRenderer = params => {
-  //   if (params.value) {
-  //     return (
-  //       <FontAwesomeIcon 
-  //         className={styles['icon_check']}
-  //         icon={faCheck} 
-  //         size="2x" 
-  //         title="Oui"
-  //       />
-  //     )
-  //   } else {
-  //     return '';
-  //   }
-  // }
-
   
   return (
     isLoading ?
@@ -154,15 +133,6 @@ const MonsterDetail = ( { item, deleteMonster, isLoading, context, placeId } ) =
         </>
       }
 
-          {/* <div className="ag-theme-material" style={{height: 200, width: 950}}>
-            <AgGridReact rowData={rowDataMonster} frameworkComponents={{trueFalseRenderer: trueFalseRenderer}}>
-              <AgGridColumn headerName="Action" field="action"></AgGridColumn>
-              <AgGridColumn headerName="Dégâts / Soin" field="damages"></AgGridColumn>
-              <AgGridColumn headerName="Corps à corps" field="cac" cellRenderer="trueFalseRenderer"></AgGridColumn>
-              <AgGridColumn headerName="Distance" field="distance" cellRenderer="trueFalseRenderer"></AgGridColumn>
-              <AgGridColumn headerName="Fréquence" field="frequency"></AgGridColumn>
-            </AgGridReact>
-          </div> */}
       <Modal 
         isOpen={openDeleteModal} 
         closeModal={() => {

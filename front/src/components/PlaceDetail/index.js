@@ -28,48 +28,6 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
     deletePlace(id, setOpenDeleteModal(false));
   }
 
-  // const [gridApi, setGridApi] = useState(null);
-  // const onGridReady = (params) => {
-  //   setGridApi(params.api);
-  // };
-
-  // const rowDataPlace = [];
-  // item.monsters?.forEach(monster => {
-  //   rowDataPlace.push({name: monster.name, id: monster.id, actions: monster.caracteristics.actions, isBoss: monster.isBoss});
-  // });
-
-  // const onMonsterSelected = () => {
-  //   let selectedRow = gridApi.getSelectedRows();
-  //   getMonster(selectedRow[0].id, 'currentMonsterInPlace');
-  // };
-
-  // const bossRenderer = params => {
-  //   if (params.value) {
-  //     return (
-  //       <FontAwesomeIcon 
-  //         className={styles['icon_boss']}
-  //         icon={faSkull} 
-  //         size="1x" 
-  //         title="Boss"
-  //       />
-  //     )
-  //   } else {
-  //     return '';
-  //   }
-  // }
-
-  // const actionRenderer = params => {
-  //   if (params.value.length > 0) {
-  //     params.value.map(action => {
-  //       console.log(action);
-  //       return 'action';
-  //         // return <div className={`${styles['icon_action']} ${styles[getIcon(action)]}`} title={getTitle(action)}></div>
-  //     });
-  //   } else {
-  //     return ';'
-  //   }
-  // }
-
   return (
     isLoading ?
     <Loader/>
@@ -151,7 +109,6 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
 
       </div>
 
-
       { // Monsters
         item.monsters?.length > 0 &&
         <>
@@ -188,32 +145,6 @@ const PlaceDetail = ( { item, isLoading, deletePlace, scenarioId, getMonster } )
           }
         </>
       }
-
-        {/* <div className="ag-theme-material" style={{height: 200, width: 300}}>
-          <AgGridReact 
-            rowData={rowDataPlace}
-            rowSelection={'single'}
-            onGridReady={onGridReady}
-            onSelectionChanged={onMonsterSelected}
-            frameworkComponents={{bossRenderer: bossRenderer, actionRenderer: actionRenderer}}
-            >
-            <AgGridColumn 
-              headerName="Monstre" 
-              field="name"
-            ></AgGridColumn>
-            <AgGridColumn 
-              headerName="Compétences" 
-              field="actions"
-              cellRenderer="actionRenderer"
-            ></AgGridColumn>
-            <AgGridColumn 
-              headerName="" 
-              field="isBoss"
-              cellRenderer="bossRenderer"
-            ></AgGridColumn>
-
-          </AgGridReact>
-        </div> */}
 
       {
         Object.keys(item).length > 0 &&      

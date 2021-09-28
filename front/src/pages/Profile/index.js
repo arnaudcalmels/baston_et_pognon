@@ -21,10 +21,12 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
 
   return (
     <div className={styles['main']}>
-      <img 
-        className={styles['avatar']}
-        src={avatar.base64} 
-        alt='photo_avatar'/>
+      <div className={styles['image_container']}>
+        <img
+          className={styles['avatar']}
+          src={avatar.base64}
+          alt='photo_avatar'/>
+      </div>
       <h2 className={styles['name']}>{username}</h2>
       <p className={styles['email']}>Email : {email}</p>
 

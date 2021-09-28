@@ -26,14 +26,22 @@
 
 }
 
-#image_preview {
+.image_container {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
-    margin-top: 0;
-    position: relative;
-    width: 300px;
+    display: flex;
+    justify-content: center;
     justify-self: center;
+    align-items: center;
+    overflow-y: hidden;
+    background-size: cover;
+    height: 225px;
+    width: 300px;
     border-radius: 5px;
+}
+
+#image_preview {
+    width: 100%;
 }
 
 .scenario_name {
@@ -120,8 +128,8 @@
 }
 
 @media screen and (min-width: 1200px) {
-    #image_preview {
-        align-self: flex-start;
+    .image_container {
+        height: 375px;
         width: 500px;
     }
     
@@ -143,7 +151,8 @@
 }
 
 @media screen and (min-width: 1500px) {
-    #image_preview {
+    .image_container {
+        height: 525px;
         width: 700px;
     }
 

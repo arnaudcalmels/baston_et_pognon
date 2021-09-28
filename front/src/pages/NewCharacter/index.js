@@ -79,8 +79,10 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
 
             </div>
 
-            {/* eslint-disable-next-line */}
-            <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+            <div className={styles['image_container']}>
+              {/* eslint-disable-next-line */}
+              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+            </div>
 
             <div className={styles['character_picture']}>
               <label htmlFor="picture" className={styles['form_label']}>Ajouter une image  :</label>
@@ -89,9 +91,6 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
                 onDone={getFile.bind(this, props)}
               />
             </div>
-
-            {/* eslint-disable-next-line */}
-            <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
 
             <div className={styles['new-identity']}>
               <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>

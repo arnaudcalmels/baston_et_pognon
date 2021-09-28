@@ -114,7 +114,7 @@
     left: -2rem;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1200px) {
     .header {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -142,8 +142,8 @@
     
     .menu {
         position: absolute;
-        top: 65px;
-        right: 0;
+        top: 60px;
+        right: 5px;
         display: none;
         grid-template-columns: auto 300px 10px;
         grid-template-rows: 60% 40%;

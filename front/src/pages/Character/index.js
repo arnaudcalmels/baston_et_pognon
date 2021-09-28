@@ -72,8 +72,10 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
           <span className={styles['character_level']}>Niveau {character.level}</span>
 
 
-          {/* eslint-disable-next-line */}
-          <img id={styles['image']} src={character.picture?.base64} alt={character.picture?.name}/>  
+          <div className={styles['image_container']}>
+            {/* eslint-disable-next-line */}
+            <img id={styles['image']} src={character.picture?.base64} alt={character.picture?.name}/>
+          </div>
 
 
           <div className={styles['identity']}>
@@ -227,10 +229,14 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
 
                 {
                   newPicture ?
-                    <img id={styles['new-image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                    <div className={styles['image_container']}>
+                      <img id={styles['new-image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                    </div>
                     : 
-                    // eslint-disable-next-line
-                    <img id={styles['image_preview']} src={character.picture?.base64} alt={character.picture?.name}/>
+                    <div className={styles['image_container']}>
+                      {/* eslint-disable-next-line */}
+                      <img id={styles['image_preview']} src={character.picture?.base64} alt={character.picture?.name}/>
+                    </div>
                 }
 
                 <div className={styles['new-identity']}>

@@ -46,14 +46,21 @@
 
 }
 
-#image_preview {
+.image_container {
     grid-column: 1 / 2;
     grid-row: 1 / span 3;
-    // margin-top: 0;
-    // position: relative;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    background-size: cover;
     height: 300px;
+    width: 300px;
     justify-self: center;
     border-radius: 5px;
+}
+
+#image_preview {
+    height: 100%;
 }
 
 .character_name {
@@ -153,7 +160,6 @@
     }
 
 }
-
 
 .error_message {
     color: red;
@@ -256,7 +262,6 @@
     justify-content: space-between;
 }
 
-
 @media screen and (min-width: 1200px) {
 
     .form {
@@ -264,9 +269,9 @@
         width: 1100px;
     }
 
-    #image_preview {
-        align-self: flex-start;
+    .image_container {
         height: 500px;
+        width: 500px;
     }
         
     .caracteristics {
@@ -278,7 +283,6 @@
         grid-column: 1 / span 3;
     }
     
-
 }
 
 @media screen and (min-width: 1500px) {

@@ -540,6 +540,7 @@ import {
         setSuccessToast('Suppression effectuée');
         store.dispatch(editScenarioSuccess(response.data));
         store.dispatch(deletePlaceSuccess());
+        store.dispatch(deleteMonsterSuccess('currentMonsterInPlace'));
         action.closeFunction();
       })
       .catch ((error) => {

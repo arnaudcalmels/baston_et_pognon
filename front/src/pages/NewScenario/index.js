@@ -63,8 +63,10 @@ const NewScenario = ({ newScenario }) => {
               <ErrorMessage name='name' component='div' className={styles['error_message']}/>
             </div>
 
-            {/* eslint-disable-next-line */}
-            <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+            <div className={styles['image_container']}>
+              {/* eslint-disable-next-line */}
+              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+            </div>
 
             <div className={styles['scenario_picture']}>
               <label htmlFor="picture" className={styles['form_label']}>Ajouter une image :</label>

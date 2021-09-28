@@ -76,8 +76,11 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
 
         <div className={styles['show_scenario']} id={styles['block_scenario']}>
         <Title title={scenario.name} id={styles['title']}/>
-          <img id={styles['image']}src={scenario.picture?.base64} alt="photo_scenario"/>  
-          
+
+          <div className={styles['image_container']}>
+            <img id={styles['image']}src={scenario.picture?.base64} alt="photo_scenario"/>  
+          </div>
+
           <table className={`${styles['table']} ${styles['caracteristics']}`}>
             <tbody className={styles['table_content']}>
               <tr className={styles['table_row']}>
@@ -145,10 +148,14 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
               <Form className={styles['form']}>
                 {
                   newPicture ?
-                    <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                    <div className={styles['image_container']}>
+                      <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                    </div>
                     : 
-                    // eslint-disable-next-line
-                    <img id={styles['image_preview']} src={scenario.picture?.base64} alt={scenario.picture?.name}/>
+                    <div className={styles['image_container']}>
+                      {/* eslint-disable-next-line */}
+                      <img id={styles['image_preview']} src={scenario.picture?.base64} alt={scenario.picture?.name}/>
+                    </div>
                 }
 
                 <div className={styles['scenario_picture']}>

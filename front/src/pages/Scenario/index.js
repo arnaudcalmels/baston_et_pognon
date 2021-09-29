@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import FileBase64 from 'react-file-base64';
 
-//import useMediaQuery from '../../utils/useMediaQuery';
-
 import Title from '../../components/Title';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
@@ -43,7 +41,6 @@ const Scenario = ({ scenario, editScenario, deleteScenario, currentWanderingMons
     block_scenario.classList.toggle(styles['hide_scenario']);
     block_scenario.classList.toggle(styles['show_scenario']);
 
-    
     window.scrollTo(0, 0);
   }
 

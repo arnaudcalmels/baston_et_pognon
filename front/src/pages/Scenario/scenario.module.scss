@@ -254,6 +254,15 @@
         grid-column: 2 / 3;
         justify-self: start;
     }
+
+    .error_message {
+        color: red;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        font-style: italic;
+        text-align: center;
+    }
+    
 }
 
 @media screen and (min-width: 1200px) {
@@ -285,7 +294,6 @@
     }
 
 }
-
 
 @media screen and (min-width: 1500px) {
     .image_container {

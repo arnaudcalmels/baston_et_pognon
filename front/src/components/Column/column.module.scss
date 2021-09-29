@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: column;
     height: 600px;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 262px;
 }
 
@@ -40,6 +40,6 @@
 
 @media screen and (min-width: 1200px) {
     .place {
-        width: 440px;
+        width: 445px;
     }
 }

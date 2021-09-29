@@ -3,8 +3,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
-// import Modal from '../../components/Modal';
-// import AddMonster from '../../containers/components/AddMonster';
 
 import PropTypes from 'prop-types';
 
@@ -19,7 +17,6 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
   []);
 
   let [newPicture, setNewPicture] = useState();
-  // const [openAddMonsterModal, setOpenAddMonsterModal] = useState(false);
 
   const getFile = (props, file) => {
     props.setFieldValue("picture", file);
@@ -49,7 +46,7 @@ const EditPlace = ({ scenarioId, closeModal, getCategories, categories, placeId,
             if (!values.name) {
               errors.name = 'Veuillez remplir ce champ !';
             }
-            if (values.categoryId === 0) {
+            if (isNaN(values.categoryId)) {
               errors.categoryId = 'Veuillez sélectionner une catégorie !';
             }
             return errors;

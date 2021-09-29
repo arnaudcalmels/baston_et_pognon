@@ -32,7 +32,7 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
         initialValues={{
           scenarioId: scenarioId,
           name: '',
-          categoryId: 0,
+          categoryId: '',
           description: '',
           hiddenBoosterCount: 0,
           picture: null
@@ -42,7 +42,7 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
             if (!values.name) {
               errors.name = 'Veuillez remplir ce champ !';
             }
-            if (values.categoryId === 0) {
+            if (!values.categoryId) {
               errors.categoryId = 'Veuillez sélectionner une catégorie !';
             }
             return errors;
@@ -96,13 +96,13 @@ const AddPlace = ({ scenarioId, newPlace, closeModal, getCategories, categories 
 
               <div className={`${styles['newPlace_booster']} ${styles['form_item']}`}>
                 <label htmlFor="hiddenBoosterCount" className={styles['form_label']}>Boosters cachés :</label>
-                  <Field
-                    className={styles['form_field']}
-                    id="hiddenBoosterCount"
-                    name="hiddenBoosterCount"
-                    type="number"
-                    min={0}
-                  />
+                <Field
+                  className={styles['form_field']}
+                  id="hiddenBoosterCount"
+                  name="hiddenBoosterCount"
+                  type="number"
+                  min={0}
+                />
               </div>
 
               <div className={`${styles['newPlace_description']} ${styles['form_item']}`}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useHistory } from 'react-router-dom';
 import FileBase64 from 'react-file-base64';
 
@@ -58,8 +58,17 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
         }}
         validate={values => {
           const errors = {};
-          if (!values.name || !values.sex || !values.professionId || !values.raceId) {
-            errors.all = 'Veuillez remplir tous les champs !';
+          if (!values.name) {
+            errors.name = 'Veuillez remplir ce champ !';
+          }
+          if (!values.sex) {
+            errors.sex = 'Veuillez sélectionner un sexe !';
+          }
+          if (!values.professionId) {
+            errors.professionId = 'Veuillez sélectionner une classe !';
+          }
+          if (!values.raceId) {
+            errors.raceId = 'Veuillez sélectionner une race !';
           }
           return errors;
         }}
@@ -76,7 +85,7 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
                 name="name"
                 type="text"
               />
-
+              <ErrorMessage name='name' component='div' className={styles['error_message']}/>
             </div>
 
             <div className={styles['image_container']}>
@@ -108,6 +117,7 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
                     ))
                   }
               </Field>
+              <ErrorMessage name='professionId' component='div' className={styles['error_message']}/>
 
               <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
               <Field
@@ -124,6 +134,7 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
                     ))
                   }
               </Field>
+              <ErrorMessage name='raceId' component='div' className={styles['error_message']}/>
 
               <div className={styles['form_label']}>Sexe :</div>
               <div role="group" className={styles['form_group']}>
@@ -136,6 +147,7 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
                   F
                 </label>
               </div>
+                <ErrorMessage name='sex' component='div' className={styles['error_message']}/>
             </div>  
 
             <div className={styles['caracteristics']}>

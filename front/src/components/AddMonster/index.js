@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FileBase64 from 'react-file-base64';
 
@@ -8,12 +8,6 @@ import PropTypes from 'prop-types';
 import styles from './addMonster.module.scss';
 
 const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newMonster, context }) => {
-  useEffect(() => {
-    // getCategories();
-  },
-  // eslint-disable-next-line
-  []);
-
   let [ picture, setPicture ] = useState();
 
   const getFile = (props, file) => {
@@ -56,6 +50,9 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
             const errors = {};
             if (!values.name) {
               errors.name = 'Veuillez remplir ce champ !';
+            }
+            if (values.caracteristics.actions.length < 1) {
+              errors.caracteristics = 'Veuillez ajouter au moins une action !';
             }
             return errors;
           }}
@@ -147,7 +144,9 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
               </div>
 
               <div className={styles['newMonster_actions']}>
-                <h4 className={styles['form_title']}>Actions : </h4>
+                <h4 className={styles['form_title']}>Actions * : </h4>
+                <ErrorMessage name='caracteristics' component='div' className={styles['error_message']}/>
+
                 <FieldArray name="caracteristics.actions">
                 {
                   ({ insert, remove, push }) => (
@@ -228,7 +227,8 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
                   </div>
                   )
                 }
-                </FieldArray>              
+                </FieldArray>   
+           
               </div>
 
             </div>

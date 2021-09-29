@@ -46,10 +46,9 @@
 
 .error_message {
     color: red;
-    margin-top: 0.5rem;
+    margin-left: 2rem;
     font-size: 0.8rem;
     font-style: italic;
-    text-align: center;
 }
 
 #submit_button {
@@ -71,6 +70,14 @@
 
 .newMonster_picture {
     text-align: center;
+}
+
+.newMonster_actions {
+
+    & .error_message {
+        margin-bottom: 1rem;
+    }
+    
 }
 
 .action {

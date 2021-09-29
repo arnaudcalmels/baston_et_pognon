@@ -30,10 +30,12 @@ const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) =
         }}
         validate={values => {
           const errors = {};
-          if (values.mail && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+          if (!values.email) {
+            errors.email = 'Veuillez remplir ce champ !';
+          }
+          if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
             errors.email = 'Adresse mail invalide';
           }
-
           return errors;
         }}
         onSubmit={(values) => handleSubmit(values)}
@@ -64,7 +66,6 @@ const EditProfile = ({ pseudo, email, id, avatar, cancelAction, editProfile }) =
               name="pseudo" 
               type="text" 
             />
-            <ErrorMessage name='pseudo' component='div' className={styles['error_message']}/>
 
             <label htmlFor="email" className={styles['form_label']}>Adresse mail :</label>
             <Field 

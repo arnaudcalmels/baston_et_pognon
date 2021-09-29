@@ -40,6 +40,9 @@ const EditMonster = ({ closeModal, currentMonster, editMonster, context, placeId
               if (!values.name) {
                 errors.name = 'Veuillez remplir ce champ !';
               }
+              if (values.caracteristics.actions.length < 1) {
+                errors.caracteristics = 'Veuillez ajouter au moins une action !';
+              }
               return errors;
             }}
           onSubmit={(values) => handleSubmit(values)}
@@ -137,6 +140,8 @@ const EditMonster = ({ closeModal, currentMonster, editMonster, context, placeId
 
                 <div className={styles['newMonster_actions']}>
                   <h4 className={styles['form_title']}>Actions : </h4>
+                  <ErrorMessage name='caracteristics' component='div' className={styles['error_message']}/>
+
                   <FieldArray name="caracteristics.actions">
                   {
                     ({ insert, remove, push }) => (

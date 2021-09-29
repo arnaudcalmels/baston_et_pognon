@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import FileBase64 from 'react-file-base64';
 
 import Button from '../../components/Button';
@@ -42,7 +42,6 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
   };
   
   let [newPicture, setNewPicture] = useState();
-  // let [newProfession, setNewProfession] = useState();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);  
 
   const getFile = (props, file) => {
@@ -195,8 +194,17 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
             }}
             validate={values => {
               const errors = {};
-              if (!values.name || !values.sex || !values.professionId || !values.raceId) {
-                errors.all = 'Veuillez remplir tous les champs !';
+              if (!values.name) {
+                errors.name = 'Veuillez remplir ce champ !';
+              }
+              if (!values.sex) {
+                errors.sex = 'Veuillez sélectionner un sexe !';
+              }
+              if (isNaN(values.professionId)) {
+                errors.professionId = 'Veuillez sélectionner une classe !';
+              }
+              if (isNaN(values.raceId)) {
+                errors.raceId = 'Veuillez sélectionner une race !';
               }
               return errors;
             }}
@@ -205,8 +213,6 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
           {
             (props) => (
               <Form className={styles['form']}>
-                {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
-
                 <div className={styles['new-character_name']}>
                   <label htmlFor="name" className={styles['form_label']}>Nom :</label>
                   <Field
@@ -215,6 +221,8 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                     name="name"
                     type="text"
                   />
+                <ErrorMessage name='name' component='div' className={styles['error_message']}/>
+
                 </div>
 
                 <span className={styles['character_level']}>Niveau 1</span>
@@ -255,6 +263,7 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                         ))
                       }
                   </Field>
+                  <ErrorMessage name='professionId' component='div' className={styles['error_message']}/>
 
                   <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
                   <Field
@@ -271,6 +280,7 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                         ))
                       }
                   </Field>
+                  <ErrorMessage name='raceId' component='div' className={styles['error_message']}/>
 
                   <div className={styles['form_label']}>Sexe :</div>
                   <div role="group" className={styles['form_group']}>
@@ -283,7 +293,7 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                       F
                     </label>
                   </div>
-
+                  <ErrorMessage name='sex' component='div' className={styles['error_message']}/>
                 </div>  
 
                 <div className={styles['new-caracteristics']}>
@@ -356,9 +366,6 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
                 </div>
 
               </Form>
-
-              
-
             )
           }
           </Formik>

@@ -25,7 +25,6 @@
     &_group {
         display: flex;
         width: 150px;
-        height: 30px;
 
     }
      &_radio {
@@ -73,6 +72,10 @@
         width: 250px;
         margin-left: 1rem;
     }
+
+    & .error_message {
+        margin-top: 0.5rem;
+    }
 }
 
 .character_picture {
@@ -88,7 +91,7 @@
     width: 300px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1rem;
+    grid-gap: 0.5rem;
     align-items: center;
     justify-items: center;
     justify-self: flex-start;
@@ -163,10 +166,11 @@
 
 .error_message {
     color: red;
-    margin-top: 0.5rem;
+    // margin-top: 0.5rem;
     font-size: 0.8rem;
     font-style: italic;
     text-align: center;
+    grid-column: 1 / span 2;
 }
 
 .info {

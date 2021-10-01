@@ -2,7 +2,7 @@ import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
-import Home from './pages/Home';
+import Home from './containers/pages/Home';
 import Characters from './containers/pages/Characters';
 import Character from './containers/pages/Character';
 import NewCharacter from './containers/pages/NewCharacter';

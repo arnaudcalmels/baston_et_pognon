@@ -1,0 +1,26 @@
+@import '../../styles/vars';
+
+.main {
+    grid-row: 2 / 3;
+    grid-column: 1 / span 12;
+    margin: 0 2rem;
+    text-align: center;
+}
+
+.paragraph {
+    margin-top: 3rem;
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        width: 75vw;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .main {
+        width: 60vw;
+        margin: 0 auto;
+    }
+}

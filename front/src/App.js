@@ -17,6 +17,7 @@ import Navigation from './containers/components/Navigation';
 import Footer from './components/Footer';
 import Register from './containers/components/Register';
 import Login from './containers/components/Login';
+import Legals from './pages/Legals';
 
 import { closeModal } from './actions/auth';
 
@@ -42,6 +43,8 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
         <Route exact path="/jeu" component={Game} />
         <Route exact path="/actualité" component={News} />
         <Route exact path="/profil" component={Profile} />
+        <Route exact path="/infos-mentions-legales" component={Legals} />
+
       </Switch>
 
       <Footer />

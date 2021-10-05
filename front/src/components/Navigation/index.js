@@ -80,16 +80,18 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
                 Parties en ligne
               </NavLink> 
             </li>
-            <li>
-              <NavLink 
-                className={styles['navlink']} 
-                activeClassName={styles['isActive']} 
-                to="/actualité" 
-                onClick={() => displayMenu()}
-              >
-                Actualités
-              </NavLink> 
-            </li>
+            {/* Implémentation future
+              <li>
+                <NavLink 
+                  className={styles['navlink']} 
+                  activeClassName={styles['isActive']} 
+                  to="/actualité" 
+                  onClick={() => displayMenu()}
+                >
+                  Actualités
+                </NavLink> 
+              </li> 
+            */}
           </ul>
         </nav>
         

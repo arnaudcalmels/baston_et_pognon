@@ -1,17 +1,13 @@
 import React from 'react';
 
-// import PropTypes from 'prop-types';
+import styles from './game.module.scss';
 
 const Game = (props) => {
   return (
-    <>
-      <p>Je suis dans Game</p>
-    </>
+    <div className={styles['main']}>
+      <p>Prochainement...</p>
+    </div>
   );
 };
-
-// Game.propTypes = {
-    
-// };
 
 export default Game;

@@ -189,10 +189,6 @@
     justify-self: start;
 }
 
-.profession_infos {
-    text-align: center;
-}
-
 .action {
     display: flex;
     align-items: center;
@@ -280,12 +276,7 @@
     .caracteristics {
         align-self: initial;
     }
-    
-    .profession_infos {
-        grid-row: 2 / 3;
-        grid-column: 1 / span 3;
-    }
-    
+        
 }
 
 @media screen and (min-width: 1500px) {

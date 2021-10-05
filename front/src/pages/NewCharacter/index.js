@@ -94,7 +94,7 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
             </div>
 
             <div className={styles['character_picture']}>
-              <label htmlFor="picture" className={styles['form_label']}>Ajouter une image  :</label>
+              <label htmlFor="picture" className={styles['form_label']}>Ajouter une image : </label>
               <FileBase64
                 multiple={false}
                 onDone={getFile.bind(this, props)}
@@ -224,10 +224,6 @@ const NewCharacter = ({ newCharacter, getProfessions, getRaces, professions, rac
         )
       }
       </Formik>
-
-      <div className={styles['profession_infos']}>
-        Caractéristiques détaillées des classes
-      </div>
 
     </div>
   );

@@ -41,7 +41,9 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
         <Route exact path="/scenario/nouveau" component={NewScenario} />
         <Route exact path="/scenario/:id" component={Scenario} />
         <Route exact path="/jeu" component={Game} />
-        <Route exact path="/actualité" component={News} />
+        {/* Implémentation future
+          <Route exact path="/actualité" component={News} />
+         */}
         <Route exact path="/profil" component={Profile} />
         <Route exact path="/infos-mentions-legales" component={Legals} />
 

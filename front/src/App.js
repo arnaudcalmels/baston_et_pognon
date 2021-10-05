@@ -18,6 +18,7 @@ import Footer from './components/Footer';
 import Register from './containers/components/Register';
 import Login from './containers/components/Login';
 import Legals from './pages/Legals';
+import Lost404 from './pages/Lost404';
 
 import { closeModal } from './actions/auth';
 
@@ -46,6 +47,7 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
          */}
         <Route exact path="/profil" component={Profile} />
         <Route exact path="/infos-mentions-legales" component={Legals} />
+        <Route path="*" component={Lost404} />
 
       </Switch>
 

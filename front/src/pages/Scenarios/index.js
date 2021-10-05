@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './scenarios.module.scss';
+import example from '../../assets/images/creation_scenario.png';
 
 const Scenarios = ({ isLoggedIn, scenarios, getScenarios, getPlaceSuccess, getMonsterSuccess, isLoading }) => {
   let history = useHistory();
@@ -77,16 +78,22 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios, getPlaceSuccess, getMo
       }
 
       <div className={styles['text_container']}>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto autem officia eos cupiditate numquam sit neque ratione possimus blanditiis omnis voluptate repudiandae, doloremque fugiat, magnam voluptatem facilis quis tempora animi?</p>
-        <img src="https://cdn.pixabay.com/photo/2016/04/30/13/12/sutterlin-1362879__340.jpg" alt="page"/>
+        <p className={styles['text_container_title']}>Bienvenue dans la page de création de scénario.</p>
+        <p>Un futur maître de jeu peut créer un scénario qu’il pourra utiliser par la suite dans les parties en ligne (fonctionnalité non existante actuellement).</p>
+        <p>Le scénario sera décrit par les différents lieux que les personnages seront amenés à traverser.<br/>
+        Les lieux peuvent être un simple espace narratif ou un repère de monstres qui s’attaqueront aux intrépides aventuriers qui auront l’audace de s’aventurer jusque-là.</p>
+        <p>Il est possible d’ajouter des monstres errants qui auront ou non la possibilité d’attaquer en groupe.</p>
+
+        <img src={example} alt="Page de création de scénario"/>
         <NavLink 
           className={styles['navlink']} 
           to="/scenario/nouveau" 
         >
           Créer mon 1er scénario
         </NavLink>  
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste vel, error eligendi nam doloribus eum facilis saepe tempora distinctio odio enim. Animi distinctio natus perspiciatis sunt rem, aliquid hic voluptas!</p>
-        <img src="https://cdn.pixabay.com/photo/2017/11/17/07/56/background-2956789__340.jpg" alt="page2"/>
+        <p>Pensez bien à répartir judicieusement des boosters sur les monstres et/ou à les cacher dans certains lieux.<br/>
+        Ces boosters sont le témoignage de la réussite et de la bravoure des aventuriers qui gagneront en compétences au fur et à mesure qu’ils s’empareront de ces boosters.</p>
+        <p>Le jeu en ligne n’étant pas encore implémenté, le nombre de booster requis par un personnage pour le faire progresser dans les niveaux n’est pas encore défini.</p>
       </div>
 
     </div>

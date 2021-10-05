@@ -98,6 +98,12 @@ align-items: self-start;
 
     }
 
+    .new {
+        display: block;
+        grid-column: 10 / 12;
+        cursor: pointer;
+    }
+
 }
 
 @media screen and (min-width: 1500px) {
@@ -108,12 +114,6 @@ align-items: self-start;
             width: 500px;
         }
 
-    }
-
-    .new {
-        display: block;
-        grid-column: 10 / 12;
-        cursor: pointer;
     }
 
 }

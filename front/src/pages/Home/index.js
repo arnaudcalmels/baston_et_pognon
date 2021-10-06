@@ -21,7 +21,7 @@ const Home = ({ isRegisterModalOpen, isLoginModalOpen }) => {
       <div className={styles['paragraph']}>
         <p>Ce site est uniquement destiné à servir de démonstration.</p>
         <p>Un compte de démonstration est disponible pour les visiteurs. Les fonctionnalités de création, modification et suppression sont désactivées pour ce compte.</p>
-        <p>identifiant : <em>visiteur@test.io</em> / mot de passe : <em>visiteur1*</em></p>
+        <p>identifiant : <em>visiteur@test.io</em> / mot de passe : <em>Visiteur1*</em></p>
         <Button 
           color='#eee' 
           children='Se connecter' 

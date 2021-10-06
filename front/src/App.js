@@ -10,7 +10,7 @@ import Scenarios from './containers/pages/Scenarios';
 import Scenario from './containers/pages/Scenario';
 import NewScenario from './containers/pages/NewScenario';
 import Game from './pages/Game';
-import News from './pages/News';
+// import News from './pages/News';
 import Profile from './containers/pages/Profile';
 import Modal from './components/Modal';
 import Navigation from './containers/components/Navigation';

@@ -10,6 +10,7 @@ use App\Repository\GameRepository;
 use App\Repository\RaceRepository;
 use App\Repository\CharactersRepository;
 use App\Repository\ProfessionRepository;
+use App\Security\VisitorAccountChecker;
 use App\Validator\CharactersValidator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,6 +51,10 @@ class CharactersController extends AbstractController
      */
     public function new(Request $request, ValidatorInterface $validator): JsonResponse
     {
+        if (VisitorAccountChecker::isVisitorAccount($this->getUser())) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         $characterValidator = new CharactersValidator($validator);
 
         $errorsDatas = $characterValidator->validateRequestDatas($request->getContent());
@@ -99,6 +104,10 @@ class CharactersController extends AbstractController
         ValidatorInterface $validator
         ): JsonResponse
     {
+        if (VisitorAccountChecker::isVisitorAccount($this->getUser())) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         $owner = $character->getOwner();
         $currentUser = $this->getUser();
         $gameCount = $gameRepo->countGamesPerCharacter($character);
@@ -158,6 +167,11 @@ class CharactersController extends AbstractController
     public function delete(Request $request, Characters $character = null): JsonResponse
     {
         $currentUser = $this->getUser();
+
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         $owner = $character->getOwner();
 
         if (!$character) {

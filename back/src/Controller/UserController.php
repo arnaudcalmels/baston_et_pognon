@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Validator\UserValidator;
+use App\Security\VisitorAccountChecker;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -94,6 +95,10 @@ class UserController extends AbstractController
     {
         $currentUser = $this->getUser();
 
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         if ($user !== $currentUser) {
             $data = ['Vous n\'êtes pas autorisé à modifier cet utilisateur'];
             $statusCode = 403;
@@ -147,6 +152,10 @@ class UserController extends AbstractController
     {
         $currentUser = $this->getUser();
 
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         if ($currentUser === null) {
             $data = ['Utilisateur non trouvé'];
             $statusCode = 404;
@@ -184,6 +193,10 @@ class UserController extends AbstractController
     public function delete(Request $request, User $user): JsonResponse
     {
         $currentUser = $this->getUser();
+
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
 
         if ($user !== $currentUser) {
             $message = 'Vous n\'êtes pas autorisé à modifier cet utilisateur';

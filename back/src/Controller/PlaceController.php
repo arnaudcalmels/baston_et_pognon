@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\CategoryPlaces;
 use App\Entity\Place;
 use App\Entity\Scenario;
+use App\Entity\CategoryPlaces;
 use App\Validator\PlaceValidator;
+use App\Security\VisitorAccountChecker;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,6 +46,10 @@ class PlaceController extends AbstractController
      */
     public function new(Request $request, PlaceValidator $placeValidator)
     {
+        if (VisitorAccountChecker::isVisitorAccount($this->getUser())) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         $errorsDatas = $placeValidator->validateRequestDatas($request->getContent(), true);
 
         if (count($errorsDatas) > 0) {
@@ -87,6 +92,11 @@ class PlaceController extends AbstractController
     public function edit(Request $request, Place $place = null, PlaceValidator $placeValidator)
     {
         $currentUser = $this->getUser();
+
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         if (!$place) {
             $data = ['Ce lieu n\'existe pas'];
             $statusCode = 404;
@@ -131,6 +141,11 @@ class PlaceController extends AbstractController
     public function delete(Place $place = null)
     {
         $currentUser = $this->getUser();
+        
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         if (!$place) {
             $data = ['Ce lieu n\'existe pas'];
             $statusCode = 404;

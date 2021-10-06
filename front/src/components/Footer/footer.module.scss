@@ -1,37 +1,33 @@
 @import '../../styles/vars';
 
 .footer {
-    background-color: $color-secondary;
+    background-image: url(../../assets/images/texture_secondary_1920.jpg);
     grid-row: 3 / 4;
     grid-column: 1 / span 12;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    display: grid;
-    grid-template-rows: repeat(2, 50px);
     position: relative;
     bottom: 0;
-  
-}
-
-.footer ul {
-    padding: 0;
-    grid-row: 1 / 2;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-items: center;
 }
 
 .link {
     text-decoration: none;
-    color: black;
+    color: $color-secondary;
+    font-family: $font-title;
+    font-size: 1rem;
+    text-shadow: 4px 4px 2px rgba(0,0,0,0.6);
+    letter-spacing: 1px;
+    
+    &:hover {
+        color: $color-primary;
+        text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.8);
+    }
+
 }
 
-.footer p {
-    grid-row: 2 / 3;
-    text-align: center;
-}
-
-@media screen and (max-width: 500px) {
-    .footer ul {
-        grid-template-columns: 30% 30% 40%;
+@media screen and (min-width: 1200px) {
+    .link {
+        font-size: 1.2rem;
     }
 }

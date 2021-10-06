@@ -1,33 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import FileBase64 from 'react-file-base64';
 
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import DeleteConfirm from '../../components/DeleteConfirm';
+import Loader from '../../components/Loader';
+import Title from '../../components/Title';
+import Section from '../../components/Section';
+import Column from '../../components/Column';
 
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faRing, faCoins } from '@fortawesome/free-solid-svg-icons';
+import { faMars, faVenus, faHeart, faShieldAlt, faStar, faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons';
+
+import { getIcon, getTitle } from '../../utils/getIcons';
 
 import styles from './character.module.scss';
 
-const Character = ({ deleteCharacter, editCharacter, character, getProfessions, getRaces, professions, races }) => { 
+const Character = ({ deleteCharacter, editCharacter, character, getProfessions, getRaces, professions, races, getCharacters, isLoggedIn }) => { 
   useEffect(() => {
-    getProfessions();
-    getRaces();
+    if (isLoggedIn ) {
+      getCharacters();
+      getProfessions();
+      getRaces();
+    } 
   },
   // eslint-disable-next-line
   []);
   
   const showForm = () => {
     const block_form = document.getElementById(styles['block_form']);
-    const identity = document.getElementById(styles['identity']);
+    const block_character = document.getElementById(styles['block_character']);
     
     block_form.classList.toggle(styles['show_form']);
-    identity.classList.toggle(styles['hide_identity']);
-    
+    block_character.classList.toggle(styles['hide_character']);
+    block_character.classList.toggle(styles['show_character']);
+
     window.scrollTo(0, 0);
   };
   
@@ -51,276 +61,335 @@ const Character = ({ deleteCharacter, editCharacter, character, getProfessions, 
   return (
     <div className={styles['main']}>
 
-      <div className={styles['overlay-image']}>
-        <img src={character.picture?.base64} alt="photo_perso"/>  
-        <div className={styles['hover']}>
-          <FontAwesomeIcon 
-            onClick={() => console.log('modifier photo')} 
-            icon={faPlusCircle} 
-            size="2x" 
-            style={{cursor: 'pointer'}}
-            title="Modifier l'image"
-          />
-        </div>
-      </div>
+    {
+      isLoggedIn && character ?
+      <>
+        <div className={styles['show_character']} id={styles['block_character']}>
 
-      <h2 className={styles['name']}>{character.name}</h2>
+          <Title title={character.name} id={styles['title']}/>
 
-      <table className={styles['table']} id={styles['identity']}>
-        <tbody className={styles['table_content']}>
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Sexe :</td>
-            <td className={styles['table_cell-value']}>{character.sex}</td>
-          </tr>
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Classe :</td>
-            <td className={styles['table_cell-value']}>{character.profession.name}</td>
-          </tr>
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Race :</td>
-            <td className={styles['table_cell-value']}>{character.race.name}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div id={styles['block_form']} className={styles['hide_form']}>
-        <Formik
-          initialValues={{
-          name: character.name,
-          sex: character.sex,
-          professionId: character.profession.id,
-          raceId: character.race.id,
-          picture: character.picture,
-          }}
-          validate={values => {
-            const errors = {};
-            if (!values.name || !values.sex || !values.professionId || !values.raceId) {
-              errors.all = 'Veuillez remplir tous les champs !';
-            }
-            return errors;
-          }}
-          onSubmit={(values) => handleSubmit(values)}
-        >
-        {
-          (props) => (
-            <Form className={styles['form']}>
-              {/* <ErrorMessage name='all' component='div' className={styles['error_message']}/> */}
-
-              <label htmlFor="name" className={styles['form_label']}>Nom :</label>
-              <Field
-                className={styles['form_field']}
-                id="name"
-                name="name"
-                type="text"
-              />
-
-              <div className={styles['form_label']}>Sexe :</div>
-              <div role="group" className={styles['form_group']}>
-                <label className={styles['form_radio']}>
-                  <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
-                  M
-                </label>
-                <label className={styles['form_radio']}>
-                  <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
-                  F
-                </label>
-              </div>
-
-              <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
-              <Field
-                className={styles['form_field']}
-                id="professionId"
-                name="professionId"
-                as="select"
-                onChange={props.handleChange}
-              >
-                <option defaultValue>Sélectionnez une classe</option>
-                  {
-                    professions.map(profession => (
-                      <option value={profession.id}>{profession.name}</option>
-                    ))
-                  }
-                </Field>
+          <span className={styles['character_level']}>Niveau {character.level}</span>
 
 
-              <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
-              <Field
-                className={styles['form_field']}
-                id="raceId"
-                name="raceId"
-                as="select"
-                onChange={props.handleChange}
-              >
-                <option defaultValue>Sélectionnez une race</option>
-                  {
-                    races.map(race => (
-                      <option value={race.id}>{race.name}</option>
-                    ))
-                  }
-              </Field>
+          <div className={styles['image_container']}>
+            {/* eslint-disable-next-line */}
+            <img id={styles['image']} src={character.picture?.base64} alt={character.picture?.name}/>
+          </div>
 
-            <span className={styles['info']}>Tous les champs sont obligatoires.</span>
 
-            <div className={`${styles['newCharacter_picture']} ${styles['form_item']}`}>
-              <label htmlFor="picture" className={styles['form_label']}>Image :</label>
-              <FileBase64
-                multiple={false}
-                onDone={getFile.bind(this, props)}
-              />
+          <div className={styles['identity']}>
+            <div className={styles['character_profession']}>
+              {character.profession.name}
             </div>
 
-              {
-                newPicture ?
-                  <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
-                  : 
-                  // eslint-disable-next-line
-                  <img id={styles['image_preview']} src={character.picture?.base64} alt={character.picture?.name}/>
-              }
+            <div className={styles['character_race']}>
+              {character.race.name}
+            </div>
 
-              <Button
-                id={styles['submit_button']}
-                type="submit"
-                color='#eee'
-                children='Valider'
-              />
-          
-            </Form>
-
-          )
-        }
-        </Formik>
-        <Button
-          id={styles['cancel_button']}
-          color='#eee'
-          children='Annuler'
-          onClick={() => showForm()}
-        />
-      </div>
-
-      <table className={styles['table']} id={styles['caracteristics']}>
-        <tbody className={styles['table_content']}>
-          <tr className={styles['table_title']}>
-            <td>Niveau {character.level}</td>
-          </tr>
-          {
-            character.profession?.caracteristics?.actions.map(action => (
-              action.isSpecial && !action.heal ?
-                <tr className={styles['table_row']}>
-                  <td className={styles['table_cell-name']}>Attaque spéciale :</td>
-                  <td className={styles['table_cell-value']}>{action.damages}</td>
-                </tr>
-              : action.isSpecial && action.heal ?
-                <tr className={styles['table_row']}>
-                  <td className={styles['table_cell-name']}>Soin spécial :</td>
-                  <td className={styles['table_cell-value']}>{action.damages}</td>
-                </tr>
-              : action.heal ?
-                <tr className={styles['table_row']}>
-                  <td className={styles['table_cell-name']}>Soin :</td>
-                  <td className={styles['table_cell-value']}>{action.damages}</td>
-                </tr>
-              :
-              <tr className={styles['table_row']}>
-                <td className={styles['table_cell-name']}>Attaque normale :</td>
-                <td className={styles['table_cell-value']}>{action.damages}</td>
-              </tr>
-            ))
-          }
-          
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>PV :</td>
-            <td className={styles['table_cell-value']}>{character.profession?.caracteristics?.lifePoints}</td>
-          </tr>
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Armure :</td>
-            <td className={styles['table_cell-value']}>{character.profession?.caracteristics?.armor}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table className={styles['table']} id={styles['inventory']}>
-      <tbody className={styles['table_content']}>
-          <tr className={styles['table_title']}>
-            <td>Inventaire</td>
-          </tr>
-          {
-            character.inventory.specialObjects.map(object => (
-              <tr className={styles['table_row_inventory']} key={object.id}>
-                <td className={styles['table_cell_inventory-picture']}>
-                  <FontAwesomeIcon 
-                    icon={faRing} 
-                    size="2x" 
-                  />
-                </td>
-                <td className={styles['table_cell_inventory-name']}>{object.name}</td>
-                <td className={styles['table_cell_inventory-value']}>+ 1 PV </td>
-              </tr>
-            ))
-          }
-          <tr className={styles['table_row_inventory']}>
-            <td className={styles['table_cell_inventory-picture']}>
+            {
+              character.sex === "M" ?
               <FontAwesomeIcon 
-                icon={faCoins} 
+                icon={faMars} 
                 size="2x" 
               />
-            </td>
-            <td className={styles['table_cell_inventory-name']}>Booster</td>
-            <td className={styles['table_cell_inventory-value']}>{character.inventory.boostersCount} </td>
-          </tr>
+              :
+              <FontAwesomeIcon 
+                icon={faVenus} 
+                size="2x" 
+              />
+            }
+          </div>
 
-        </tbody>
-      </table>
+          {
+            character.profession?.caracteristics &&
+            <div className={styles['caracteristics']}>
+              <FontAwesomeIcon 
+                className={styles['icon_lifepoints']}
+                icon={faHeart} 
+                title="Points de vie"
+              />
+              <span className={styles['icon_value']}>
+                {character.profession?.caracteristics?.lifePoints}
+              </span>
 
-      <table className={styles['table']} id={styles['statistics']}>
-        <tbody className={styles['table_content']}>
-          <tr className={styles['table_title']}>
-            <td>Statistiques</td>
-          </tr>
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Nb de parties jouées :</td>
-            <td className={styles['table_cell-value']}>10</td>
-          </tr>
-          <tr className={styles['table_row']}>
-            <td className={styles['table_cell-name']}>Autre stat :</td>
-            <td className={styles['table_cell-value']}>20</td>
-          </tr>
-       </tbody>
-      </table>
+              <FontAwesomeIcon 
+                className={styles['icon_armor']}
+                icon={faShieldAlt} 
+                title="Armure"
+              />
+              <span className={styles['icon_value']}>
+                {character.profession?.caracteristics?.armor}
+              </span>
+            </div>
+          }
+          
+          {/* La modification du personnage ne sera plus possible dès lors qu'il a été joué */}
+            <FontAwesomeIcon 
+              className={styles['icon_pen']}
+              icon={faPen} 
+              size="1x" 
+              title="Editer le personnage"
+              style={{cursor: 'pointer'}}
+              onClick={() => {
+                showForm();
+              }} 
+            />
 
-      <div className={styles['buttons']}>
-        <Button 
-            color='#eee' 
-            children='Editer le personnage' 
-            onClick={() => {
-              console.log('editer perso');
-              showForm();
-            }} 
-          />
+            <FontAwesomeIcon 
+              className={styles['icon_trash']}
+              icon={faTrashAlt} 
+              size="1x" 
+              title="Supprimer le personnage"
+              style={{cursor: 'pointer'}}
+              onClick={() => {
+                setOpenDeleteModal(true);
+              }} 
+            />
 
-        <Button 
-          color='#eee' 
-          children='Supprimer le personnage' 
-          onClick={() => {
-            setOpenDeleteModal(true);
-          }} 
-        />
-      </div>
+          <div className={styles['block_skills_inventory']}>
+            <Section title="Compétences" >
+              <Column dynamicClassName='skills'>
+                {
+                  character.profession?.caracteristics?.actions.map(action => (
+                    <div className={styles['action']} key={action.id}>
+                      <div className={`${styles['icon_action']} ${styles[getIcon(action, character.profession.name)]}`} title={getTitle(action, character.profession.name)}></div>
+                      <span className={styles['icon_value']} title="Dégats / Soins">
+                        {action.damages}
+                      </span>
+                      <p title="Fréquence d'utilisation">Tous les {action.frequency > 1 ? action.frequency : ''} tours</p>
+                    </div>
+                    )
+                    
+                  )
+                }
+              </Column>
+            </Section>
 
-      <Modal 
-        isOpen={openDeleteModal} 
-        closeModal={() => {
-          setOpenDeleteModal(false);
-        }}
-        title='Supprimer le personnage ?' 
-        children={
-          <DeleteConfirm 
-            cancelAction={() => setOpenDeleteModal(false)} 
-            confirmAction={() => {
-              handleDeleteCharacter(character.id);
-              setOpenDeleteModal(false);
+            <Section title="Inventaire">
+              <Column dynamicClassName='inventory'>
+                <div className={styles['inventory']}>
+                  <FontAwesomeIcon 
+                    className={styles['icon_booster']}
+                    icon={faStar} 
+                    title="Booster"
+                  />
+                  <p className={styles['item_name']}>Booster(s)</p>
+                  <span className={styles['item_number']}>{character.inventory.boostersCount} </span>
+                </div>
+              </Column>
+            </Section>
+          </div>
+
+
+        </div>
+
+        <div id={styles['block_form']} className={styles['hide_form']}>
+          <Formik
+            initialValues={{
+            name: character.name,
+            sex: character.sex,
+            professionId: character.profession.id,
+            raceId: character.race.id,
+            picture: character.picture,
             }}
-          />}
-      />
+            validate={values => {
+              const errors = {};
+              if (!values.name) {
+                errors.name = 'Veuillez remplir ce champ !';
+              }
+              if (!values.sex) {
+                errors.sex = 'Veuillez sélectionner un sexe !';
+              }
+              if (isNaN(values.professionId)) {
+                errors.professionId = 'Veuillez sélectionner une classe !';
+              }
+              if (isNaN(values.raceId)) {
+                errors.raceId = 'Veuillez sélectionner une race !';
+              }
+              return errors;
+            }}
+            onSubmit={(values) => handleSubmit(values)}
+          >
+          {
+            (props) => (
+              <Form className={styles['form']}>
+                <div className={styles['new-character_name']}>
+                  <label htmlFor="name" className={styles['form_label']}>Nom :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="name"
+                    name="name"
+                    type="text"
+                  />
+                <ErrorMessage name='name' component='div' className={styles['error_message']}/>
+
+                </div>
+
+                <span className={styles['character_level']}>Niveau 1</span>
+
+                <div className={styles['character_picture']}>
+                  <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+                  <FileBase64
+                    multiple={false}
+                    onDone={getFile.bind(this, props)}
+                  />
+                </div>
+
+                {
+                  newPicture ?
+                    <div className={styles['image_container']}>
+                      <img id={styles['new-image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                    </div>
+                    : 
+                    <div className={styles['image_container']}>
+                      {/* eslint-disable-next-line */}
+                      <img id={styles['image_preview']} src={character.picture?.base64} alt={character.picture?.name}/>
+                    </div>
+                }
+
+                <div className={styles['new-identity']}>
+                  <label htmlFor="professionId" className={styles['form_label']}>Classe :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="professionId"
+                    name="professionId"
+                    as="select"
+                    onChange={props.handleChange}
+                  >
+                    <option defaultValue>Sélectionnez une classe</option>
+                      {
+                        professions.map(profession => (
+                          <option value={profession.id} key={profession.id}>{profession.name}</option>
+                        ))
+                      }
+                  </Field>
+                  <ErrorMessage name='professionId' component='div' className={styles['error_message']}/>
+
+                  <label htmlFor="raceId" className={styles['form_label']}>Race :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="raceId"
+                    name="raceId"
+                    as="select"
+                    onChange={props.handleChange}
+                  >
+                    <option defaultValue>Sélectionnez une race</option>
+                      {
+                        races.map(race => (
+                          <option value={race.id} key={race.id}>{race.name}</option>
+                        ))
+                      }
+                  </Field>
+                  <ErrorMessage name='raceId' component='div' className={styles['error_message']}/>
+
+                  <div className={styles['form_label']}>Sexe :</div>
+                  <div role="group" className={styles['form_group']}>
+                    <label className={styles['form_radio']}>
+                      <Field type="radio" name="sex" value="M" className={styles['form_radio-input']}/>
+                      M
+                    </label>
+                    <label className={styles['form_radio']}>
+                      <Field type="radio" name="sex" value="F" className={styles['form_radio-input']}/>
+                      F
+                    </label>
+                  </div>
+                  <ErrorMessage name='sex' component='div' className={styles['error_message']}/>
+                </div>  
+
+                <div className={styles['new-caracteristics']}>
+                  <FontAwesomeIcon 
+                    className={styles['icon_lifepoints']}
+                    icon={faHeart} 
+                    title="Points de vie"
+                  />
+                  <span className={styles['icon_value']}>{professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.lifePoints}</span>
+
+                  <FontAwesomeIcon 
+                    className={styles['icon_armor']}
+                    icon={faShieldAlt} 
+                    title="Armure"
+                  />
+                  <span className={styles['icon_value']}>{professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.armor}</span>
+
+                </div>
+                
+                <span className={styles['info']}>Tous les champs sont obligatoires.</span>
+
+                <Button
+                  id={styles['cancel_button']}
+                  type='button'
+                  color='#eee'
+                  children='Annuler'
+                  onClick={() => showForm()}
+                  shadow='#333 2px 2px 6px'
+                />
+
+                <Button
+                  id={styles['submit_button']}
+                  type="submit"
+                  color='#eee'
+                  children='Valider'
+                  shadow='#333 2px 2px 6px'
+                />
+            
+                <div className={styles['block_skills_inventory']}>
+                  <Section title="Compétences" >
+                    <Column dynamicClassName='skills'>
+                      {
+                        professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.caracteristics?.actions.map(action => (
+                          <div className={styles['action']} key={action.id}>
+                            <div className={`${styles['icon_action']} ${styles[getIcon(action, professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.name)]}`} title={getTitle(action, professions.find(profession => profession.id === parseInt(props.values.professionId, 10))?.name)}></div>
+                            <span className={styles['icon_value']} title="Dégats / Soins">
+                              {action.damages}
+                            </span>
+                            <p title="Fréquence d'utilisation">Tous les {action.frequency > 1 ? action.frequency : ''} tours</p>
+                          </div>
+
+                        ))
+                      }
+                    </Column>
+                  </Section>
+
+                  <Section title="Inventaire">
+                    <Column dynamicClassName='inventory'>
+                      <div className={styles['inventory']}>
+                        <FontAwesomeIcon 
+                          className={styles['icon_booster']}
+                          icon={faStar} 
+                          title="Booster"
+                        />
+                        <p className={styles['item_name']}>Booster(s)</p>
+                        <span className={styles['item_number']}>{character.inventory.boostersCount} </span>
+                      </div>
+                    </Column>
+                  </Section>
+                </div>
+
+              </Form>
+            )
+          }
+          </Formik>
+        </div>
+
+        <Modal 
+          isOpen={openDeleteModal} 
+          closeModal={() => {
+            setOpenDeleteModal(false);
+          }}
+          title='Supprimer le personnage ?' 
+          children={
+            <DeleteConfirm 
+              cancelAction={() => setOpenDeleteModal(false)} 
+              confirmAction={() => {
+                handleDeleteCharacter(character.id);
+                setOpenDeleteModal(false);
+              }}
+            />}
+        />
+      </>
+      :
+      <Loader />
+    }
 
     </div>
   );
@@ -334,6 +403,8 @@ Character.propTypes = {
   getRaces: PropTypes.func,
   professions: PropTypes.arrayOf(PropTypes.object,),
   races: PropTypes.arrayOf(PropTypes.object,),
+  getCharacters: PropTypes.func,
+  isLoggedIn: PropTypes.bool,
 };
 
 export default Character;

@@ -72,10 +72,12 @@ const ChangePassword = ({ cancelAction, changePassword }) => {
           />
           <ErrorMessage name='confirmPassword' component='div' className={styles['error_message']}/>
 
-          <Button id={styles['submit_button']} type="submit" color='#eee' children='Valider'/>
+          <div className={styles['buttons']}>
+            <Button id={styles['close_button']} type='button' color='#ddd' children='Annuler' onClick={cancelAction}/>
+            <Button id={styles['submit_button']} type="submit" color='#ddd' children='Valider'/>
+          </div>
         </Form>
       </Formik>
-      <Button id={styles['close_button']} color='#eee' children='Annuler' onClick={cancelAction}/>
     </>
   );
 };

@@ -1,0 +1,199 @@
+@import '../../styles/vars';
+
+.main {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 235px;
+    overflow-x: auto;
+}
+
+.section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 40px) 20px;
+}
+
+#image, .image {
+    display: none;
+}
+
+.name {
+    grid-column: 1 / span 2;
+    margin: 0;
+    padding-left: 0.5rem;
+    align-self: center;
+}
+
+.level {
+    grid-column: 1 / 2;
+    align-self: center;
+    margin: 0;
+    padding-left: 0.5rem;
+}
+
+.caracteristics {
+    grid-column: 1 / 3;
+    grid-row: 3 / 4;
+}
+
+.icon {
+    &_booster {
+        color: gold;
+        grid-row: 4 / 5;
+        grid-column: 1 / 2;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+    }
+
+    &_lifepoints {
+        color: red;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+    }
+
+    &_armor {
+        color: darkblue;
+        padding-left: 0.5rem;
+        align-self: center;
+        font-size: 1.5rem;
+    }
+
+    &_boss {
+        color: black;
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
+        padding-left: 0.5rem;
+        align-self: center;
+        justify-self: center;
+        font-size: 1.5rem;
+    }
+
+    &_pen, &_trash {
+        display: none;
+    }
+
+    &_value {
+        font-size: 1.1rem;
+        padding-left: 0.3rem;
+        padding-right: 0.8rem;
+    }
+
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icon_action {
+    width: 50px;
+    height: 50px;
+    background-image: url('../../assets/images/actions.png');
+    background-repeat: no-repeat;
+}
+
+.heal {
+    background-position-x: $position-normal;
+    background-position-y: $position-heal;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-heal;
+    }
+}
+
+.sword {
+    background-position-x: $position-normal;
+    background-position-y: $position-sword;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-sword;
+    }
+}
+
+.bow {
+    background-position-x: $position-normal;
+    background-position-y: $position-bow;
+
+    &-special {
+        background-position-x: $position-special;
+        background-position-y: $position-bow;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        width: 300px
+    }
+
+    .section {
+        grid-template-columns: 100px 180px 20px;
+        grid-template-rows: repeat(4, 40px) 50px;
+    }
+    
+    #image {
+        display: block;
+        max-width: 100px;
+        max-height: 160px;
+        border-radius: 5px;
+        grid-row: 1 / 5;
+        grid-column: 1 / 2;
+    }
+    
+    .image {
+        display: block;
+        width: 100px;
+        height: 160px;
+        grid-row: 1 / 5;
+        grid-column: 1 / 2;
+    }
+    
+    .name {
+        grid-row: 1 / 2;
+        grid-column: 2 / 3;
+    }
+    
+    .level {
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
+    }
+    
+    .caracteristics {
+        grid-row: 3 / 4;
+        grid-column: 2 / 3;
+    }
+ 
+    .icon {
+        &_booster {
+            grid-column: 2 / 3;
+        }
+    
+        &_boss {
+            grid-column: 2 / 3;
+        }
+        
+        &_pen {
+            display: block;
+            grid-row: 1 / 2;
+            grid-column: 3 / 4;
+        }
+    
+        &_trash {
+            display: block;
+            grid-row: 2 / 3;
+            grid-column: 3 / 4;
+        }
+        
+    }
+    
+}

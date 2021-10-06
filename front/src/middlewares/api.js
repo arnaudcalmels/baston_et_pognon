@@ -1,14 +1,15 @@
 import axios from 'axios';
 
 import { setErrorToasts, setSuccessToast } from '../utils/toasts';
+import { findMonster, findNewMonster, findPlace, findNewPlace } from '../utils/findItem';
 
 // actions
 import { signUpSuccess, loginSuccess } from '../actions/auth';
 import { editProfileSuccess, getProfile, getProfileSuccess, } from '../actions/user';
 import { editCharacterSuccess, getCharactersSuccess, newCharacterSuccess, getProfessionsSuccess, getRacesSuccess } from '../actions/character';
-import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess, } from '../actions/scenario';
-import { getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
-import { getMonsterSuccess } from '../actions/monster';
+import { getScenariosSuccess, newScenarioSuccess, editScenarioSuccess} from '../actions/scenario';
+import { deletePlaceSuccess, getCategoriesSuccess, getPlaceSuccess } from '../actions/place';
+import { getMonsterSuccess, deleteMonsterSuccess } from '../actions/monster';
 import { setLoadingTrue, setLoadingFalse } from '../actions/other';
 
 // types
@@ -213,6 +214,7 @@ import {
     }
 
     case GET_CHARACTERS: {
+      store.dispatch(setLoadingTrue('character'));
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -226,6 +228,7 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(getCharactersSuccess(response.data));
+        store.dispatch(setLoadingFalse('character'));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -311,6 +314,7 @@ import {
     // ----- SCENARIO -----
 
     case GET_SCENARIOS: {
+      store.dispatch(setLoadingTrue('scenario'));
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -324,6 +328,7 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(getScenariosSuccess(response.data));
+        store.dispatch(setLoadingFalse('scenario'));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -448,8 +453,14 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
-        setSuccessToast('Lieu créé !');
-        action.closeFunction();
+        const place = findNewPlace(response.data.id);
+        if (Object.keys(place).length > 0) {
+          store.dispatch(getPlaceSuccess(place));
+          setSuccessToast('Lieu créé !');
+          action.closeFunction();
+        } else {
+          setErrorToasts(['Lieu non créé']);
+        }
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -459,7 +470,7 @@ import {
     }
 
     case GET_PLACE: {
-      store.dispatch(setLoadingTrue());
+      store.dispatch(setLoadingTrue('place'));
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -473,9 +484,7 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(getPlaceSuccess(response.data));
-        store.dispatch(setLoadingFalse());
-        console.log(response.data);
-
+        store.dispatch(setLoadingFalse('place'));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -499,8 +508,14 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
-        setSuccessToast('Modification effectuée');
-        action.closeFunction();
+        const place = findPlace(action.id, response.data.id);
+        if (place) {
+          store.dispatch(getPlaceSuccess(place));
+          setSuccessToast('Modification effectuée');
+          action.closeFunction();
+        } else {
+          setErrorToasts(['Modification non effectuée']);
+        }
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -524,6 +539,8 @@ import {
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
         store.dispatch(editScenarioSuccess(response.data));
+        store.dispatch(deletePlaceSuccess());
+        store.dispatch(deleteMonsterSuccess('currentMonsterInPlace'));
         action.closeFunction();
       })
       .catch ((error) => {
@@ -546,12 +563,24 @@ import {
         },
         data: action.values     
       };
-
       axios(config)
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
-        setSuccessToast('Monstre créé !');
-        action.closeFunction();
+        const monster = findNewMonster(JSON.parse(action.values).placeId, JSON.parse(action.values).wanderGroupId, response.data.id);
+        console.log('new monster');
+        console.log(monster);
+        if (Object.keys(monster).length > 0) {
+          store.dispatch(getMonsterSuccess(monster, action.context));
+          setSuccessToast('Monstre créé !');
+          action.closeFunction();
+          // si le monstre a été créé dans un lieu, on met à jour le lieu également
+          if (JSON.parse(action.values).placeId) {
+            const place = findPlace(JSON.parse(action.values).placeId, response.data.id)
+            store.dispatch(getPlaceSuccess(place));
+          }
+        } else {
+        setErrorToasts(['Monstre non créé']);
+        }
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -561,7 +590,7 @@ import {
     }
   
     case GET_MONSTER: {
-      store.dispatch(setLoadingTrue());
+      store.dispatch(setLoadingTrue('monster'));
       const { auth: { token } } = store.getState();
       const config = {
         method: 'get',
@@ -574,8 +603,8 @@ import {
 
       axios(config)
       .then ((response) => { 
-        store.dispatch(getMonsterSuccess(response.data));
-        store.dispatch(setLoadingFalse());
+        store.dispatch(getMonsterSuccess(response.data, action.context));
+        store.dispatch(setLoadingFalse('monster'));
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -599,8 +628,19 @@ import {
       axios(config)
       .then ((response) => { 
         store.dispatch(editScenarioSuccess(response.data));
-        setSuccessToast('Modification effectuée');
-        action.closeFunction();
+        const monster = findMonster(action.id, response.data.id);
+        if (Object.keys(monster).length > 0) {
+          store.dispatch(getMonsterSuccess(monster, action.context));
+          setSuccessToast('Modification effectuée');
+          //si le monstre est rattaché à un lieu, on met à jour le lieu
+          if (action.placeId) {
+            const place = findPlace(action.placeId, response.data.id)
+            store.dispatch(getPlaceSuccess(place));
+          }
+          action.closeFunction();
+        } else {
+          setErrorToasts(['Modification non effectuée']);
+        }
       })
       .catch ((error) => {
         setErrorToasts(error.response?.data);
@@ -623,7 +663,13 @@ import {
       axios(config)
       .then ((response) => { 
         setSuccessToast('Suppression effectuée');
+        store.dispatch(deleteMonsterSuccess(action.context));
         store.dispatch(editScenarioSuccess(response.data));
+        //si le monstre était rattaché à un lieu, on met à jour le lieu
+        if (action.placeId) {
+          const place = findPlace(action.placeId, response.data.id)
+          store.dispatch(getPlaceSuccess(place));
+        }
         action.closeFunction();
       })
       .catch ((error) => {

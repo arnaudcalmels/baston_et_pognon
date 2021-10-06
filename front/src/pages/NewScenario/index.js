@@ -8,10 +8,6 @@ import Button from '../../components/Button';
 
 import PropTypes from 'prop-types';
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import styles from './newScenario.module.scss';
 
 const NewScenario = ({ newScenario }) => {
@@ -56,28 +52,6 @@ const NewScenario = ({ newScenario }) => {
         {
           (props) => (
           <Form className={styles['form']}>
-            <div className={styles['overlay-image']}>
-            {/* eslint-disable-next-line */}
-            <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
-              {/* <div className={styles['hover']}>
-                <FontAwesomeIcon 
-                  onClick={() => console.log('ajouter photo')} 
-                  icon={faPlusCircle} 
-                  size="2x" 
-                  style={{cursor: 'pointer'}}
-                  title="Ajouter une image"
-                />
-              </div> */}
-            </div>
-
-            <div className={styles['scenario_picture']}>
-                <label htmlFor="picture" className={styles['form_label']}>Ajouter une image :</label>
-                <FileBase64
-                  multiple={false}
-                  onDone={getFile.bind(this, props)}
-                />
-              </div>
-
             <div className={styles['scenario_name']}>
               <label htmlFor="name" className={styles['form_label']}>Nom * :</label>
               <Field
@@ -89,9 +63,17 @@ const NewScenario = ({ newScenario }) => {
               <ErrorMessage name='name' component='div' className={styles['error_message']}/>
             </div>
 
-            <div className={styles['description']}>
-              <h3>Description :</h3>
-              <Field as="textarea" name="description" className={styles['form_field']}/>
+            <div className={styles['image_container']}>
+              {/* eslint-disable-next-line */}
+              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+            </div>
+
+            <div className={styles['scenario_picture']}>
+              <label htmlFor="picture" className={styles['form_label']}>Ajouter une image :</label>
+              <FileBase64
+                multiple={false}
+                onDone={getFile.bind(this, props)}
+              />
             </div>
 
             <div className={styles['caracteristics']}>
@@ -113,13 +95,29 @@ const NewScenario = ({ newScenario }) => {
                 min={1}
               />
             </div>
-          <span className={styles['info']}>Les champs marqués d'une * sont obligatoires.</span>
+
+            <div className={styles['description']}>
+              <h4>Description :</h4>
+              <Field as="textarea" name="description" className={styles['form_field']}/>
+            </div>
+
+            <span className={styles['info']}>Les champs marqués d'une * sont obligatoires.</span>
+
+            <Button
+              id={styles['cancel_button']}
+              type='button'
+              color='#eee'
+              children='Annuler'
+              onClick={() => backToList()}
+              shadow='#333 2px 2px 6px'
+            />
 
             <Button
               id={styles['submit_button']}
               type="submit"
               color='#eee'
               children='Valider'
+              shadow='#333 2px 2px 6px'
             />
         
           </Form>
@@ -127,13 +125,6 @@ const NewScenario = ({ newScenario }) => {
           )
         }
         </Formik>
-
-        <Button
-          id={styles['cancel_button']}
-          color='#eee'
-          children='Annuler'
-          onClick={() => backToList()}
-        />
 
     </div>
   );

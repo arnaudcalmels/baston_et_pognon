@@ -1,4 +1,4 @@
-import store from '../store/store';
+import { store } from '../store/store';
 
 // fonction générique qui récupère un item dans un tableau
 const getItem = (id, itemType) => {

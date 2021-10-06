@@ -1,0 +1,11 @@
+@import '../../styles/vars';
+
+.main {
+    grid-row: 2 / 3;
+    grid-column: 1 / span 12;
+    margin: 0 2rem;
+    text-align: center;
+    margin-top: 5rem;
+    font-size: 2rem;
+    font-style: italic;
+}

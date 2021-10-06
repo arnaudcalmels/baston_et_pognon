@@ -21,10 +21,12 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
 
   return (
     <div className={styles['main']}>
-      <img 
-        className={styles['avatar']}
-        src={avatar.base64} 
-        alt='photo_avatar'/>
+      <div className={styles['image_container']}>
+        <img
+          className={styles['avatar']}
+          src={avatar.base64}
+          alt='photo_avatar'/>
+      </div>
       <h2 className={styles['name']}>{username}</h2>
       <p className={styles['email']}>Email : {email}</p>
 
@@ -35,6 +37,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
           onClick={() => {
             setOpenEditProfileModal(true);
           }} 
+          shadow='#333 2px 2px 6px'
         />
 
         <Button 
@@ -43,6 +46,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
           onClick={() => {
             setOpenChangePasswordModal(true);
           }} 
+          shadow='#333 2px 2px 6px'
         />
 
         <Button 
@@ -51,6 +55,7 @@ const Profile = ({ username, email, avatar, id, editProfile, deleteProfile, logo
           onClick={() => {
             setOpenDeleteModal(true);
           }} 
+          shadow='#333 2px 2px 6px'
         />
       </div>
 

@@ -1,6 +1,7 @@
 .form {
-    margin-top: 3rem;
-    padding-left: 2rem;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
 
     &_field {
         display: flex;
@@ -34,24 +35,6 @@
     font-style: italic;
 }
 
-#close_button {
-    position: relative;
-    top: -3rem;
-    left: 2rem;  
-}
-
-#submit_button {
-    position: relative;
-    left: 7rem;  
-}
-
-@media screen and (min-width: 600px) {
-    .form {
-        padding-right: 2rem;
-    }
-
-    #submit_button {
-        left: 8rem;  
-    }
-
+.buttons {
+    display: flex;
 }

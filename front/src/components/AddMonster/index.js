@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FileBase64 from 'react-file-base64';
 
@@ -7,13 +7,7 @@ import PropTypes from 'prop-types';
 
 import styles from './addMonster.module.scss';
 
-const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newMonster }) => {
-  useEffect(() => {
-    // getCategories();
-  },
-  // eslint-disable-next-line
-  []);
-
+const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newMonster, context }) => {
   let [ picture, setPicture ] = useState();
 
   const getFile = (props, file) => {
@@ -23,7 +17,7 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
 
   const handleSubmit = (values) => {
     console.log(JSON.stringify(values, null, 2));
-    newMonster(slug, JSON.stringify(values, null, 2), closeModal);
+    newMonster(slug, JSON.stringify(values, null, 2), closeModal, context);
   };
 
   return (
@@ -57,6 +51,9 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
             if (!values.name) {
               errors.name = 'Veuillez remplir ce champ !';
             }
+            if (values.caracteristics.actions.length < 1) {
+              errors.caracteristics = 'Veuillez ajouter au moins une action !';
+            }
             return errors;
           }}
         onSubmit={(values) => handleSubmit(values)}
@@ -64,11 +61,20 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
       {
         (props) => (
           <Form className={styles['form']}>
-            <h3 className={styles['form_title']}>Je crée un nouveau monstre</h3>
-
             <div className={styles['form_content']}>
 
-              <div className={`${styles['newMonster_name']} ${styles['form_item']}`}>
+              {/* eslint-disable-next-line */}
+              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
+
+              <div className={styles['newMonster_picture']}>
+                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+                <FileBase64
+                  multiple={false}
+                  onDone={getFile.bind(this, props)}
+                />
+              </div>
+
+              <div className={styles['newMonster_name']}>
                 <label htmlFor="name" className={styles['form_label']}>Nom * :</label>
                 <Field
                   className={styles['form_field']}
@@ -79,16 +85,16 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
                 <ErrorMessage name='name' component='div' className={styles['error_message']}/>
               </div>
 
-              <div className={`${styles['newMonster_picture']} ${styles['form_item']}`}>
-                <label htmlFor="picture" className={styles['form_label']}>Image :</label>
-                <FileBase64
-                  multiple={false}
-                  onDone={getFile.bind(this, props)}
+              <div className={styles['newMonster_level']}>
+                <label htmlFor="level" className={styles['form_label']}>Niveau :</label>
+                <Field
+                  className={styles['form_field']}
+                  id="level"
+                  name="level"
+                  type="number"
+                  min={1}
                 />
               </div>
-
-              {/* eslint-disable-next-line */}
-              <img id={styles['image_preview']} src={picture?.base64} alt={picture?.name}/>
 
               <div className={`${styles['newMonster_isBoss']} ${styles['form_checkbox']}`}>
                 <div className={styles['form_label']}>Boss :</div>
@@ -110,29 +116,8 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
                 </label>
               </div>
 
-              <div className={styles['newMonster_level']}>
-                <label htmlFor="level" className={styles['form_label']}>Niveau :</label>
-                <Field
-                  className={styles['form_field']}
-                  id="level"
-                  name="level"
-                  type="number"
-                  min={1}
-                />
-              </div>
-
               <div className={styles['newMonster_caracteristics']}>
-                <h3 className={styles['form_title']}>Caractéristiques :</h3>
-                <div className={styles['newMonster_armor']}>
-                  <label htmlFor="armor" className={styles['form_label']}>Armure :</label>
-                  <Field
-                    className={styles['form_field']}
-                    id="armor"
-                    name="caracteristics.armor"
-                    type="number"
-                    min={1}
-                  />
-                </div>
+                <h4 className={styles['form_title']}>Caractéristiques :</h4>
 
                 <div className={styles['newMonster_lifePoints']}>
                   <label htmlFor="armor" className={styles['form_label']}>Points de vie :</label>
@@ -144,20 +129,44 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
                     min={1}
                   />
                 </div>
+
+                <div className={styles['newMonster_armor']}>
+                  <label htmlFor="armor" className={styles['form_label']}>Armure :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="armor"
+                    name="caracteristics.armor"
+                    type="number"
+                    min={1}
+                  />
+                </div>
+
               </div>
 
               <div className={styles['newMonster_actions']}>
-                <h3 className={styles['form_title']}>Actions : </h3>
+                <h4 className={styles['form_title']}>Actions * : </h4>
+                <ErrorMessage name='caracteristics' component='div' className={styles['error_message']}/>
+
                 <FieldArray name="caracteristics.actions">
                 {
                   ({ insert, remove, push }) => (
                     <div>
                       {props.values.caracteristics.actions.length > 0 &&
                       props.values.caracteristics.actions.map((action, index) => (
-                        <div className="" key={index}>
-                          Action {index+1}
+                        <div className={styles['action']} key={index}>
+                          <span className={styles['action_title']}>Action {index+1}</span>
+                          <div className={styles['form_checkbox']}>
+                            <div className={styles['form_label']}>Soin :</div>
+                            <label>
+                              <Field type="checkbox" name={`caracteristics.actions.${index}.heal`} className={styles['form_checkbox-input']}/>
+                              {
+                                props.values.caracteristics.actions[index].heal ? "oui" : "non"
+                              }
+                            </label>
+                          </div>
+
                           <div className="">
-                            <label htmlFor={`caracteristics.actions.${index}.damages`} className={styles['form_label']}>Dégâts :</label>
+                            <label htmlFor={`caracteristics.actions.${index}.damages`} className={styles['form_label']}>Dégâts / Soins :</label>
                             <Field
                               className={styles['form_field']}  
                               name={`caracteristics.actions.${index}.damages`}
@@ -187,16 +196,6 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
                           </div>
 
                           <div className={styles['form_checkbox']}>
-                            <div className={styles['form_label']}>Soin :</div>
-                            <label>
-                              <Field type="checkbox" name={`caracteristics.actions.${index}.heal`} className={styles['form_checkbox-input']}/>
-                              {
-                                props.values.caracteristics.actions[index].heal ? "oui" : "non"
-                              }
-                            </label>
-                          </div>
-
-                          <div className={styles['form_checkbox']}>
                             <div className={styles['form_label']}>Spéciale :</div>
                             <label>
                               <Field type="checkbox" name={`caracteristics.actions.${index}.isSpecial`} className={styles['form_checkbox-input']}/>
@@ -206,7 +205,7 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
                             </label>
                           </div>
 
-                          <div className="">
+                          <div className={styles['action_button']}>
                             <button
                               type="button"
                               className="secondary"
@@ -228,28 +227,30 @@ const AddMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, newM
                   </div>
                   )
                 }
-                </FieldArray>              
+                </FieldArray>   
+           
               </div>
 
             </div>
 
             <Button 
+              id={styles['cancel_button']} 
+              type='button'
+              color='#ddd' 
+              children='Annuler' 
+              onClick={closeModal}
+            />
+
+            <Button 
               id={styles['submit_button']} 
               type="submit" 
-              color='#eee' 
+              color='#ddd' 
               children='Valider'
             />
           </Form>
         )
       }
     </Formik>
-
-    <Button 
-      id={styles['cancel_button']} 
-      color='#eee' 
-      children='Annuler' 
-      onClick={closeModal}
-    />
 
     </div>
   );
@@ -262,6 +263,7 @@ AddMonster.propTypes = {
   wanderGroupId: PropTypes.number,
   slug: PropTypes.string,
   newMonster: PropTypes.func,
+  context: PropTypes.string,
 };
 
 export default AddMonster;

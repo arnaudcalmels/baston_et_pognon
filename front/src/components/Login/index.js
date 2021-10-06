@@ -51,11 +51,13 @@ const Login = ({ closeModal, loginSubmit }) => {
           />
           <ErrorMessage name='password' component='div' className={styles['error_message']}/>
 
-          <Button id={styles['submit_button']} type="submit" color='#eee' children='Se connecter'/>
+          <div className={styles['buttons']}>
+            <Button id={styles['close_button']} type='button' color='#ddd' children='Annuler' onClick={closeModal}/>
+            <Button id={styles['submit_button']} type="submit" color='#ddd' children='Se connecter'/>
+          </div>
 
         </Form>
       </Formik>
-      <Button id={styles['close_button']} color='#eee' children='Annuler' onClick={closeModal}/>
     </>
 
   );

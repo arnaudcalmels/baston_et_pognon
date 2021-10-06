@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import logo from '../../assets/images/logo.png';
 
 import styles from './navigation.module.scss';
 
@@ -29,6 +30,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
   return (
     <div className={styles['header']}>
       <h1 className={styles['logo']}>
+        <img src={logo} className={styles['logo_png']} alt="logo Baston & Pognon" />
         <NavLink 
           className={styles['navlink']} 
           to="/"
@@ -42,7 +44,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
         className={styles['bars']} 
         icon={faBars} 
         size="2x" 
-        style={{cursor: 'pointer'}}
+        style={{color: 'white'}}
       />     
 
       <div className={styles['menu']}>   
@@ -78,16 +80,18 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
                 Parties en ligne
               </NavLink> 
             </li>
-            <li>
-              <NavLink 
-                className={styles['navlink']} 
-                activeClassName={styles['isActive']} 
-                to="/actualité" 
-                onClick={() => displayMenu()}
-              >
-                Actualités
-              </NavLink> 
-            </li>
+            {/* Implémentation future
+              <li>
+                <NavLink 
+                  className={styles['navlink']} 
+                  activeClassName={styles['isActive']} 
+                  to="/actualité" 
+                  onClick={() => displayMenu()}
+                >
+                  Actualités
+                </NavLink> 
+              </li> 
+            */}
           </ul>
         </nav>
         
@@ -108,7 +112,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
               className={styles['chevron']} 
               icon={faChevronDown} 
               size="1x" 
-              style={{cursor: 'pointer'}}
+              style={{cursor: 'pointer', color: 'white'}}
             />     
 
             <nav className={styles['user_navbar']}>
@@ -134,6 +138,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
                       handleLogout(); 
                       displayMenu();
                     }} 
+                    shadow='#333 2px 2px 6px'
                   />
                 </li>
               </ul>
@@ -148,6 +153,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
                 isRegisterModalOpen(); 
                 displayMenu();
               }} 
+              shadow='#333 2px 2px 6px'
             />
             <Button 
               color='#eee' 
@@ -156,6 +162,7 @@ const Navigation = ({ isRegisterModalOpen, isLoginModalOpen, isLoggedIn, logout,
                 isLoginModalOpen(); 
                 displayMenu();
               }} 
+              shadow='#333 2px 2px 6px'
             />
           </>
         }
@@ -172,7 +179,7 @@ Navigation.propTypes = {
   isLoggedIn: PropTypes.bool,
   logout: PropTypes.func,
   username: PropTypes.string,
-  avatar: PropTypes.string,
+  avatar: PropTypes.object,
 };
 
 export default Navigation;

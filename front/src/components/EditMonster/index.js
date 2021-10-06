@@ -1,25 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import FileBase64 from 'react-file-base64';
 
 import Button from '../Button';
-import Loader from '../Loader';
-import Modal from '../../components/Modal';
-import DeleteConfirm from '../../components/DeleteConfirm';
 
 import PropTypes from 'prop-types';
 
 import styles from './editMonster.module.scss';
 
-const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, getMonster, monsterId, currentMonster, isLoading, editMonster, deleteMonster }) => {
-  useEffect(() => {
-    getMonster(monsterId);
-  },
-  // eslint-disable-next-line
-  []);
-
+const EditMonster = ({ closeModal, currentMonster, editMonster, context, placeId }) => {
   let [newPicture, setNewPicture] = useState();
-  const [openDeleteModal, setOpenDeleteModal] = useState(false); 
 
   const getFile = (props, file) => {
     props.setFieldValue("picture", file);
@@ -27,24 +17,13 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
   };
 
   const handleSubmit = (values) => {
-    console.log(JSON.stringify(values, null, 2));
-    editMonster(monsterId, JSON.stringify(values, null, 2), closeModal);
-  };
-
-  const handleDeleteMonster = (id) => {
-    deleteMonster(id, closeModal);
+    editMonster(currentMonster.id, JSON.stringify(values, null, 2), closeModal, context, placeId);
   };
 
   return (
-    isLoading ?
-      <Loader/>
-    :
       <div>
         <Formik
           initialValues={{
-            scenarioId,
-            placeId,
-            wanderGroupId,
             name: currentMonster.name,
             isBoss: currentMonster.isBoss,
             hasBooster: currentMonster.hasBooster,
@@ -61,6 +40,9 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
               if (!values.name) {
                 errors.name = 'Veuillez remplir ce champ !';
               }
+              if (values.caracteristics.actions.length < 1) {
+                errors.caracteristics = 'Veuillez ajouter au moins une action !';
+              }
               return errors;
             }}
           onSubmit={(values) => handleSubmit(values)}
@@ -68,9 +50,23 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
         {
           (props) => (
             <Form className={styles['form']}>
-              {/* <h3 className={styles['form_title']}>Je crée un nouveau monstre</h3> */}
-
               <div className={styles['form_content']}>
+
+                {
+                  newPicture ?
+                    <img id={styles['new-image_preview']} src={newPicture.base64} alt={newPicture.name}/>
+                    : 
+                    // eslint-disable-next-line
+                    <img id={styles['image_preview']} src={currentMonster.picture?.base64} alt={currentMonster.picture?.name}/>
+                }
+
+                <div className={styles['newMonster_picture']}>
+                  <label htmlFor="picture" className={styles['form_label']}>Image :</label>
+                  <FileBase64
+                    multiple={false}
+                    onDone={getFile.bind(this, props)}
+                  />
+                </div>
 
                 <div className={`${styles['newMonster_name']} ${styles['form_item']}`}>
                   <label htmlFor="name" className={styles['form_label']}>Nom * :</label>
@@ -83,21 +79,16 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
                   <ErrorMessage name='name' component='div' className={styles['error_message']}/>
                 </div>
 
-                <div className={`${styles['newMonster_picture']} ${styles['form_item']}`}>
-                  <label htmlFor="picture" className={styles['form_label']}>Image :</label>
-                  <FileBase64
-                    multiple={false}
-                    onDone={getFile.bind(this, props)}
+                <div className={styles['newMonster_level']}>
+                  <label htmlFor="level" className={styles['form_label']}>Niveau :</label>
+                  <Field
+                    className={styles['form_field']}
+                    id="level"
+                    name="level"
+                    type="number"
+                    min={1}
                   />
                 </div>
-
-                {
-                  newPicture ?
-                    <img id={styles['new_image_preview']} src={newPicture.base64} alt={newPicture.name}/>
-                    : 
-                    // eslint-disable-next-line
-                    <img id={styles['image_preview']} src={currentMonster.picture?.base64} alt={currentMonster.picture?.name}/>
-                }
 
                 <div className={`${styles['newMonster_isBoss']} ${styles['form_checkbox']}`}>
                   <div className={styles['form_label']}>Boss :</div>
@@ -119,29 +110,9 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
                   </label>
                 </div>
 
-                <div className={styles['newMonster_level']}>
-                  <label htmlFor="level" className={styles['form_label']}>Niveau :</label>
-                  <Field
-                    className={styles['form_field']}
-                    id="level"
-                    name="level"
-                    type="number"
-                    min={1}
-                  />
-                </div>
 
                 <div className={styles['newMonster_caracteristics']}>
-                  <h3 className={styles['form_title']}>Caractéristiques :</h3>
-                  <div className={styles['newMonster_armor']}>
-                    <label htmlFor="armor" className={styles['form_label']}>Armure :</label>
-                    <Field
-                      className={styles['form_field']}
-                      id="armor"
-                      name="caracteristics.armor"
-                      type="number"
-                      min={1}
-                    />
-                  </div>
+                  <h4 className={styles['form_title']}>Caractéristiques :</h4>
 
                   <div className={styles['newMonster_lifePoints']}>
                     <label htmlFor="armor" className={styles['form_label']}>Points de vie :</label>
@@ -153,20 +124,45 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
                       min={1}
                     />
                   </div>
+
+                  <div className={styles['newMonster_armor']}>
+                    <label htmlFor="armor" className={styles['form_label']}>Armure :</label>
+                    <Field
+                      className={styles['form_field']}
+                      id="armor"
+                      name="caracteristics.armor"
+                      type="number"
+                      min={1}
+                    />
+                  </div>
+
                 </div>
 
                 <div className={styles['newMonster_actions']}>
-                  <h3 className={styles['form_title']}>Actions : </h3>
+                  <h4 className={styles['form_title']}>Actions : </h4>
+                  <ErrorMessage name='caracteristics' component='div' className={styles['error_message']}/>
+
                   <FieldArray name="caracteristics.actions">
                   {
                     ({ insert, remove, push }) => (
                       <div>
                         {props.values.caracteristics.actions?.length > 0 &&
                         props.values.caracteristics.actions?.map((action, index) => (
-                          <div className="" key={index}>
-                            Action {index+1}
+                          <div className={styles['action']} key={index}>
+                            <span className={styles['action_title']}>Action {index+1}</span>
+
+                            <div className={styles['form_checkbox']}>
+                              <div className={styles['form_label']}>Soin :</div>
+                              <label>
+                                <Field type="checkbox" name={`caracteristics.actions.${index}.heal`} className={styles['form_checkbox-input']}/>
+                                {
+                                  props.values.caracteristics.actions[index].heal ? "oui" : "non"
+                                }
+                              </label>
+                            </div>
+
                             <div className="">
-                              <label htmlFor={`caracteristics.actions.${index}.damages`} className={styles['form_label']}>Dégâts :</label>
+                              <label htmlFor={`caracteristics.actions.${index}.damages`} className={styles['form_label']}>Dégâts / Soins :</label>
                               <Field
                                 className={styles['form_field']}  
                                 name={`caracteristics.actions.${index}.damages`}
@@ -195,15 +191,6 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
                               />
                             </div>
 
-                            <div className={styles['form_checkbox']}>
-                              <div className={styles['form_label']}>Soin :</div>
-                              <label>
-                                <Field type="checkbox" name={`caracteristics.actions.${index}.heal`} className={styles['form_checkbox-input']}/>
-                                {
-                                  props.values.caracteristics.actions[index].heal ? "oui" : "non"
-                                }
-                              </label>
-                            </div>
 
                             <div className={styles['form_checkbox']}>
                               <div className={styles['form_label']}>Spéciale :</div>
@@ -215,7 +202,7 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
                               </label>
                             </div>
 
-                            <div className="">
+                            <div className={styles['action_button']}>
                               <button
                                 type="button"
                                 className="secondary"
@@ -243,45 +230,23 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
               </div>
 
               <Button 
+                id={styles['cancel_button']} 
+                type='button'
+                color='#ddd' 
+                children='Annuler' 
+                onClick={closeModal}
+              />
+
+              <Button 
                 id={styles['submit_button']} 
                 type="submit" 
-                color='#eee' 
+                color='#ddd' 
                 children='Valider'
               />
             </Form>
           )
         }
       </Formik>
-
-      <Button 
-        id={styles['cancel_button']} 
-        color='#eee' 
-        children='Annuler' 
-        onClick={closeModal}
-      />
-
-      <Button 
-        id={styles['delete_button']} 
-        color='#eee' 
-        children='Supprimer le monstre' 
-        onClick={() => setOpenDeleteModal(true)}
-      />
-
-      <Modal 
-        isOpen={openDeleteModal} 
-        closeModal={() => {
-          setOpenDeleteModal(false);
-        }}
-        title='Supprimer le monstre ?' 
-        children={
-          <DeleteConfirm 
-            cancelAction={() => setOpenDeleteModal(false)} 
-            confirmAction={() => {
-              handleDeleteMonster(monsterId);
-              setOpenDeleteModal(false);
-            }}
-          />}
-      />
 
 
       </div>
@@ -290,15 +255,10 @@ const EditMonster = ({ closeModal, scenarioId, placeId, wanderGroupId, slug, get
 
 EditMonster.propTypes = {
   closeModal: PropTypes.func,
-  scenarioId: PropTypes.number,  
-  placeId: PropTypes.number,
-  wanderGroupId: PropTypes.number,
-  slug: PropTypes.string,
-  getMonster: PropTypes.func,
-  monsterId: PropTypes.number,
-  monster: PropTypes.object,
-  isLoading: PropTypes.bool, 
+  currentMonster: PropTypes.object,
   editMonster: PropTypes.func,
+  context: PropTypes.string,
+  placeId: PropTypes.number,
 };
 
 export default EditMonster;

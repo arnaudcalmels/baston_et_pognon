@@ -1,19 +1,13 @@
 @import '../../styles/vars';
 
 .main {
-    min-height: 80vh;
     grid-row: 2 / 3;
     grid-column: 1 / span 12;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 50px 1fr;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;        
-}
-
-#title {
-    grid-column: 1 / span 2;
-    grid-row: 1 / 2;
+    align-items: center;
+   
 }
 
 .form {
@@ -24,44 +18,34 @@
     grid-gap: 0.5rem;
     justify-items: center;
     align-items: center;
-    margin-top: 1rem;
-}
 
-.overlay-image {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-    margin-top: 0;
-    position: relative;
-    width: 300px;
-    justify-self: center;
-    display: flex;
-    justify-content: center;    
-
-    & #image_preview {
-        max-width: 300px;
-        max-height: 200px;
-        // opacity: 0.5;
+    &_field {
+        font-family: $font-body;
+        border: none;
     }
 
-    // & .hover {
-    //     position: absolute;
-    //     top: 0;
-    //     height: 100%;
-    //     width: 100%;
-    //     opacity: 0.2;
-    //     transition: .5s ease;
-    //     display: flex;
-    //     justify-content: center;
-    //     align-items: flex-end;
-    // }
+}
 
-    // &:hover .hover {
-    //     opacity: 1;
-    // }
+.image_container {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+    align-items: center;
+    overflow-y: hidden;
+    background-size: cover;
+    height: 225px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+#image_preview {
+    width: 100%;
 }
 
 .scenario_name {
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 3;
     grid-row: 1 / 2;
     margin-bottom: 1rem;
 
@@ -72,19 +56,9 @@
 }
 
 .scenario_picture {
-    grid-column: 1 / 2;
     grid-row: 3 / 4;
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
-    max-width: 300px;
-    overflow: hidden;
-
-    & .form_label {
-        margin-bottom: 0.5rem;
-        text-align: center;
-    }
-
+    grid-column: 1 / 2;
+    text-align: center;
 }
 
 .description {
@@ -94,12 +68,17 @@
     height: 300px;
     justify-self: center;
     text-align: center;
-    border: 3px solid $color-secondary;
-    border-radius: 5px;
     padding: 0.5rem;
     margin: 1rem;
     display: flex;
     flex-direction: column;
+
+    h4 {
+        text-align: start;
+        margin: 0;
+        font-family: $font-body;
+        font-weight: normal;
+    }
 
     & .form_field {
         width: auto;
@@ -109,10 +88,7 @@
 
 .caracteristics {
     grid-column: 2 / 3;
-    grid-row: 2 / 4;
-    border: 3px solid $color-secondary;
-    border-radius: 5px;
-    padding: 0.5rem;
+    grid-row: 2 / 3;
     margin: 1rem;
     width: 300px;
     display: grid;
@@ -142,44 +118,24 @@
 }
 
 #cancel_button {
-    justify-self: center;
-    width: 100px;  
-    position: relative;
-    top: -3rem;
+    grid-column: 1 / 2;
+    justify-self: end;
 }
 
 #submit_button {
     grid-column: 2 / 3;
-    justify-self: center;
-    width: 100px;  
+    justify-self: start;
 }
 
 @media screen and (min-width: 1200px) {
-    .form {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 50px 300px 100px 200px 1fr 50px;
-        justify-content: center;
-        align-items: center;  
-    }
-
-    .scenario_name {
-        grid-column: 1 / span 3;
-    }
-
-    .overlay-image {
-        grid-column: 1 / 2;
-        grid-row: 2 / 3;
+    .image_container {
+        height: 375px;
+        width: 500px;
     }
     
-    .scenario_picture {
-        grid-column: 1 / 2;
-        grid-row: 3 / 4;
-    }
-
     .description {
-        grid-column: 2 / span 2;
-        grid-row: 2 / 4;
+        grid-column: 2 / 2;
+        grid-row: 2 / 3;
         align-self: flex-start;
     }
 
@@ -191,36 +147,18 @@
     .info {
         grid-column: 1 / span 3;
     }
-    
-    #cancel_button {
-        left: 11rem;
-    }
-    
-    #submit_button {
-        grid-column: 2 / 3;
-        justify-self: end;
-    }
-    
+        
 }
 
 @media screen and (min-width: 1500px) {
-    .form {
-        grid-template-rows: 50px 300px 100px 1fr 50px;
-    }
-
-    .caracteristics {
-        grid-column: 3 / 4;
-        grid-row: 2 / 3;
+    .image_container {
+        height: 525px;
+        width: 700px;
     }
 
     .description {
-        grid-column: 2 / 3;
-        grid-row: 2 / span 2;
-        align-self: flex-start;
-        margin-top: 2rem;
+        width: 700px;
+        height: 450px;
     }
 
-    #cancel_button {
-        top: -7rem;
-    }
 }

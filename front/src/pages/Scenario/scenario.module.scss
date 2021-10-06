@@ -1,7 +1,6 @@
 @import '../../styles/vars';
 
 .main {
-    min-height: 80vh;
     grid-row: 2 / 3;
     grid-column: 1 / span 12;
     display: flex;
@@ -33,46 +32,27 @@
     display: block;
 }
 
-.overlay-image {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-    margin-top: 0;
-    position: relative;
-    width: 300px;
+.image_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 125px;
+    width: 200px;
     justify-self: center;
+    border-radius: 5px;
+}
 
-    
-    & img {
-        width: 300px;
-        height: auto;
-    }
-
-    & .hover {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        opacity: 0.2;
-        transition: .5s ease;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-    }
-
-    &:hover .hover {
-        opacity: 1;
-    }
+#image, #image_preview, #new_image_preview {
+    width: 100%;
 }
 
 .table {
 
-    border: 3px solid $color-secondary;
-    border-radius: 5px;
     padding: 0.5rem;
     margin: 1rem;
     width: 300px;
 
-    
     &_content {
         width: 300px;
         display: grid;
@@ -110,77 +90,41 @@
     }
 }
 
-.description {
+.description, .new-description {
     width: 300px;
-    text-align: center;
-    border: 3px solid $color-secondary;
-    border-radius: 5px;
-    padding: 0.5rem;
+    height: 290px;
     margin: 1rem;
-}
+    font-family: $font-description;
+    overflow: scroll;
 
-#sub_title {
-    font-size: 1.3rem;
-}
-
-.carousel {
-    width: 250px;
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-.slider {
-    margin-bottom: 1rem;
-}
-
-.place {
-    display: none;
-}
-
-.wanderingMonsters  {
-    width: 300px;
-    text-align: center;
-    border: 3px solid $color-secondary;
-    border-radius: 5px;
-    padding: 0.5rem;
-    margin: 1rem;
-    padding-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.monsters {
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.monster_group {
-    padding: 0.5rem;
+    h4 {
+        text-align: start;
+        margin: 0;
+        font-family: $font-body;
+        font-weight: normal;
+    }
 }
 
 .add_group, .add_place {
     padding: 0.5rem;
-    opacity: 0.2;
+    opacity: 0.6;
+    align-self: center;
 
     &:hover {
         opacity: 1;
     }
 }
 
-.buttons {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#edit_button {
-    display: none;
+.icon {
+    &_pen, &_trash {
+        display: none;
+    }
 }
 
 @media screen and (min-width: 768px) {
     #title {
         grid-column: 1 / span 2;
+        grid-row: 1 / 2;
     }
 
     .show_scenario {
@@ -190,13 +134,14 @@
         align-items: center;        
     }
 
-    .overlay-image {
-        justify-self: center;
+    .image_container {
         grid-row: 2 / 3;
         grid-column: 1 / 2;
+        height: 225px;
+        width: 300px;    
     }
 
-    #caracteristics {
+    .caracteristics {
         grid-column: 2 / 3;
         grid-row: 2 / 3;
     }
@@ -207,39 +152,27 @@
         justify-self: center;
         grid-row: 3 / 4;
     }
+        
+    .icon {
+        &_pen {
+            display: block;
+            grid-row: 1 / 2;
+            grid-column: 1 / span 2;
+            justify-self: flex-end;
+        } 
+        
+        &_trash {
+            display: block;
+            grid-row: 1 / 2;
+            grid-column: 1 / span 2;
+            justify-self: flex-end;
+            align-self: flex-end;
+        }
 
-    .carousel {
-        width: 520px;
-        grid-column: 1 / span 2;
-        justify-self: center;
-    }
-    
-    .place {
-        width: 250px;
-        height: 350px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .wanderingMonsters  {
-        grid-column: 1 / span 2;
-        justify-self: center;
-        grid-row: 4 / 5;
-    }
-    
-    .buttons {
-        flex-direction: row;
-        grid-column: 1 / span 2;
-        justify-content: center;
-    }
-
-    #edit_button {
-        display: block;
     }
 
     .form {
-        grid-row: 2 / 3;
+        grid-row: 1 / 2;
         grid-column: 1 / span 2;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -247,8 +180,19 @@
         justify-items: center;
         align-items: center;
         margin-top: 1rem;
+
+        &_field {
+            font-family: $font-body;
+            border: none;
+        }
     } 
     
+    .scenario_picture {
+        grid-row: 2 / 3;
+        grid-column: 2 / 2;
+        align-self: flex-end;
+    }
+
     .new-scenario_name {
         grid-column: 1 / span 2;
         grid-row: 1 / 2;
@@ -261,14 +205,12 @@
     }
         
     .new-description {
-        grid-row: 3 / 4;
         grid-column: 1 / span 2;
         width: 600px;
-        height: 300px;
         justify-self: center;
+        grid-row: 3 / 4;
+        height: 300px;
         text-align: center;
-        border: 3px solid $color-secondary;
-        border-radius: 5px;
         padding: 0.5rem;
         margin: 1rem;
         display: flex;
@@ -280,10 +222,9 @@
         }
     }
         
-    .caracteristics {
-        border: 3px solid $color-secondary;
-        border-radius: 5px;
-        padding: 0.5rem;
+    .new-caracteristics {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
         margin: 1rem;
         width: 300px;
         display: grid;
@@ -292,9 +233,9 @@
         align-items: center;
         justify-items: center;
         
-            & .form_field {
-                width: 30px;
-            }
+        & .form_field {
+            width: 30px;
+        }
     }
         
     .info {
@@ -305,162 +246,64 @@
     }
     
     #cancel_button {
-        justify-self: center;
-        width: 100px;  
-        position: relative;
-        top: -3rem;
-        left: 5rem;
+        grid-column: 1 / 2;
+        justify-self: end;
     }
     
     #submit_button {
         grid-column: 2 / 3;
-        justify-self: center;
-        width: 100px;  
+        justify-self: start;
+    }
+
+    .error_message {
+        color: red;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        font-style: italic;
+        text-align: center;
     }
     
 }
 
 @media screen and (min-width: 1200px) {
-    #title {
+    #title, .new-scenario_name {
         grid-column: 1 / span 3;
     }
 
-    .show_scenario {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 50px 400px 200px 1fr 50px;
-        justify-content: center;
-        align-items: center;  
+    .image_container {
+        height: 375px;
+        width: 500px;
     }
 
-
-    .overlay-image {
-        grid-row: 2 / 3;
-        grid-column: 1 / 2 ;
-    }
-
-    #caracteristics {
+    .caracteristics, .new-caracteristics {
         grid-row: 3 / 4;
         grid-column: 1 / 2 ;
         justify-self: center;
         align-self: flex-start;
     }
 
-    .description {
-        grid-column: 2 / span 2;
-        grid-row: 2 / 4;
-        align-self: flex-start;
-        margin-top: 4rem;
-    }
-
-    .wanderingMonsters  {
-        grid-row: 3 / 4;
-        grid-column: 3 / 4 ;
-        justify-self: center;
-        align-self: flex-start;
-    }
-
-    .carousel {
-        grid-row: 5 / 6;
-        grid-column: 1 / span 3;
-        width: 800px;
-        justify-self: center;
-    }
-
-    .buttons {
-        grid-row: -1 / span 1;
-        grid-column: 1 / span 3;
-    }
-
-    .form {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 50px 400px 200px 1fr 50px;
-        justify-content: center;
-        align-items: center;  
-    }
-    
-    .new-scenario_name {
-        grid-column: 1 / span 3;
-    }
-
-    .new-description {
-        grid-column: 2 / span 2;
+    .description, .new-description {
+        grid-column: 2 / 2;
         grid-row: 2 / 3;
-        align-self: flex-start;
     }
 
-    .caracteristics {
+    .scenario_picture {
         grid-row: 3 / 4;
-        grid-column: 1 / 2;
-    }
-
-    .info {
-        grid-column: 1 / span 3;
-    }
-
-    #cancel_button {
-        left: 23rem;
-    }
-    
-    #submit_button {
-        grid-column: 2 / 3;
-        justify-self: end;
+        grid-column: 2 / 2;
+        align-self: flex-start;
     }
 
 }
 
-
 @media screen and (min-width: 1500px) {
-    .show_scenario {
-        grid-template-rows: 50px 200px 200px 1fr 50px;
+    .image_container {
+        height: 525px;
+        width: 700px;
     }
 
-    .overlay-image {
-        justify-self: center;
-        align-self: flex-start;
-        margin-top: 2rem;
-    }
-
-    #caracteristics {
-        grid-row: 2 / 3;
-        grid-column: 3 / 4 ;
-        justify-self: center;
-        align-self: flex-start;
-        margin-top: 2rem;
-    }
-
-    .description {
-        grid-column: 2 / 3;
-        grid-row: 2 / span 2;
-        align-self: flex-start;
-        margin-top: 2rem;
-    }
-
-    .carousel {
-        grid-row: 4 / 5;
-        width : 1100px;
-    }
-
-    .form {
-        grid-template-rows: 50px 250px 200px 1fr 50px;
-    }
-
-    .caracteristics {
-        grid-column: 3 / 4;
-        grid-row: 2 / 3;
-    }
-
-    .new-description {
-        grid-column: 2 / 3;
-        grid-row: 2 / span 2;
-        align-self: flex-start;
-        margin-top: 2rem;
-    }
-
-    #cancel_button {
-        top: -3rem;
-        left: 39rem;
+    .description, .new-description {
+        width: 700px;
+        height: 450px;
     }
 
 }

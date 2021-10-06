@@ -2,7 +2,7 @@ import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
-import Home from './pages/Home';
+import Home from './containers/pages/Home';
 import Characters from './containers/pages/Characters';
 import Character from './containers/pages/Character';
 import NewCharacter from './containers/pages/NewCharacter';
@@ -10,13 +10,15 @@ import Scenarios from './containers/pages/Scenarios';
 import Scenario from './containers/pages/Scenario';
 import NewScenario from './containers/pages/NewScenario';
 import Game from './pages/Game';
-import News from './pages/News';
+// import News from './pages/News';
 import Profile from './containers/pages/Profile';
 import Modal from './components/Modal';
 import Navigation from './containers/components/Navigation';
 import Footer from './components/Footer';
 import Register from './containers/components/Register';
 import Login from './containers/components/Login';
+import Legals from './pages/Legals';
+import Lost404 from './pages/Lost404';
 
 import { closeModal } from './actions/auth';
 
@@ -40,8 +42,13 @@ const App = ({ isRegisterModalOpen, isLoginModalOpen, closeModal }) => {
         <Route exact path="/scenario/nouveau" component={NewScenario} />
         <Route exact path="/scenario/:id" component={Scenario} />
         <Route exact path="/jeu" component={Game} />
-        <Route exact path="/actualité" component={News} />
+        {/* Implémentation future
+          <Route exact path="/actualité" component={News} />
+         */}
         <Route exact path="/profil" component={Profile} />
+        <Route exact path="/infos-mentions-legales" component={Legals} />
+        <Route path="*" component={Lost404} />
+
       </Switch>
 
       <Footer />

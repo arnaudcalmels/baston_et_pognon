@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Place;
 use App\Entity\Action;
 use App\Entity\Monster;
-use App\Entity\Caracteristics;
-use App\Entity\Place;
 use App\Entity\Scenario;
-use App\Entity\WanderingMonsterGroup;
+use App\Entity\Caracteristics;
 use Doctrine\ORM\EntityManager;
 use App\Validator\MonsterValidator;
+use App\Entity\WanderingMonsterGroup;
+use App\Security\VisitorAccountChecker;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,6 +51,10 @@ class MonsterController extends AbstractController
     */
     public function new(Request $request, string $slug, MonsterValidator $monsterValidator)
     {
+        if (VisitorAccountChecker::isVisitorAccount($this->getUser())) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         $errors = $monsterValidator->validateRequestDatas($request->getContent(), true, $slug);
 
         if (count($errors) > 0) {
@@ -126,7 +131,11 @@ class MonsterController extends AbstractController
         if (!$monster) {
 
             return new JsonResponse(['Le monstre d\'id ('.$id.') n\'existe pas'], 404);
-        } 
+        }
+
+        if (VisitorAccountChecker::isVisitorAccount($this->getUser())) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
 
         $place = $monster->getPlace();
 
@@ -184,6 +193,11 @@ class MonsterController extends AbstractController
         }
 
         $currentUser = $this->getUser();
+
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         $place = $monster->getPlace();
         $scenario = $place ? $place->getScenario() : $monster->getWanderingMonsterGroup()->getScenario();
         $owner = $scenario->getOwner();

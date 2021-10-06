@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Scenario;
-use App\Repository\ScenarioRepository;
 use App\Validator\ScenarioValidator;
+use App\Repository\ScenarioRepository;
+use App\Security\VisitorAccountChecker;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -74,6 +75,10 @@ class ScenarioController extends AbstractController
      */
     public function new(Request $request, ValidatorInterface $validator): JsonResponse
     {
+        if (VisitorAccountChecker::isVisitorAccount($this->getUser())) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+        
         $scenarioValidator = new ScenarioValidator($validator);
 
         $errorsDatas = $scenarioValidator->validateRequestDatas($request->getContent());
@@ -117,6 +122,11 @@ class ScenarioController extends AbstractController
     public function edit(Request $request, Scenario $scenario = null, ValidatorInterface $validator): JsonResponse
     {
         $currentUser = $this->getUser();
+
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         if (!$scenario) {
             $error = ['Ce scénario n\'existe pas'];
             $statusCode = 404;
@@ -167,6 +177,11 @@ class ScenarioController extends AbstractController
     public function delete(Request $request, Scenario $scenario = null): JsonResponse
     {
         $currentUser = $this->getUser();
+
+        if (VisitorAccountChecker::isVisitorAccount($currentUser)) {
+            return new JsonResponse(['Action interdite pour le compte visiteur'], 403);
+        }
+
         $owner = $scenario ? $scenario->getOwner() : null;
 
         if (!$scenario) {

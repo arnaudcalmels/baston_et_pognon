@@ -91,6 +91,8 @@ const Characters = ({ getCharacters, isLoggedIn, characters, isLoading }) => {
         </NavLink>  
         <p>Les boosters obtenus par les personnages tout au long de leurs aventures vont leur permettre de progresser et de devenir plus puissants. <br/>
         Attention à ne pas mourir car alors tous les boosters seraient perdus !</p>
+        <p className={styles['mobile']}><em>En version mobile, seule la consultation est possible. Les fonctionnalités de création, modification et suppression sont désactivées.</em></p>
+
       </div>
 
     </div>

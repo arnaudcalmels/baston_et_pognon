@@ -47,6 +47,7 @@
     color: black;
     font-weight: bold;
     margin: 0.5rem;
+    display: none;
 }
 
 
@@ -70,6 +71,14 @@
         & img {
             width: 300px;
         }
+    }
+
+    .navlink {
+        display: block;
+    }
+    
+    .mobile {
+        display: none;
     }
 
 }

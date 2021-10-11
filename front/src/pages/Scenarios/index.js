@@ -94,6 +94,7 @@ const Scenarios = ({ isLoggedIn, scenarios, getScenarios, getPlaceSuccess, getMo
         <p>Pensez bien à répartir judicieusement des boosters sur les monstres et/ou à les cacher dans certains lieux.<br/>
         Ces boosters sont le témoignage de la réussite et de la bravoure des aventuriers qui gagneront en compétences au fur et à mesure qu’ils s’empareront de ces boosters.</p>
         <p>Le jeu en ligne n’étant pas encore implémenté, le nombre de booster requis par un personnage pour le faire progresser dans les niveaux n’est pas encore défini.</p>
+        <p className={styles['mobile']}><em>En version mobile, seule la consultation est possible. Les fonctionnalités de création, modification et suppression sont désactivées.</em></p>
       </div>
 
     </div>

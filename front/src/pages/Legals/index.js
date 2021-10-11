@@ -18,12 +18,15 @@ const Legals = () => {
           <li>Axios</li>
           <li>Formik</li>
           <li>Sass</li>
+          <li>Apache</li>
         </ul>
         <h5>Back : </h5>
         <ul>
           <li>Symfony</li>
           <li>Nelmio Cors</li>
           <li>Lexik JWT</li>
+          <li>PostgreSQL</li>
+          <li>Heroku</li>
         </ul>
       </div>
       

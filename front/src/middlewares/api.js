@@ -119,6 +119,13 @@ import {
     }
 
     case EDIT_PROFILE: {
+      const {user: { email } } = store.getState();
+      if (email === 'visiteur@test.io') {
+          setErrorToasts(['Action interdite pour le compte visiteur']);
+          action.closeFunction();
+          break;
+      }
+      
       const { auth: { token } } = store.getState();
       const config = {
         method: 'patch',
@@ -141,9 +148,17 @@ import {
       });
 
       break;
+
     }
 
     case CHANGE_PASSWORD: {
+      const {user: { email } } = store.getState();
+      if (email === 'visiteur@test.io') {
+          setErrorToasts(['Action interdite pour le compte visiteur']);
+          action.closeFunction();
+          break;
+      }
+
       const { auth: { token } } = store.getState();
       const config = {
         method: 'patch',
@@ -286,6 +301,13 @@ import {
     }
 
     case EDIT_CHARACTER: {
+      const {user: { email } } = store.getState();
+      if (email === 'visiteur@test.io') {
+          setErrorToasts(['Action interdite pour le compte visiteur']);
+          action.closeFunction();
+          break;
+      }
+
       const { auth: { token } } = store.getState();
       const config = {
         method: 'put',
@@ -364,6 +386,13 @@ import {
     }
 
     case EDIT_SCENARIO: {
+      const {user: { email } } = store.getState();
+      if (email === 'visiteur@test.io') {
+          setErrorToasts(['Action interdite pour le compte visiteur']);
+          action.closeFunction();
+          break;
+      }
+
       const { auth: { token } } = store.getState();
       const config = {
         method: 'put',
@@ -494,6 +523,13 @@ import {
     }
 
     case EDIT_PLACE: {
+      const {user: { email } } = store.getState();
+      if (email === 'visiteur@test.io') {
+          setErrorToasts(['Action interdite pour le compte visiteur']);
+          action.closeFunction();
+          break;
+      }
+
       const { auth: { token } } = store.getState();
       const config = {
         method: 'put',
@@ -614,6 +650,13 @@ import {
     }
 
     case EDIT_MONSTER: {
+      const {user: { email } } = store.getState();
+      if (email === 'visiteur@test.io') {
+          setErrorToasts(['Action interdite pour le compte visiteur']);
+          action.closeFunction();
+          break;
+      }
+
       const { auth: { token } } = store.getState();
       const config = {
         method: 'put',
